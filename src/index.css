@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme inline {
+  --color-tutu-violet:       #7B6CF6;
+  --color-tutu-violet-light: #BFB7FD;
+  --color-tutu-violet-dark:  #5A4CC4;
+  --color-tutu-lavender:     #E9E6F7;
+  --color-tutu-mint:         #37D6A3;
+  --color-tutu-coral:        #FD6251;
+  --color-tutu-amber:        #F59E0B;
+  --color-tutu-sky:          #60A5FA;
+  --color-tutu-ink:          #151521;
+  --color-tutu-muted:        #A09DB4;
+  --color-tutu-surface:      #F7F5FF;
+  --color-tutu-card:         #FFFFFF;
+  --color-tutu-border:       #EAE7F8;
+
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body:    'Inter', sans-serif;
+}
+
+/* ── Light mode ───────────────────────────────────────────────── */
+:root {
+  --background:          #F7F5FF;
+  --foreground:          #151521;
+  --card:                #FFFFFF;
+  --card-foreground:     #151521;
+  --primary:             #7B6CF6;
+  --primary-foreground:  #FFFFFF;
+  --secondary:           #E9E6F7;
+  --secondary-foreground:#151521;
+  --muted:               #F0EEF9;
+  --muted-foreground:    #A09DB4;
+  --accent:              #BFB7FD;
+  --accent-foreground:   #151521;
+  --border:              #EAE7F8;
+  --ring:                #7B6CF6;
+  --radius:              16px;
+
+  /* Semantic financial tokens */
+  --positive:            #37D6A3;
+  --negative:            #FD6251;
+  --warning:             #F59E0B;
+  --info:                #60A5FA;
+}
+
+/* ── Dark mode ────────────────────────────────────────────────── */
+.dark {
+  --background:          #0E0D1A;
+  --foreground:          #F0EEF9;
+  --card:                #1A1830;
+  --card-foreground:     #F0EEF9;
+  --primary:             #7B6CF6;
+  --primary-foreground:  #FFFFFF;
+  --secondary:           #252340;
+  --secondary-foreground:#C8C4E8;
+  --muted:               #1E1C33;
+  --muted-foreground:    #6B6887;
+  --accent:              #BFB7FD;
+  --accent-foreground:   #151521;
+  --border:              #252340;
+  --ring:                #7B6CF6;
+}
+
+/* ── @font-face for Figma-imported design assets ─────────────────── */
+
+@font-face {
+  font-family: 'Lato:Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://static.figma.com/font/Lato-Regular_1') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins:SemiBold';
+  font-style: normal;
+  font-weight: 600;
+  src: url('https://static.figma.com/font/Poppins-SemiBold_6') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins:Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://static.figma.com/font/Poppins-Regular_6') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins:Medium';
+  font-style: normal;
+  font-weight: 500;
+  src: url('https://static.figma.com/font/Poppins-Medium_6') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter:Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://static.figma.com/font/Inter_1') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter:Semi Bold';
+  font-style: normal;
+  font-weight: 600;
+  src: url('https://static.figma.com/font/Inter_1') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter:Medium';
+  font-style: normal;
+  font-weight: 500;
+  src: url('https://static.figma.com/font/Inter_1') format('woff2');
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans:Medium';
+  font-style: normal;
+  font-weight: 500;
+  src: url('https://static.figma.com/font/PlusJakartaSans_wght__2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans:Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://static.figma.com/font/PlusJakartaSans_wght__2') format('woff2');
+}
+
+/* ── Base ─────────────────────────────────────────────────────────── */
+
+html,
+body,
+#root {
+  height: 100%;
+  font-family: var(--font-body);
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+*:hover {
+  scrollbar-color: rgba(123, 108, 246, 0.2) transparent;
+}
