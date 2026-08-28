@@ -31,7 +31,6 @@ export const LogIn = () => {
           <PasswordField
             label='Senha'
             placeholder='Digite sua senha'
-            hint='A senha deve ter pelo menos 6 caracteres'
           />
           <Button size='lg'>Entrar</Button>
         </div>

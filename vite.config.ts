@@ -9,6 +9,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@tutu-ui": path.resolve(__dirname, "./src/ui"),
+      "@tutu-components": path.resolve(__dirname, "./src/components"),
     },
   },
 });

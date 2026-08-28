@@ -1,12 +1,13 @@
-import { LogIn } from './pages/LogIn'
+import { RouterProvider } from 'react-router'
+import { router } from './router'
 
-function App() {
-
+// Exemplo de inclusão de Provedores Globais
+export function App() {
   return (
-    <>
-    <LogIn />
-    </>
+    // <QueryClientProvider client={queryClient}>
+    //   <ThemeProvider>
+           <RouterProvider router={router} />
+    //   </ThemeProvider>
+    // </QueryClientProvider>
   )
 }
-
-export default App

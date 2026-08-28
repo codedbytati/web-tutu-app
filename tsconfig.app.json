@@ -7,7 +7,9 @@
     "types": ["vite/client"],
     "paths": {
       "@tutu-ui": ["./src/ui/index.ts"],
-      "@tutu-ui/*": ["./src/ui/*"]
+      "@tutu-ui/*": ["./src/ui/*"],
+      "@tutu-components": ["./src/components/index.ts"],
+      "@tutu-components/*": ["./src/components/*"],
     },
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,
