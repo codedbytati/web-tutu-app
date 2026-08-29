@@ -7,7 +7,7 @@ type HeaderProps = {
 
 export const Header = ({ icon: Icon, label }: HeaderProps) => {
   return (
-    <div className='flex items-center gap-2 bg-tutu-card py-3 px-6'>
+    <div className='flex items-center gap-2 bg-tutu-card py-3 px-6 border-b border-b-tutu-border'>
       <div className='bg-tutu-violet/15 rounded-xl p-2'>
         <Icon size={22} className='text-tutu-ink' />
       </div>

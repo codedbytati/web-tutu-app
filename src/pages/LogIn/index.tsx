@@ -1,6 +1,6 @@
 import { Mail } from 'lucide-react'
-import Logo from '../../../public/logo.png'
-import GoogleSVG from '../../../public/google.svg'
+import Logo from '../../assets/logo.png'
+import GoogleSVG from '../../assets/google.svg'
 import { Button, PasswordField, TextField } from '@tutu-ui'
 
 export const LogIn = () => {

@@ -1,3 +1,4 @@
+import { Avatar } from '@tutu-ui'
 import { Bell, Search } from 'lucide-react'
 
 type UserBarProps = {
@@ -8,7 +9,7 @@ export const UserBar = ({ name }: UserBarProps) => {
   return (
     <div className='flex items-center justify-between mt-5 mb-4 mx-5'>
       <div className='flex items-center gap-3'>
-        <div className='bg-tutu-coral/10 rounded-full p-3'><p>AA</p></div>
+        <Avatar />
         <div>
           <p className='text-tutu-muted text-xs'>Olá,</p>
           <p className='text-tutu-ink text-sm font-bold font-display'>{name}</p>

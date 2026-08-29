@@ -1,21 +1,33 @@
 import { createBrowserRouter } from 'react-router'
-import { Register } from './pages/Register'
-import { LogIn } from './pages/LogIn'
+import { AppLayout } from './layouts/AppLayout'
+// import { LogIn } from './pages/LogIn'
+// import { Register } from './pages/Register'
 import { Home } from './pages/Home'
 
 export const router = createBrowserRouter([
+  // Rotas de Autenticação (Páginas "limpas", sem Sidebar)
+  // {
+  //   path: '/login',
+  //   element: <LogIn />,
+  // },
+  // {
+  //   path: '/register',
+  //   element: <Register />,
+  // },
+
+  // Rotas da Aplicação Autenticada (Todas terão a Sidebar)
   {
     path: '/',
-    element: <Home />,
+    element: <AppLayout />,
+    children: [
+      {
+        index: true, // Corresponde à rota "/"
+        element: <Home />,
+      },
+    ],
   },
-  {
-    path: '/cadastro',
-    element: <Register />,
-  },
-  {
-    path: '/login',
-    element: <LogIn />,
-  },
+
+  // Rota 404
   // {
   //   path: '*',
   //   element: <NotFound />,
