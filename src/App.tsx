@@ -1,13 +1,15 @@
 import { RouterProvider } from 'react-router'
 import { router } from './router'
+import { AuthProvider } from './contexts/authContext'
 
-// Exemplo de inclusão de Provedores Globais
 export function App() {
   return (
-    // <QueryClientProvider client={queryClient}>
-    //   <ThemeProvider>
-           <RouterProvider router={router} />
-    //   </ThemeProvider>
-    // </QueryClientProvider>
+    <AuthProvider>
+      {/* <QueryClientProvider client={queryClient}> */}
+      {/*   <ThemeProvider> */}
+      <RouterProvider router={router} />
+      {/*   </ThemeProvider> */}
+      {/* </QueryClientProvider> */}
+    </AuthProvider>
   )
 }

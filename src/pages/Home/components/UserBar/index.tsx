@@ -16,11 +16,11 @@ export const UserBar = ({ name }: UserBarProps) => {
         </div>
       </div>
       <div className='flex items-center gap-2'>
-        <div className='bg-tutu-card border border-tutu-border rounded-full p-3'>
-          <Search size={16} className='text-tutu-muted' />
+        <div className='bg-tutu-card border border-tutu-border rounded-full p-3 group hover:bg-tutu-surface cursor-pointer'>
+          <Search size={16} className='text-tutu-muted group-hover:text-tutu-ink' />
         </div>
-        <div className='bg-tutu-card border border-tutu-border rounded-full p-3'>
-          <Bell size={16} className='text-tutu-muted' />
+        <div className='bg-tutu-card border border-tutu-border rounded-full p-3 group hover:bg-tutu-surface cursor-pointer'>
+          <Bell size={16} className='text-tutu-muted group-hover:text-tutu-ink' />
         </div>
       </div>
     </div>
