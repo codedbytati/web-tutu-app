@@ -1,8 +1,9 @@
+import type { ButtonHTMLAttributes } from 'react'
 import { tv } from 'tailwind-variants'
 
 const makeStyles = tv({
   base: ['font-display font-semibold cursor-pointer py-4',
-    'transition-all duration-200 ease-in-out hover:bg-tutu-violet-dark',
+    'transition-all duration-200 ease-in-out hover:opacity-90',
     'disabled:cursor-not-allowed disabled:opacity-40',
     'focus:ring-2 focus:ring-tutu-violet focus:ring-offset-2 focus:outline-none'],
   variants: {
@@ -25,12 +26,19 @@ type ButtonProps = {
   variant?: 'primary' | 'secondary' | 'ghost' | 'positive' | 'danger'
   size?: 'sm' | 'md' | 'lg'
   children: React.ReactNode
-  onClick?: () => void
-  disabled?: boolean
-  type?: string
+  onClick?: ButtonHTMLAttributes<HTMLButtonElement>['onClick']
+  disabled?: ButtonHTMLAttributes<HTMLButtonElement>['disabled']
+  type?: ButtonHTMLAttributes<HTMLButtonElement>['type']
 }
 
-export const Button = ({ children, type, variant = 'primary', size = 'md', onClick, disabled }: ButtonProps) => {
+export const Button = ({
+  children,
+  type = 'button',
+  variant = 'primary',
+  size = 'md',
+  onClick,
+  disabled
+}: ButtonProps) => {
   return (
     <button
       type={type}

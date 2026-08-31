@@ -18,7 +18,7 @@ const makeStyles = tv({
 type TextFieldProps = {
   label: string
   placeholder: string
-  icon: LucideIcon
+  icon?: LucideIcon
   hint?: string
   size?: 'sm' | 'md' | 'lg'
 }

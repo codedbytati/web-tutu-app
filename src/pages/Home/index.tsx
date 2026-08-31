@@ -3,7 +3,7 @@ import { ActionButtons, Analysis, BalanceCard, BalanceChart, Transactions, UserB
 export const Home = () => {
   return (
     <div>
-      <UserBar name='Ana' />
+      <UserBar name='Maria Silva' />
       <div className='flex flex-col gap-6 mx-5 mb-6'>
         <BalanceCard />
         <ActionButtons />

@@ -2,7 +2,7 @@ import { CreditCardIcon } from 'lucide-react'
 
 export const TransactionItem = () => {
   return (
-    <div className='flex items-center justify-between p-3 border-b border-b-tutu-border last:border-b-0 hover:bg-tutu-surface hover:rounded-2xl'>
+    <div className='flex items-center justify-between p-3 cursor-pointer border-b border-b-tutu-border last:border-b-0 hover:bg-tutu-surface hover:rounded-2xl'>
       <div className='flex items-center gap-3'>
         <div className='bg-tutu-coral/15 rounded-2xl p-2'>
           <CreditCardIcon size={20} className='text-tutu-ink' />

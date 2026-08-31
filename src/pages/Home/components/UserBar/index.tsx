@@ -9,7 +9,7 @@ export const UserBar = ({ name }: UserBarProps) => {
   return (
     <div className='flex items-center justify-between mt-5 mb-4 mx-5'>
       <div className='flex items-center gap-3'>
-        <Avatar />
+        <Avatar name={name} />
         <div>
           <p className='text-tutu-muted text-xs'>Olá,</p>
           <p className='text-tutu-ink text-sm font-bold font-display'>{name}</p>

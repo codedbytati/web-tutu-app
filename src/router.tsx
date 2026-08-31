@@ -3,6 +3,8 @@ import { AppLayout } from './layouts/AppLayout'
 // import { LogIn } from './pages/LogIn'
 // import { Register } from './pages/Register'
 import { Home } from './pages/Home'
+import { PageNotFound } from './pages/PageNotFound'
+import { Transfers } from './pages/Transfers'
 
 export const router = createBrowserRouter([
   // Rotas de Autenticação (Páginas "limpas", sem Sidebar)
@@ -21,15 +23,17 @@ export const router = createBrowserRouter([
     element: <AppLayout />,
     children: [
       {
-        index: true, // Corresponde à rota "/"
+        index: true,
         element: <Home />,
       },
+      {
+        path: '*',
+        element: <PageNotFound />,
+      },
+      {
+        path: '/transferencias',
+        element: <Transfers />,
+      }
     ],
   },
-
-  // Rota 404
-  // {
-  //   path: '*',
-  //   element: <NotFound />,
-  // },
 ])
