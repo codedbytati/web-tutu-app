@@ -3,8 +3,8 @@ import { tv } from 'tailwind-variants'
 import { Eye, EyeOff } from 'lucide-react'
 
 const makeStyles = tv({
-  base: ['flex items-center justify-between gap-2 border border-tutu-border py-2',
-    'focus-within:ring-2 focus-within:ring-tutu-violet focus-within:ring-offset-2',
+  base: ['flex items-center justify-between gap-2 border border-border py-2',
+    'focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2',
     'disabled:opacity-40 disabled:cursor-not-allowed',
     '[&_input]:outline-none [&_input]:w-full [&_input]:bg-transparent'],
   variants: {
@@ -28,15 +28,15 @@ export const PasswordField = ({ label, placeholder, hint, size = 'md' }: TextFie
 
   return (
     <div>
-      <p className='font-display text-tutu-ink text-xs font-semibold mb-1.5'>{label}</p>
+      <p className='font-display text-foreground text-xs font-semibold mb-1.5'>{label}</p>
       <div className={makeStyles({ size })}>
         <input type={hidden ? 'password' : 'text'} placeholder={placeholder} />
         {hidden ?
-          <Eye className='text-tutu-muted cursor-pointer' size={15} onClick={() => setIsHidden(false)} /> :
-          <EyeOff className='text-tutu-muted cursor-pointer' size={15} onClick={() => setIsHidden(true)} />
+          <Eye className='text-muted-foreground cursor-pointer' size={15} onClick={() => setIsHidden(false)} /> :
+          <EyeOff className='text-muted-foreground cursor-pointer' size={15} onClick={() => setIsHidden(true)} />
         }
       </div>
-      {hint && <p className='text-tutu-muted text-xs pt-1.5'>{hint}</p>}
+      {hint && <p className='text-muted-foreground text-xs pt-1.5'>{hint}</p>}
     </div>
   )
 }

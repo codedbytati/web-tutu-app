@@ -5,14 +5,14 @@ const makeStyles = tv({
   base: ['font-display font-semibold cursor-pointer py-4',
     'transition-all duration-200 ease-in-out hover:opacity-90',
     'disabled:cursor-not-allowed disabled:opacity-40',
-    'focus:ring-2 focus:ring-tutu-violet focus:ring-offset-2 focus:outline-none'],
+    'focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:outline-none'],
   variants: {
     variant: {
-      primary: 'bg-tutu-violet text-tutu-card',
-      secondary: 'bg-tutu-lavender text-tutu-ink',
-      ghost: 'bg-transparent text-tutu-ink',
-      positive: 'bg-tutu-mint text-tutu-card',
-      danger: 'bg-tutu-coral text-tutu-card',
+      primary: 'bg-primary text-card',
+      secondary: 'bg-lavender text-foreground',
+      ghost: 'bg-transparent text-foreground',
+      positive: 'bg-positive text-card',
+      danger: 'bg-negative text-card',
     },
     size: {
       sm: 'rounded-xl text-xs px-4',

@@ -53,8 +53,8 @@ export const BalanceChart = () => {
   ]);
 
   return (
-    <div className="bg-tutu-card rounded-2xl p-5 border border-tutu-border chart-container">
-      <h2 className='font-display font-bold text-sm text-tutu-ink'>Balanço mensal</h2>
+    <div className="bg-card rounded-2xl p-5 border border-border chart-container">
+      <h2 className='font-display font-bold text-sm text-foreground'>Balanço mensal</h2>
       <Chart
         options={options}
         series={series}

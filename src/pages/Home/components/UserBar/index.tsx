@@ -11,16 +11,16 @@ export const UserBar = ({ name }: UserBarProps) => {
       <div className='flex items-center gap-3'>
         <Avatar name={name} />
         <div>
-          <p className='text-tutu-muted text-xs'>Olá,</p>
-          <p className='text-tutu-ink text-sm font-bold font-display'>{name}</p>
+          <p className='text-muted-foreground text-xs'>Olá,</p>
+          <p className='text-foreground text-sm font-bold font-display'>{name}</p>
         </div>
       </div>
       <div className='flex items-center gap-2'>
-        <div className='bg-tutu-card border border-tutu-border rounded-full p-3 group hover:bg-tutu-surface cursor-pointer'>
-          <Search size={16} className='text-tutu-muted group-hover:text-tutu-ink' />
+        <div className='bg-card border border-border rounded-full p-3 group hover:bg-background cursor-pointer'>
+          <Search size={16} className='text-muted-foreground group-hover:text-foreground' />
         </div>
-        <div className='bg-tutu-card border border-tutu-border rounded-full p-3 group hover:bg-tutu-surface cursor-pointer'>
-          <Bell size={16} className='text-tutu-muted group-hover:text-tutu-ink' />
+        <div className='bg-card border border-border rounded-full p-3 group hover:bg-background cursor-pointer'>
+          <Bell size={16} className='text-muted-foreground group-hover:text-foreground' />
         </div>
       </div>
     </div>

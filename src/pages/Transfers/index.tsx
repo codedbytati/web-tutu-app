@@ -6,12 +6,12 @@ export const Transfers = () => {
   return (
     <Modal>
       <Modal.Header>
-        <div className='bg-tutu-mint/10 rounded-2xl p-2'>
-          <PlusCircle size={20} className='text-tutu-mint' />
+        <div className='bg-positive/10 rounded-2xl p-2'>
+          <PlusCircle size={20} className='text-positive' />
         </div>
         <div>
-          <h1 className='font-display font-bold text-base text-tutu-ink'>Nova receita</h1>
-          <p className='text-xs text-tutu-muted'>Registre um valor recebido</p>
+          <h1 className='font-display font-bold text-base text-foreground'>Nova receita</h1>
+          <p className='text-xs text-muted-foreground'>Registre um valor recebido</p>
         </div>
       </Modal.Header>
       <Modal.Body>
