@@ -6,17 +6,19 @@ import {
   type ReactNode,
   createElement,
 } from "react";
-import { type User, onAuthStateChanged } from "firebase/auth";
+import { type User, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../services/firebase";
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
+  logout: async () => {},
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -32,9 +34,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe();
   }, []);
 
+  const logout = () => signOut(auth);
+
   return createElement(
     AuthContext.Provider,
-    { value: { user, loading } },
+    { value: { user, loading, logout } },
     !loading ? children : null,
   );
 };

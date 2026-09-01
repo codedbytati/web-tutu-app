@@ -10,7 +10,7 @@ type TextProps<T extends ElementType = 'p'> = {
 } & ComponentPropsWithoutRef<T>
 
 const makeStyles = tv({
-  base: '',
+  base: 'text-card-foreground',
   variants: {
     appearance: {
       display: 'font-display font-extrabold text-[64px] tracking-tighter',
@@ -40,7 +40,7 @@ const getTag = (appearance: FontAppearanceKeys): ElementType => {
 
 export const Text = <T extends ElementType = 'p'>({
   as,
-  appearance = 'body1',
+  appearance = 'body2',
   className,
   children,
   ...props

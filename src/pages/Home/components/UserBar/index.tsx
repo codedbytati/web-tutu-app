@@ -7,9 +7,12 @@ type UserBarProps = {
 
 export const UserBar = ({ name }: UserBarProps) => {
   return (
-    <div className='flex items-center justify-between mt-5 mb-4 mx-5'>
+    <div className='flex items-center justify-between mb-4 mx-5'>
       <div className='flex items-center gap-3'>
-        <Avatar name={name} />
+        <div className='relative'>
+          <Avatar name={name} />
+          <div className='absolute top-8 left-9 bg-positive size-3.5 rounded-full border-2 border-background' />
+        </div>
         <div>
           <p className='text-muted-foreground text-xs'>Olá,</p>
           <p className='text-foreground text-sm font-bold font-display'>{name}</p>

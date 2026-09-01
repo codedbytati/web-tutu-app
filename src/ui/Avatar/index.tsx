@@ -1,17 +1,30 @@
+import { tv } from 'tailwind-variants'
 import { getInitials } from '../utils/getInitials'
+
+const makeStyles = tv({
+  base: ['flex justify-center items-center bg-negative/10 rounded-full',
+    '[&_p]:text-negative [&_p]:font-semibold [&_p]:font-display'],
+  variants: {
+    size: {
+      xs: 'size-6 [&_p]:text-[9px]',
+      sm: 'size-8 [&_p]:text-xs',
+      md: 'size-10 [&_p]:text-sm',
+      lg: 'size-12 [&_p]:text-base',
+      xl: 'size-16 [&_p]:text-xl',
+    }
+  }
+})
 
 type AvatarProps = {
   name: string
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 }
 
-export const Avatar = ({ name }: AvatarProps) => {
+export const Avatar = ({ name, size = 'lg' }: AvatarProps) => {
 
   return (
-    <div className='relative'>
-      <div className='bg-negative/10 rounded-full p-3'>
-        <p className='text-negative font-semibold font-display'>{getInitials(name)}</p>
-      </div>
-      <div className='absolute top-8 left-9 bg-positive size-3.5 rounded-full border-2 border-background' />
+    <div className={makeStyles({ size })}>
+      <p>{getInitials(name)}</p>
     </div>
   )
 }

@@ -5,9 +5,11 @@ import { Register } from './pages/Register'
 import { Home } from './pages/Home'
 import { PageNotFound } from './pages/PageNotFound'
 import { Transfers } from './pages/Transfers'
+import { Profile } from './pages/Profile'
+import { ProtectedRoute } from './layouts/ProtectedRoute'
 
 export const router = createBrowserRouter([
-  // Rotas de Autenticação (Páginas "limpas", sem Sidebar)
+  // Rotas Púbicas
   {
     path: '/login',
     element: <LogIn />,
@@ -17,23 +19,32 @@ export const router = createBrowserRouter([
     element: <Register />,
   },
 
-  // Rotas da Aplicação Autenticada (Todas terão a Sidebar)
+  // Rotas Protegidas
   {
-    path: '/',
-    element: <AppLayout />,
+    element: <ProtectedRoute />,
     children: [
       {
-        index: true,
-        element: <Home />,
+        path: '/',
+        element: <AppLayout />,
+        children: [
+          {
+            index: true,
+            element: <Home />,
+          },
+          {
+            path: '/transferencias',
+            element: <Transfers />,
+          },
+          {
+            path: '/perfil',
+            element: <Profile />,
+          },
+          {
+            path: '*',
+            element: <PageNotFound />,
+          },
+        ],
       },
-      {
-        path: '*',
-        element: <PageNotFound />,
-      },
-      {
-        path: '/transferencias',
-        element: <Transfers />,
-      }
     ],
   },
 ])

@@ -1,0 +1,51 @@
+import { ColoredCard } from '@tutu-components'
+import { Avatar, Button, Text } from '@tutu-ui'
+import { ChevronRight, UserIcon } from 'lucide-react'
+import { useNavigate } from 'react-router'
+import { useAuth } from '../../contexts/authContext'
+
+export const Profile = () => {
+  const { logout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    await logout()
+    navigate('/login')
+  }
+
+  return (
+    <div className='w-1/2'>
+      <Text appearance='h3' as='h1' className='font-bold mb-4 mx-5'>Perfil</Text>
+      <div className='flex flex-col gap-6 mx-5 mb-6'>
+        <ColoredCard>
+          <div className='flex items-center gap-4'>
+            <Avatar size='xl' name='Maria da Silva' />
+            <div>
+              <Text appearance='h3' as='p' className='text-card'>Maria da Silva</Text>
+              <Text appearance='body2' className='text-card/70'>maria.silva@example.com</Text>
+            </div>
+          </div>
+        </ColoredCard>
+        <div className='flex items-center justify-between py-3.5 px-4 rounded-2xl bg-card border border-border'>
+          <div className='flex items-center gap-3'>
+            <div className='bg-muted rounded-xl p-2'>
+              <UserIcon size={20} />
+            </div>
+            <div>
+              <Text className='font-semibold font-display'>Dados pessoais</Text>
+              <Text appearance='caption' className='text-muted-foreground '>Edite as suas informações pessoais</Text>
+            </div>
+          </div>
+          <ChevronRight size={16} className='text-muted-foreground' />
+        </div>
+        <Button
+          size='md'
+          className='bg-negative/10 border border-negative/15 text-negative'
+          onClick={handleLogout}
+        >
+          Sair da conta
+        </Button>
+      </div>
+    </div>
+  )
+}

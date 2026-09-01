@@ -29,6 +29,7 @@ type ButtonProps = {
   onClick?: ButtonHTMLAttributes<HTMLButtonElement>['onClick']
   disabled?: ButtonHTMLAttributes<HTMLButtonElement>['disabled']
   type?: ButtonHTMLAttributes<HTMLButtonElement>['type']
+  className?: string
 }
 
 export const Button = ({
@@ -37,12 +38,13 @@ export const Button = ({
   variant = 'primary',
   size = 'md',
   onClick,
-  disabled
+  disabled,
+  className
 }: ButtonProps) => {
   return (
     <button
       type={type}
-      className={makeStyles({ variant, size })}
+      className={makeStyles({ variant, size, className })}
       onClick={onClick}
       disabled={disabled}
     >

@@ -36,7 +36,7 @@ export function AppLayout() {
       <Sidebar />
       <div className='flex-1'>
         <Header icon={currentRoute.icon} label={currentRoute.label} />
-        <main className="w-full flex justify-center">
+        <main className="w-full flex mt-5 justify-center">
           <Outlet />
         </main>
       </div>
