@@ -10,6 +10,12 @@
       "@tutu-ui/*": ["./src/ui/*"],
       "@tutu-components": ["./src/components/index.ts"],
       "@tutu-components/*": ["./src/components/*"],
+      "@tutu-schemas": ["./src/schemas/index.ts"],
+      "@tutu-schemas/*": ["./src/schemas/*"],
+      "@tutu-hooks": ["./src/hooks/index.ts"],
+      "@tutu-hooks/*": ["./src/hooks/*"],
+      "@tutu-services": ["./src/services/index.ts"],
+      "@tutu-services/*": ["./src/services/*"]
     },
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,

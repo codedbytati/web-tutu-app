@@ -13,7 +13,7 @@ export const router = createBrowserRouter([
     element: <LogIn />,
   },
   {
-    path: '/register',
+    path: '/cadastro',
     element: <Register />,
   },
 
