@@ -1,3 +1,4 @@
+import { useAuth } from '@tutu-contexts/authContext'
 import { ColoredCard } from '@tutu-components'
 import {
   ActionButtons,
@@ -8,9 +9,11 @@ import {
 } from './components'
 
 export const Home = () => {
+  const { loggedUser } = useAuth()
+
   return (
     <div className='w-1/2'>
-      <UserBar name='Maria Silva' />
+      <UserBar name={loggedUser?.displayName ?? 'Boas vindas'} />
       <div className='flex flex-col gap-6 mx-5 mb-6'>
         <ColoredCard>
           <p className='text-card/65 uppercase font-semibold font-display text-xs'>Saldo total</p>

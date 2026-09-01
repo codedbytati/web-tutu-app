@@ -10,24 +10,24 @@ import { type User, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../services/firebase";
 
 interface AuthContextType {
-  user: User | null;
+  loggedUser: User | null;
   loading: boolean;
   logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
-  user: null,
+  loggedUser: null,
   loading: true,
   logout: async () => {},
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [loggedUser, setLoggedUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      setLoggedUser(currentUser);
       setLoading(false);
     });
 
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return createElement(
     AuthContext.Provider,
-    { value: { user, loading, logout } },
+    { value: { loggedUser, loading, logout } },
     !loading ? children : null,
   );
 };

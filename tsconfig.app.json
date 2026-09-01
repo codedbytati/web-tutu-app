@@ -15,7 +15,9 @@
       "@tutu-hooks": ["./src/hooks/index.ts"],
       "@tutu-hooks/*": ["./src/hooks/*"],
       "@tutu-services": ["./src/services/index.ts"],
-      "@tutu-services/*": ["./src/services/*"]
+      "@tutu-services/*": ["./src/services/*"],
+      "@tutu-contexts": ["./src/contexts/index.ts"],
+      "@tutu-contexts/*": ["./src/contexts/*"]
     },
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,

@@ -16,11 +16,11 @@ const makeStyles = tv({
 })
 
 type AvatarProps = {
-  name: string
+  name?: string
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 }
 
-export const Avatar = ({ name, size = 'lg' }: AvatarProps) => {
+export const Avatar = ({ name = 'Sem nome', size = 'lg' }: AvatarProps) => {
 
   return (
     <div className={makeStyles({ size })}>

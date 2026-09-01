@@ -5,6 +5,11 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    headers: {
+      "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    },
+  },
   resolve: {
     alias: {
       "@tutu-ui": path.resolve(__dirname, "./src/ui"),
@@ -12,6 +17,7 @@ export default defineConfig({
       "@tutu-schemas": path.resolve(__dirname, "./src/schemas"),
       "@tutu-hooks": path.resolve(__dirname, "./src/hooks"),
       "@tutu-services": path.resolve(__dirname, "./src/services"),
+      "@tutu-contexts": path.resolve(__dirname, "./src/contexts"),
     },
   },
 });

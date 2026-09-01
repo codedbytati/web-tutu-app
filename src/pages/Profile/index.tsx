@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router'
 import { useAuth } from '../../contexts/authContext'
 
 export const Profile = () => {
-  const { logout } = useAuth()
+  const { loggedUser, logout } = useAuth()
   const navigate = useNavigate()
 
   const handleLogout = async () => {
@@ -19,10 +19,10 @@ export const Profile = () => {
       <div className='flex flex-col gap-6 mx-5 mb-6'>
         <ColoredCard>
           <div className='flex items-center gap-4'>
-            <Avatar size='xl' name='Maria da Silva' />
+            <Avatar size='xl' name={loggedUser?.displayName ?? ''} />
             <div>
-              <Text appearance='h3' as='p' className='text-card'>Maria da Silva</Text>
-              <Text appearance='body2' className='text-card/70'>maria.silva@example.com</Text>
+              <Text appearance='h3' as='p' className='text-card'>{loggedUser?.displayName ?? ''}</Text>
+              <Text appearance='body2' className='text-card/70'>{loggedUser?.email ?? ''}</Text>
             </div>
           </div>
         </ColoredCard>
