@@ -4,9 +4,10 @@ import {
   ActionButtons,
   Analysis,
   BalanceChart,
-  Transactions,
   UserBar
 } from './components'
+import { HomeIcon } from 'lucide-react'
+import { TransactionList } from '@tutu-components/TransactionList'
 
 export const Home = () => {
   const { loggedUser } = useAuth()
@@ -22,7 +23,21 @@ export const Home = () => {
         <ActionButtons />
         <Analysis />
         <BalanceChart />
-        <Transactions />
+        <div>
+          <div className='flex items-center justify-between'>
+            <h2 className='font-display font-bold text-sm text-foreground'>Últimas transações</h2>
+            <a href='/transferencias' className='font-semibold text-xs text-primary'>Ver todos</a>
+          </div>
+          <TransactionList>
+            <TransactionList.Item
+              icon={HomeIcon}
+              description='Compra de produtos'
+              type='Débito'
+              date='01/01/2023'
+              amount='100,00'
+            />
+          </TransactionList>
+        </div>
       </div>
     </div>
   )

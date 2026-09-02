@@ -1,6 +1,6 @@
 import { ColoredCard } from '@tutu-components'
 import { Avatar, Button, Text } from '@tutu-ui'
-import { ChevronRight, UserIcon } from 'lucide-react'
+import { ChevronRight, CircleQuestionMarkIcon, LockIcon, UserIcon } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { useAuth } from '../../contexts/authContext'
 
@@ -26,17 +26,43 @@ export const Profile = () => {
             </div>
           </div>
         </ColoredCard>
-        <div className='flex items-center justify-between py-3.5 px-4 rounded-2xl bg-card border border-border'>
-          <div className='flex items-center gap-3'>
-            <div className='bg-muted rounded-xl p-2'>
-              <UserIcon size={20} />
+        <div className='flex flex-col gap-4'>
+          <div className='flex items-center justify-between py-3.5 px-4 rounded-2xl bg-card border border-border'>
+            <div className='flex items-center gap-3'>
+              <div className='bg-muted rounded-xl p-2'>
+                <UserIcon size={20} />
+              </div>
+              <div>
+                <Text className='font-semibold font-display'>Dados pessoais</Text>
+                <Text appearance='caption' className='text-muted-foreground '>Edite as suas informações pessoais</Text>
+              </div>
             </div>
-            <div>
-              <Text className='font-semibold font-display'>Dados pessoais</Text>
-              <Text appearance='caption' className='text-muted-foreground '>Edite as suas informações pessoais</Text>
-            </div>
+            <ChevronRight size={16} className='text-muted-foreground' />
           </div>
-          <ChevronRight size={16} className='text-muted-foreground' />
+          <div className='flex items-center justify-between py-3.5 px-4 rounded-2xl bg-card border border-border'>
+            <div className='flex items-center gap-3'>
+              <div className='bg-muted rounded-xl p-2'>
+                <LockIcon size={20} />
+              </div>
+              <div>
+                <Text className='font-semibold font-display'>Segurança</Text>
+                <Text appearance='caption' className='text-muted-foreground '>Gerencie a sua senha</Text>
+              </div>
+            </div>
+            <ChevronRight size={16} className='text-muted-foreground' />
+          </div>
+          <div className='flex items-center justify-between py-3.5 px-4 rounded-2xl bg-card border border-border'>
+            <div className='flex items-center gap-3'>
+              <div className='bg-muted rounded-xl p-2'>
+                <CircleQuestionMarkIcon size={20} />
+              </div>
+              <div>
+                <Text className='font-semibold font-display'>Ajuda & Suporte</Text>
+                <Text appearance='caption' className='text-muted-foreground '>Central de ajuda, contato</Text>
+              </div>
+            </div>
+            <ChevronRight size={16} className='text-muted-foreground' />
+          </div>
         </div>
         <Button
           size='md'
