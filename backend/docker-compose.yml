@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  database:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: meudb
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://dev_user:dev_password@database:5432/meudb"
+    depends_on:
+      - database
