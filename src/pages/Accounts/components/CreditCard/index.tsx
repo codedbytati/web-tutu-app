@@ -28,10 +28,9 @@ export const CreditCard = ({ card, onBlock }: CardProps) => {
         </div>
         <button
           type='button'
-          aria-label='Bloquear cartão'
-          disabled={isBlocked}
+          aria-label={isBlocked ? 'Desbloquear cartão' : 'Bloquear cartão'}
           onClick={() => onBlock(card.id)}
-          className='bg-white/15 rounded-lg p-1 disabled:cursor-not-allowed'
+          className='bg-white/15 rounded-lg p-1 cursor-pointer'
         >
           <X size={12} className='text-white/70' />
         </button>

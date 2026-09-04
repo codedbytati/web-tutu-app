@@ -15,6 +15,7 @@ const userPayload = {
 describe('Financial manager API', () => {
   let token
   let accountId
+  let cardId
   let transactionId
 
   beforeAll(async () => {
@@ -64,9 +65,77 @@ describe('Financial manager API', () => {
     const accounts = response.body.result.account
     expect(Array.isArray(accounts)).toBe(true)
     expect(accounts.length).toBeGreaterThan(0)
+    expect(accounts[0]).toMatchObject({
+      bank: 'Não informado',
+      nickname: 'Conta principal',
+      balance: 0,
+      type: 'CURRENT',
+      isDeactivate: false
+    })
+
+    const cards = response.body.result.cards
+    expect(Array.isArray(cards)).toBe(true)
+    expect(cards[0]).toMatchObject({
+      bank: 'Não informado',
+      nickname: 'Cartão principal',
+      limit: 0,
+      spent: 0,
+      available: 0,
+      isDeactivate: false
+    })
 
     accountId = accounts[0].id
+    cardId = cards[0].id
     expect(accountId).toBeDefined()
+    expect(cardId).toBeDefined()
+  })
+
+  test('toggles account activation when blocking it twice', async () => {
+    const firstResponse = await request(app)
+      .patch(`/account/${accountId}/block`)
+      .set('Authorization', `Bearer ${token}`)
+
+    expect(firstResponse.status).toBe(200)
+
+    const blockedAccounts = await request(app)
+      .get('/account')
+      .set('Authorization', `Bearer ${token}`)
+    expect(blockedAccounts.body.result.account[0].isDeactivate).toBe(true)
+
+    const secondResponse = await request(app)
+      .patch(`/account/${accountId}/block`)
+      .set('Authorization', `Bearer ${token}`)
+
+    expect(secondResponse.status).toBe(200)
+
+    const activeAccounts = await request(app)
+      .get('/account')
+      .set('Authorization', `Bearer ${token}`)
+    expect(activeAccounts.body.result.account[0].isDeactivate).toBe(false)
+  })
+
+  test('toggles card activation when blocking it twice', async () => {
+    const firstResponse = await request(app)
+      .patch(`/account/card/${cardId}/block`)
+      .set('Authorization', `Bearer ${token}`)
+
+    expect(firstResponse.status).toBe(200)
+
+    const blockedCards = await request(app)
+      .get('/account')
+      .set('Authorization', `Bearer ${token}`)
+    expect(blockedCards.body.result.cards[0].isDeactivate).toBe(true)
+
+    const secondResponse = await request(app)
+      .patch(`/account/card/${cardId}/block`)
+      .set('Authorization', `Bearer ${token}`)
+
+    expect(secondResponse.status).toBe(200)
+
+    const activeCards = await request(app)
+      .get('/account')
+      .set('Authorization', `Bearer ${token}`)
+    expect(activeCards.body.result.cards[0].isDeactivate).toBe(false)
   })
 
   test('creates a new transaction for the user account', async () => {

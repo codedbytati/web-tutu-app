@@ -21,11 +21,8 @@ const block = async (id, userId) => {
 
   if (!card?.accountId) return null
 
-  return Card.findOneAndUpdate(
-    { _id: id, accountId: card.accountId._id, isDeactivate: { $ne: true } },
-    { $set: { isDeactivate: true } },
-    { new: true }
-  )
+  card.isDeactivate = !card.isDeactivate
+  return card.save()
 }
 
 module.exports = {

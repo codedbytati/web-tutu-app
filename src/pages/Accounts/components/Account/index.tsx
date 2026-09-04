@@ -1,7 +1,8 @@
-import { Text } from '@tutu-ui'
+import { Badge, Text } from '@tutu-ui'
 import { ArchiveIcon, ArchiveRestoreIcon, LandmarkIcon } from 'lucide-react'
 import { tv } from 'tailwind-variants'
 import type { AccountModel } from '../../../../domain'
+import { ACCOUNT_TYPES } from '../../../utils/getAccountType'
 
 const makeStyles = tv({
   base: 'flex items-center justify-between rounded-3xl shadow-lg bg-white px-5 py-4 border-t-6',
@@ -20,6 +21,7 @@ type AccountProps = {
 export const Account = ({ account, onBlock }: AccountProps) => {
   const isBlocked = account.isDeactivate === true
 
+
   return (
     <div
       key={account.id}
@@ -34,17 +36,9 @@ export const Account = ({ account, onBlock }: AccountProps) => {
             <Text className='font-bold font-display'>
               {account.nickname}
             </Text>
-            <div className='bg-info/15 px-2 py-0.5 rounded-lg'>
-              <p className='text-info text-[10px] font-semibold'>
-                {account.type}
-              </p>
-            </div>
+            <Badge label={ACCOUNT_TYPES[account.type].label} color={ACCOUNT_TYPES[account.type].color} />
             {isBlocked && (
-              <div className='bg-negative/15 px-2 py-0.5 rounded-lg'>
-                <p className='text-negative text-[10px] font-semibold'>
-                  Desativada
-                </p>
-              </div>
+              <Badge label='Desativado' color='gray' />
             )}
           </div>
           <Text appearance='caption' className='text-muted-foreground'>
@@ -58,8 +52,7 @@ export const Account = ({ account, onBlock }: AccountProps) => {
         </Text>
         <button
           type='button'
-          aria-label='Desativar conta'
-          disabled={isBlocked}
+          aria-label={isBlocked ? 'Ativar conta' : 'Desativar conta'}
           onClick={() => onBlock(account.id)}
           className='bg-muted p-2 rounded-lg cursor-pointer'
         >

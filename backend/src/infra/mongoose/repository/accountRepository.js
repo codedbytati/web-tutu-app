@@ -14,11 +14,11 @@ const get = async (account = {}) => {
 }
 
 const block = async (id, userId) => {
-  return Account.findOneAndUpdate(
-    { _id: id, userId },
-    { $set: { isDeactivate: true } },
-    { new: true }
-  )
+  const account = await Account.findOne({ _id: id, userId })
+  if (!account) return null
+
+  account.isDeactivate = !account.isDeactivate
+  return account.save()
 }
 
 module.exports = {

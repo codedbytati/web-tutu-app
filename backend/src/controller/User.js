@@ -46,7 +46,7 @@ class UserController {
           bank: 'Não informado',
           nickname: 'Conta principal',
           balance: 0,
-          type: 'Corrente'
+          type: 'CURRENT'
         }),
         repository: accountRepository
       })

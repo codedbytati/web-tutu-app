@@ -4,6 +4,8 @@ class Card {
     bank,
     nickname,
     limit,
+    spent = 0,
+    available = Number(limit ?? 0) - Number(spent ?? 0),
     type,
     isDeactivate = false,
     number,
@@ -18,6 +20,8 @@ class Card {
     this.bank = bank
     this.nickname = nickname
     this.limit = limit
+    this.spent = spent
+    this.available = available
     this.accountId = accountId
     this.type = type
     this.isDeactivate = isDeactivate

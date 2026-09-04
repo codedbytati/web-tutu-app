@@ -25,14 +25,7 @@ class AccountController {
   }
 
   async find(req, res) {
-    const {
-      accountRepository,
-      getAccount,
-      getCard,
-      getTransaction,
-      transactionRepository,
-      cardRepository
-    } = this.di
+    const { accountRepository, getAccount, getCard, cardRepository } = this.di
 
     try {
       const userId = req.user.id
@@ -41,12 +34,6 @@ class AccountController {
         filter: { userId }
       })
       const accountIds = account.map(({ id }) => id)
-      const transactions = accountIds.length
-        ? await getTransaction({
-            filter: { accountId: { $in: accountIds } },
-            repository: transactionRepository
-          })
-        : []
       const cards = accountIds.length
         ? await getCard({
             filter: { accountId: { $in: accountIds } },
@@ -58,7 +45,6 @@ class AccountController {
         message: 'Conta encontrada carregado com sucesso',
         result: {
           account,
-          transactions,
           cards
         }
       })
@@ -174,7 +160,7 @@ class AccountController {
     const { accountRepository, saveAccount } = this.di
     const { bank, nickname, type, balance } = req.body
     const parsedBalance = Number(String(balance ?? 0).replace(',', '.'))
-    const accountTypes = ['Corrente', 'Poupança', 'Investimento']
+    const accountTypes = ['CURRENT', 'SAVINGS', 'INVESTMENT']
 
     if (
       !bank?.trim() ||

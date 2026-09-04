@@ -41,7 +41,17 @@ app.use(async (req, res, next) => {
           email: decodedToken.email,
           password: `firebase:${decodedToken.uid}`
         })
-        await accountRepository.create({ userId: user._id, type: 'Debit' })
+      }
+
+      const accounts = await accountRepository.get({ userId: user._id })
+      if (!accounts[0]) {
+        await accountRepository.create({
+          userId: user._id,
+          bank: 'Não informado',
+          nickname: 'Conta principal',
+          balance: 0,
+          type: 'CURRENT'
+        })
       }
 
       req.user = { ...decodedToken, id: user._id.toString() }

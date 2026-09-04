@@ -1,4 +1,5 @@
 export { Avatar } from './Avatar'
+export { Badge } from './Badge'
 export { Button } from './Button'
 export { CurrencyField } from './Form/CurrencyField'
 export { DateChecker } from './Form/DateChecker'

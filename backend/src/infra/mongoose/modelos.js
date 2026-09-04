@@ -16,6 +16,16 @@ const CardSchema = new Schema(
       required: true,
       min: 0
     },
+    spent: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    available: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
     type: {
       type: String,
       required: true
@@ -68,6 +78,7 @@ const AccountSchema = new Schema(
     },
     type: {
       type: String,
+      enum: ['CURRENT', 'SAVINGS', 'INVESTMENT'],
       required: true
     },
     isDeactivate: {
