@@ -1,9 +1,9 @@
 import { Outlet, useLocation } from 'react-router'
 import {
-  HomeIcon,
-  ArrowDownUpIcon,
+  ArrowLeftRightIcon,
   ChartSplineIcon,
   CreditCardIcon,
+  HomeIcon,
   UserIcon,
   type LucideIcon
 } from 'lucide-react'
@@ -16,7 +16,7 @@ interface RouteConfig {
 
 const routeMap: Record<string, RouteConfig> = {
   '/': { label: 'Início', icon: HomeIcon },
-  '/transferencias': { label: 'Transferências', icon: ArrowDownUpIcon },
+  '/transacoes': { label: 'Transações', icon: ArrowLeftRightIcon },
   '/analises': { label: 'Análises', icon: ChartSplineIcon },
   '/cartoes': { label: 'Cartões', icon: CreditCardIcon },
   '/perfil': { label: 'Perfil', icon: UserIcon },

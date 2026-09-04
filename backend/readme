@@ -1,5 +1,21 @@
 ## Tech Challenge 2
 
+### Firebase no backend
+
+O frontend envia o ID token do Firebase. Para o backend valida-lo, crie uma chave de conta de servico em Firebase Console > Project settings > Service accounts e gere o valor base64 do JSON.
+
+No PowerShell:
+
+```powershell
+[Convert]::ToBase64String([IO.File]::ReadAllBytes("service-account.json"))
+```
+
+Crie `backend/.env` a partir de `.env.example` e preencha `FIREBASE_SERVICE_ACCOUNT_BASE64` com o resultado. Depois recrie o container:
+
+```bash
+docker compose up -d --build
+```
+
 
 Rodando o projeto: 
 - Docker

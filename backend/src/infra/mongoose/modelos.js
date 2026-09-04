@@ -2,6 +2,19 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const CardSchema = new Schema({
+  bank: {
+    type: String,
+    required: true
+  },
+  nickname: {
+    type: String,
+    required: true
+  },
+  limit: {
+    type: Number,
+    required: true,
+    min: 0
+  },
   type: {
     type: String,
     required: true
@@ -12,19 +25,15 @@ const CardSchema = new Schema({
   },
   number: {
     type: String,
-    required: true
   },
   dueDate: {
     type: Date,
-    required: true
   },
   functions: {
     type: String,
-    required: true
   },
   cvc: {
     type: String,
-    required: true
   },
   paymentDate: {
     type: Date,
@@ -41,6 +50,18 @@ const CardSchema = new Schema({
 }, { timestamps: true });
 
 const AccountSchema = new Schema({
+  bank: {
+    type: String,
+    required: true
+  },
+  nickname: {
+    type: String,
+    required: true
+  },
+  balance: {
+    type: Number,
+    default: 0
+  },
   type: {
     type: String,
     required: true

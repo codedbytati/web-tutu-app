@@ -1,12 +1,12 @@
-import { HomeIcon, ArrowDownUpIcon, ChartSplineIcon, CreditCardIcon, UserIcon } from 'lucide-react'
+import { ArrowLeftRightIcon, ChartSplineIcon, CreditCardIcon, HomeIcon, UserIcon } from 'lucide-react'
 import { NavLink } from 'react-router'
 import { makeStyles } from './style'
 
 const menuItems = [
   { to: '/', label: 'Início', icon: HomeIcon, color: 'violet' },
-  { to: '/transferencias', label: 'Transferências', icon: ArrowDownUpIcon, color: 'sky' },
+  { to: '/transacoes', label: 'Transações', icon: ArrowLeftRightIcon, color: 'sky' },
   { to: '/analises', label: 'Análises', icon: ChartSplineIcon, color: 'mint' },
-  { to: '/cartoes', label: 'Cartões', icon: CreditCardIcon, color: 'amber' },
+  { to: '/cartoes', label: 'Contas & Cartões', icon: CreditCardIcon, color: 'amber' },
   { to: '/perfil', label: 'Perfil', icon: UserIcon, color: 'coral' },
 ] as const
 

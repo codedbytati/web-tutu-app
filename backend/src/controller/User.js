@@ -28,9 +28,21 @@ class UserController {
         user, repository: userRepository
       })
 
-      const accountCreated = await saveAccount({ account: new accountDTO({ userId: userCreated.id, type: 'Debit' }), repository: accountRepository })
+      const accountCreated = await saveAccount({
+        account: new accountDTO({
+          userId: userCreated.id,
+          bank: 'Não informado',
+          nickname: 'Conta principal',
+          balance: 0,
+          type: 'Corrente'
+        }),
+        repository: accountRepository
+      })
 
       const firstCard = new cardDTO({ 
+        bank: 'Não informado',
+        nickname: 'Cartão principal',
+        limit: 0,
         type: 'GOLD',
         number: 13748712374891010 ,
         dueDate: '2027-01-07',

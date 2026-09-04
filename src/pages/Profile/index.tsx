@@ -3,6 +3,7 @@ import { Avatar, Button, Text } from '@tutu-ui'
 import { ChevronRight, CircleQuestionMarkIcon, LockIcon, UserIcon } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { useAuth } from '../../contexts/authContext'
+import { Page } from '../../layouts/Page'
 
 export const Profile = () => {
   const { loggedUser, logout } = useAuth()
@@ -16,7 +17,7 @@ export const Profile = () => {
   return (
     <div className='w-1/2'>
       <Text appearance='h3' as='h1' className='font-bold mb-4 mx-5'>Perfil</Text>
-      <div className='flex flex-col gap-6 mx-5 mb-6'>
+      <Page>
         <ColoredCard>
           <div className='flex items-center gap-4'>
             <Avatar size='xl' name={loggedUser?.displayName ?? ''} />
@@ -71,7 +72,7 @@ export const Profile = () => {
         >
           Sair da conta
         </Button>
-      </div>
+      </Page>
     </div>
   )
 }

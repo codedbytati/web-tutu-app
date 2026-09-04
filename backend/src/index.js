@@ -7,6 +7,9 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocs =  require('./swagger')
 const UserController = require('./controller/User')
 const cors = require('cors')
+const firebaseAuth = require('./infra/firebaseAdmin')
+const userRepository = require('./infra/mongoose/repository/userRepository')
+const accountRepository = require('./infra/mongoose/repository/accountRepository')
 
 app.use(Express.json())
 
@@ -16,11 +19,35 @@ app.use(cors({
 
 app.use(publicRoutes)
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
     if (req.url.includes('/docs')) {
         return next();
     }
-    const [_, token] = req.headers['authorization']?.split(' ') || []
+    const [scheme, token] = req.headers['authorization']?.split(' ') || []
+    if (scheme !== 'Bearer' || !token) return res.status(401).json({ message: 'Token inválido' })
+
+    if (firebaseAuth) {
+        try {
+            const decodedToken = await firebaseAuth.verifyIdToken(token)
+            const users = await userRepository.get({ email: decodedToken.email })
+            let user = users[0]
+
+            if (!user) {
+                user = await userRepository.create({
+                    username: decodedToken.name || decodedToken.email.split('@')[0],
+                    email: decodedToken.email,
+                    password: `firebase:${decodedToken.uid}`
+                })
+                await accountRepository.create({ userId: user._id, type: 'Debit' })
+            }
+
+            req.user = { ...decodedToken, id: user._id.toString() }
+            return next()
+        } catch (error) {
+            // Keep the legacy JWT authentication available for existing API clients.
+        }
+    }
+
     const user = UserController.getToken(token)
     if (!user) return res.status(401).json({ message: 'Token inválido' })
     req.user = user

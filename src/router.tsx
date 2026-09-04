@@ -7,6 +7,8 @@ import { PageNotFound } from './pages/PageNotFound'
 import { Transactions } from './pages/Transactions'
 import { Profile } from './pages/Profile'
 import { ProtectedRoute } from './layouts/ProtectedRoute'
+import { Analysis } from './pages/Analysis'
+import { Accounts } from './pages/Accounts'
 
 export const router = createBrowserRouter([
   // Rotas Púbicas
@@ -32,8 +34,16 @@ export const router = createBrowserRouter([
             element: <Home />,
           },
           {
-            path: '/transferencias',
+            path: '/transacoes',
             element: <Transactions />,
+          },
+          {
+            path: '/analises',
+            element: <Analysis />,
+          },
+          {
+            path: '/cartoes',
+            element: <Accounts />,
           },
           {
             path: '/perfil',

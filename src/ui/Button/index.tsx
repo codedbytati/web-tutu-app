@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes } from 'react'
 import { tv } from 'tailwind-variants'
 
 const makeStyles = tv({
-  base: ['font-display font-semibold cursor-pointer py-4',
+  base: ['flex items-center font-display font-semibold cursor-pointer py-4',
     'transition-all duration-200 ease-in-out hover:opacity-90',
     'disabled:cursor-not-allowed disabled:opacity-40',
     'focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:outline-none'],

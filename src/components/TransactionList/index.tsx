@@ -6,6 +6,7 @@ type TransactionItemProps = {
   type: string;
   date: string;
   amount: string
+  isPositive?: boolean
 }
 
 export const TransactionList = ({ children }: { children: React.ReactNode }) => {
@@ -21,11 +22,12 @@ TransactionList.Item = function TransactionItem({
   description,
   type,
   date,
-  amount }: TransactionItemProps) {
+  amount,
+  isPositive = false }: TransactionItemProps) {
   return (
     <div className='flex items-center justify-between p-3 cursor-pointer border-b border-b-border last:border-b-0 hover:bg-background hover:rounded-2xl'>
       <div className='flex items-center gap-3'>
-        <div className='bg-negative/15 rounded-2xl p-2'>
+        <div className={`${isPositive ? 'bg-positive/15' : 'bg-negative/15'} rounded-2xl p-2`}>
           <Icon size={20} className='text-foreground' />
         </div>
         <div className='flex flex-col gap-0.5'>
@@ -33,7 +35,9 @@ TransactionList.Item = function TransactionItem({
           <p className='text-xs text-muted-foreground'>{type} · {date}</p>
         </div>
       </div>
-      <p className='font-display font-bold text-sm text-negative'>R$ {amount}</p>
+      <p className={`font-display font-bold text-sm ${isPositive ? 'text-positive' : 'text-negative'}`}>
+        {isPositive ? '+' : '-'} R$ {amount}
+      </p>
     </div>
   )
 }

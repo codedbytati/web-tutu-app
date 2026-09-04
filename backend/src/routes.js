@@ -17,6 +17,10 @@ const router = Router()
  */
 router.get('/account', accountController.find.bind(accountController))
 
+router.post('/account', accountController.createAccount.bind(accountController))
+
+router.post('/account/card', accountController.createCard.bind(accountController))
+
 /**
  * @swagger
  * /account/transaction:
@@ -38,7 +42,7 @@ router.get('/account', accountController.find.bind(accountController))
  *                 type: number
  *               type:
  *                 type: string
- *                 enum: [Debit, Credit]
+ *                 enum: [Debit, Credit, Transfer]
  *               from:
  *                 type: string
  *               to:

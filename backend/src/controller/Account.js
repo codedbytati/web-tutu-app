@@ -48,17 +48,101 @@ class AccountController {
   }
 
   async createTransaction(req, res) {
-    const { saveTransaction, transactionRepository } = this.di
+    const { accountRepository, getAccount, saveTransaction, transactionRepository } = this.di
     const { accountId, value, type, from, to, anexo } = req.body
-    const urlAnexo = req.body.urlAnexo ?? req.body.urlanexo ?? null
-    const transactionDTO = new TransactionDTO({ accountId, value, from, to, anexo, urlAnexo, type, date: new Date() })
 
-    const transaction = await saveTransaction({ transaction: transactionDTO, repository: transactionRepository })
-    
-    res.status(201).json({
-      message: 'Transação criada com sucesso',
-      result: transaction
-    })
+    if (!accountId || !Number.isFinite(Number(value)) || Number(value) <= 0 || !['Debit', 'Credit', 'Transfer'].includes(type)) {
+      return res.status(400).json({ message: 'Dados da transação inválidos' })
+    }
+
+    let accounts
+    try {
+      accounts = await getAccount({ repository: accountRepository, filter: { _id: accountId, userId: req.user.id } })
+    } catch (error) {
+      return res.status(400).json({ message: 'Conta inválida' })
+    }
+    if (!accounts?.[0]) {
+      return res.status(404).json({ message: 'Conta não encontrada' })
+    }
+
+    const urlAnexo = req.body.urlAnexo ?? req.body.urlanexo ?? null
+    const transactionDTO = new TransactionDTO({ accountId, value: Number(value), from, to, anexo, urlAnexo, type, date: new Date() })
+
+    try {
+      const transaction = await saveTransaction({ transaction: transactionDTO, repository: transactionRepository })
+
+      res.status(201).json({
+        message: 'Transação criada com sucesso',
+        result: transaction
+      })
+    } catch (error) {
+      res.status(500).json({ message: 'Erro ao criar transação' })
+    }
+  }
+
+  async createCard(req, res) {
+    const { accountRepository, cardRepository, getAccount, saveCard } = this.di
+    const { bank, nickname, limit } = req.body
+    const parsedLimit = Number(String(limit).replace(',', '.'))
+
+    if (!bank?.trim() || !nickname?.trim() || !Number.isFinite(parsedLimit) || parsedLimit < 0) {
+      return res.status(400).json({ message: 'Dados do cartão inválidos' })
+    }
+
+    try {
+      const accounts = await getAccount({ repository: accountRepository, filter: { userId: req.user.id } })
+      if (!accounts?.[0]) return res.status(404).json({ message: 'Conta não encontrada' })
+
+      const card = await saveCard({
+        card: {
+          bank: bank.trim(),
+          nickname: nickname.trim(),
+          limit: parsedLimit,
+          name: nickname.trim(),
+          type: 'Credit',
+          accountId: accounts[0].id
+        },
+        repository: cardRepository
+      })
+
+      res.status(201).json({
+        message: 'Cartão criado com sucesso',
+        result: card
+      })
+    } catch (error) {
+      res.status(500).json({ message: 'Erro ao criar cartão' })
+    }
+  }
+
+  async createAccount(req, res) {
+    const { accountRepository, saveAccount } = this.di
+    const { bank, nickname, type, balance } = req.body
+    const parsedBalance = Number(String(balance ?? 0).replace(',', '.'))
+    const accountTypes = ['Corrente', 'Poupança', 'Investimento']
+
+    if (!bank?.trim() || !nickname?.trim() || !accountTypes.includes(type) || !Number.isFinite(parsedBalance)) {
+      return res.status(400).json({ message: 'Dados da conta inválidos' })
+    }
+
+    try {
+      const account = await saveAccount({
+        account: {
+          bank: bank.trim(),
+          nickname: nickname.trim(),
+          type,
+          balance: parsedBalance,
+          userId: req.user.id
+        },
+        repository: accountRepository
+      })
+
+      res.status(201).json({
+        message: 'Conta criada com sucesso',
+        result: account
+      })
+    } catch (error) {
+      res.status(500).json({ message: 'Erro ao criar conta' })
+    }
   }
 
   async updateTransaction(req, res) {
@@ -112,17 +196,22 @@ class AccountController {
   }
 
   async getStatment(req, res) {
-    const { getTransaction, transactionRepository } = this.di
+    const { accountRepository, getAccount, getTransaction, transactionRepository } = this.di
 
     const { accountId } = req.params
 
-    const transactions = await getTransaction({ filter: { accountId } ,  repository: transactionRepository})
-    res.status(201).json({
-      message: 'Transação criada com sucesso',
-      result: {
-        transactions
-      }
-    })
+    try {
+      const accounts = await getAccount({ repository: accountRepository, filter: { _id: accountId, userId: req.user.id } })
+      if (!accounts?.[0]) return res.status(404).json({ message: 'Conta não encontrada' })
+
+      const transactions = await getTransaction({ filter: { accountId }, repository: transactionRepository })
+      res.status(201).json({
+        message: 'Extrato carregado com sucesso',
+        result: { transactions }
+      })
+    } catch (error) {
+      res.status(500).json({ message: 'Erro ao carregar extrato' })
+    }
   }
 }
 

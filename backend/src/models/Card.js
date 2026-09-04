@@ -1,6 +1,9 @@
 class Card {
     constructor({
         _id,
+        bank,
+        nickname,
+        limit,
         type,
         is_blocked = false,
         number,
@@ -12,6 +15,9 @@ class Card {
         accountId,
     }) {
         this.id = _id
+        this.bank = bank
+        this.nickname = nickname
+        this.limit = limit
         this.accountId = accountId
         this.type = type
         this.is_blocked = is_blocked
