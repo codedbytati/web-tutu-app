@@ -24,11 +24,16 @@ const makeSelectStyles = tv({
 })
 
 const makeOptionStyles = tv({
-  base: ['bg-white text-foreground text-sm border border-primary',
-    'disabled:text-muted-foreground hover:bg-primary-foreground checked:bg-primary-foreground']
+  base: [
+    'bg-white text-foreground text-sm border border-primary',
+    'disabled:text-muted-foreground hover:bg-primary-foreground checked:bg-primary-foreground'
+  ]
 })
 
-type SelectProps = Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> & {
+type SelectProps = Omit<
+  React.SelectHTMLAttributes<HTMLSelectElement>,
+  'size'
+> & {
   label: string
   placeholder?: string
   hint?: string
@@ -40,67 +45,77 @@ type SelectProps = Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> &
 
 export type SelectItemProps = React.OptionHTMLAttributes<HTMLOptionElement>
 
-export const SelectItem = forwardRef<HTMLOptionElement, SelectItemProps>(({
-  children,
-  ...props
-}, ref) => {
-  return (
-    <option ref={ref} className={makeOptionStyles()} {...props}>
-      {children}
-    </option>
-  )
-})
-
-export const Select = forwardRef<HTMLSelectElement, SelectProps>(({
-  label,
-  placeholder,
-  hint,
-  errorMessage,
-  isInvalid,
-  size = 'md',
-  children,
-  value,
-  defaultValue = '',
-  onChange,
-  className,
-  ...props
-}, ref) => {
-  const hasError = isInvalid || Boolean(errorMessage)
-  const message = errorMessage || hint
-
-  const [selectedValue, setSelectedValue] = useState(value ?? defaultValue ?? '')
-
-  const currentSelection = value !== undefined ? value : selectedValue
-  const isPlaceholderSelected = currentSelection === ''
-
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(e.target.value)
-    if (onChange) onChange(e)
-  }
-
-  return (
-    <div className={className}>
-      <p className='font-display text-foreground text-xs font-semibold mb-1.5'>{label}</p>
-      <select
-        ref={ref}
-        className={makeSelectStyles({ size, isInvalid: hasError })}
-        value={currentSelection}
-        onChange={handleChange}
-        data-placeholder={isPlaceholderSelected ? 'true' : 'false'}
-        {...props}
-      >
-        {placeholder && (<SelectItem hidden>{placeholder}</SelectItem>)}
+export const SelectItem = forwardRef<HTMLOptionElement, SelectItemProps>(
+  ({ children, ...props }, ref) => {
+    return (
+      <option ref={ref} className={makeOptionStyles()} {...props}>
         {children}
-      </select>
+      </option>
+    )
+  }
+)
 
-      {message && (
-        <p className={`text-xs pt-1.5 ${hasError ? 'text-negative' : 'text-muted-foreground'}`}>
-          {message}
+export const Select = forwardRef<HTMLSelectElement, SelectProps>(
+  (
+    {
+      label,
+      placeholder,
+      hint,
+      errorMessage,
+      isInvalid,
+      size = 'md',
+      children,
+      value,
+      defaultValue = '',
+      onChange,
+      className,
+      ...props
+    },
+    ref
+  ) => {
+    const hasError = isInvalid || Boolean(errorMessage)
+    const message = errorMessage || hint
+
+    const [selectedValue, setSelectedValue] = useState(
+      value ?? defaultValue ?? ''
+    )
+
+    const currentSelection = value !== undefined ? value : selectedValue
+    const isPlaceholderSelected = currentSelection === ''
+
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedValue(e.target.value)
+      if (onChange) onChange(e)
+    }
+
+    return (
+      <div className={className}>
+        <p className='font-display text-foreground text-xs font-semibold mb-1.5'>
+          {label}
         </p>
-      )}
-    </div>
-  )
-})
+        <select
+          ref={ref}
+          className={makeSelectStyles({ size, isInvalid: hasError })}
+          value={currentSelection}
+          onChange={handleChange}
+          data-placeholder={isPlaceholderSelected ? 'true' : 'false'}
+          {...props}
+        >
+          {placeholder && <SelectItem hidden>{placeholder}</SelectItem>}
+          {children}
+        </select>
+
+        {message && (
+          <p
+            className={`text-xs pt-1.5 ${hasError ? 'text-negative' : 'text-muted-foreground'}`}
+          >
+            {message}
+          </p>
+        )}
+      </div>
+    )
+  }
+)
 
 Select.displayName = 'Select'
 SelectItem.displayName = 'SelectItem'

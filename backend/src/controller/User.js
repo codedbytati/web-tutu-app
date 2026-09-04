@@ -6,26 +6,38 @@ const JWT_SECRET = 'tech-challenge'
 
 class UserController {
   constructor(di = {}) {
-    this.di = Object.assign({
-      userRepository: require('../infra/mongoose/repository/userRepository'),
-      accountRepository: require('../infra/mongoose/repository/accountRepository'),
-      cardRepository: require('../infra/mongoose/repository/cardRepository'),
+    this.di = Object.assign(
+      {
+        userRepository: require('../infra/mongoose/repository/userRepository'),
+        accountRepository: require('../infra/mongoose/repository/accountRepository'),
+        cardRepository: require('../infra/mongoose/repository/cardRepository'),
 
-      saveCard: require('../feature/Card/saveCard'),
-      salvarUsuario: require('../feature/User/salvarUsuario'),
-      saveAccount: require('../feature/Account/saveAccount'),
-      getUser: require('../feature/User/getUser'),
-    }, di)
+        saveCard: require('../feature/Card/saveCard'),
+        salvarUsuario: require('../feature/User/salvarUsuario'),
+        saveAccount: require('../feature/Account/saveAccount'),
+        getUser: require('../feature/User/getUser')
+      },
+      di
+    )
   }
 
   async create(req, res) {
     const user = new userDTO(req.body)
-    const { userRepository, accountRepository, cardRepository, salvarUsuario, saveAccount, saveCard } = this.di
+    const {
+      userRepository,
+      accountRepository,
+      cardRepository,
+      salvarUsuario,
+      saveAccount,
+      saveCard
+    } = this.di
 
-    if (!user.isValid()) return res.status(400).json({ 'message': 'não houve informações enviadas' })
+    if (!user.isValid())
+      return res.status(400).json({ message: 'não houve informações enviadas' })
     try {
       const userCreated = await salvarUsuario({
-        user, repository: userRepository
+        user,
+        repository: userRepository
       })
 
       const accountCreated = await saveAccount({
@@ -39,35 +51,36 @@ class UserController {
         repository: accountRepository
       })
 
-      const firstCard = new cardDTO({ 
+      const firstCard = new cardDTO({
         bank: 'Não informado',
         nickname: 'Cartão principal',
         limit: 0,
         type: 'GOLD',
-        number: 13748712374891010 ,
+        number: 13748712374891010,
         dueDate: '2027-01-07',
         functions: 'Debit',
         cvc: '505',
         paymentDate: null,
         name: userCreated.username,
         accountId: accountCreated.id,
-        type: 'Debit' 
+        type: 'Debit'
       })
 
-      const cardCreated = await saveCard({ card: firstCard, repository: cardRepository })
+      const cardCreated = await saveCard({
+        card: firstCard,
+        repository: cardRepository
+      })
 
       res.status(201).json({
         message: 'usuário criado com sucesso',
-        result: userCreated,
+        result: userCreated
       })
     } catch (error) {
       console.log(error)
       res.status(500).json({ message: 'caiu a aplicação' })
     }
-
   }
   async find(req, res) {
-
     const { userRepository, getUser } = this.di
     try {
       const users = await getUser({ repository: userRepository })
@@ -80,15 +93,18 @@ class UserController {
         message: 'Erro no servidor'
       })
     }
-    
   }
   async auth(req, res) {
     const { userRepository, getUser } = this.di
     const { email, password } = req.body
-    const user = await getUser({ repository: userRepository, userFilter: { email, password } })
-    
-    if (!user?.[0]) return res.status(401).json({ message: 'Usuário não encontrado' })
-    const userToTokenize = {...user[0], id: user[0].id.toString()}
+    const user = await getUser({
+      repository: userRepository,
+      userFilter: { email, password }
+    })
+
+    if (!user?.[0])
+      return res.status(401).json({ message: 'Usuário não encontrado' })
+    const userToTokenize = { ...user[0], id: user[0].id.toString() }
     res.status(200).json({
       message: 'Usuário autenticado com sucesso',
       result: {
@@ -98,14 +114,12 @@ class UserController {
   }
   static getToken(token) {
     try {
-        const decoded = jwt.verify(token, JWT_SECRET)
-        return decoded
+      const decoded = jwt.verify(token, JWT_SECRET)
+      return decoded
     } catch (error) {
-        return null
+      return null
     }
   }
 }
-
-
 
 module.exports = UserController

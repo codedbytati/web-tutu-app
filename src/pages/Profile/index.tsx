@@ -1,6 +1,11 @@
 import { ColoredCard } from '@tutu-components'
 import { Avatar, Button, Text } from '@tutu-ui'
-import { ChevronRight, CircleQuestionMarkIcon, LockIcon, UserIcon } from 'lucide-react'
+import {
+  ChevronRight,
+  CircleQuestionMarkIcon,
+  LockIcon,
+  UserIcon
+} from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { useAuth } from '../../contexts/authContext'
 import { Page } from '../../layouts/Page'
@@ -16,14 +21,20 @@ export const Profile = () => {
 
   return (
     <div className='w-1/2'>
-      <Text appearance='h3' as='h1' className='font-bold mb-4 mx-5'>Perfil</Text>
+      <Text appearance='h3' as='h1' className='font-bold mb-4 mx-5'>
+        Perfil
+      </Text>
       <Page>
         <ColoredCard>
           <div className='flex items-center gap-4'>
             <Avatar size='xl' name={loggedUser?.displayName ?? ''} />
             <div>
-              <Text appearance='h3' as='p' className='text-card'>{loggedUser?.displayName ?? ''}</Text>
-              <Text appearance='body2' className='text-card/70'>{loggedUser?.email ?? ''}</Text>
+              <Text appearance='h3' as='p' className='text-card'>
+                {loggedUser?.displayName ?? ''}
+              </Text>
+              <Text appearance='body2' className='text-card/70'>
+                {loggedUser?.email ?? ''}
+              </Text>
             </div>
           </div>
         </ColoredCard>
@@ -34,8 +45,12 @@ export const Profile = () => {
                 <UserIcon size={20} />
               </div>
               <div>
-                <Text className='font-semibold font-display'>Dados pessoais</Text>
-                <Text appearance='caption' className='text-muted-foreground '>Edite as suas informações pessoais</Text>
+                <Text className='font-semibold font-display'>
+                  Dados pessoais
+                </Text>
+                <Text appearance='caption' className='text-muted-foreground '>
+                  Edite as suas informações pessoais
+                </Text>
               </div>
             </div>
             <ChevronRight size={16} className='text-muted-foreground' />
@@ -47,7 +62,9 @@ export const Profile = () => {
               </div>
               <div>
                 <Text className='font-semibold font-display'>Segurança</Text>
-                <Text appearance='caption' className='text-muted-foreground '>Gerencie a sua senha</Text>
+                <Text appearance='caption' className='text-muted-foreground '>
+                  Gerencie a sua senha
+                </Text>
               </div>
             </div>
             <ChevronRight size={16} className='text-muted-foreground' />
@@ -58,8 +75,12 @@ export const Profile = () => {
                 <CircleQuestionMarkIcon size={20} />
               </div>
               <div>
-                <Text className='font-semibold font-display'>Ajuda & Suporte</Text>
-                <Text appearance='caption' className='text-muted-foreground '>Central de ajuda, contato</Text>
+                <Text className='font-semibold font-display'>
+                  Ajuda & Suporte
+                </Text>
+                <Text appearance='caption' className='text-muted-foreground '>
+                  Central de ajuda, contato
+                </Text>
               </div>
             </div>
             <ChevronRight size={16} className='text-muted-foreground' />

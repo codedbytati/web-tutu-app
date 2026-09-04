@@ -6,7 +6,10 @@ type AddNewExpenseProps = {
   setIsModalOpen: (isOpen: boolean) => void
 }
 
-export const AddTransfer = ({ isModalOpen, setIsModalOpen }: AddNewExpenseProps) => {
+export const AddTransfer = ({
+  isModalOpen,
+  setIsModalOpen
+}: AddNewExpenseProps) => {
   return (
     <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <Modal.Header onClose={() => setIsModalOpen(false)}>
@@ -14,8 +17,12 @@ export const AddTransfer = ({ isModalOpen, setIsModalOpen }: AddNewExpenseProps)
           <PlusCircleIcon size={20} className='text-primary' />
         </div>
         <div>
-          <Text appearance='h2' className='text-base font-bold font-display'>Nova transferência</Text>
-          <Text appearance='caption' className='text-muted-foreground'>Mova valores entre suas contas</Text>
+          <Text appearance='h2' className='text-base font-bold font-display'>
+            Nova transferência
+          </Text>
+          <Text appearance='caption' className='text-muted-foreground'>
+            Mova valores entre suas contas
+          </Text>
         </div>
       </Modal.Header>
       <Modal.Body>

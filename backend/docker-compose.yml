@@ -2,7 +2,7 @@ services:
   database:
     image: mongo:7
     ports:
-      - "27017:27017"
+      - '27017:27017'
     environment:
       MONGO_INITDB_DATABASE: meudb
     volumes:
@@ -10,10 +10,10 @@ services:
   api:
     build: .
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
-      MONGO_URI: "mongodb://database:27017/meudb"
-      FIREBASE_SERVICE_ACCOUNT_BASE64: "${FIREBASE_SERVICE_ACCOUNT_BASE64}"
+      MONGO_URI: 'mongodb://database:27017/meudb'
+      FIREBASE_SERVICE_ACCOUNT_BASE64: '${FIREBASE_SERVICE_ACCOUNT_BASE64}'
     depends_on:
       - database
 

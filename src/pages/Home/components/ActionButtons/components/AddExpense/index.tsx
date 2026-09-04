@@ -6,7 +6,10 @@ type AddNewExpenseProps = {
   setIsModalOpen: (isOpen: boolean) => void
 }
 
-export const AddExpense = ({ isModalOpen, setIsModalOpen }: AddNewExpenseProps) => {
+export const AddExpense = ({
+  isModalOpen,
+  setIsModalOpen
+}: AddNewExpenseProps) => {
   return (
     <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <Modal.Header onClose={() => setIsModalOpen(false)}>
@@ -14,8 +17,12 @@ export const AddExpense = ({ isModalOpen, setIsModalOpen }: AddNewExpenseProps) 
           <PlusCircleIcon size={20} className='text-negative' />
         </div>
         <div>
-          <Text appearance='h2' className='text-base font-bold font-display'>Nova despesa</Text>
-          <Text appearance='caption' className='text-muted-foreground'>Registre um valor gasto</Text>
+          <Text appearance='h2' className='text-base font-bold font-display'>
+            Nova despesa
+          </Text>
+          <Text appearance='caption' className='text-muted-foreground'>
+            Registre um valor gasto
+          </Text>
         </div>
       </Modal.Header>
       <Modal.Body>

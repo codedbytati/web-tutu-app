@@ -20,7 +20,10 @@ const makeStyles = tv({
   }
 })
 
-type CurrencyFieldProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> & {
+type CurrencyFieldProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'size'
+> & {
   label: string
   hint?: string
   size?: 'sm' | 'md' | 'lg'
@@ -29,36 +32,45 @@ type CurrencyFieldProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'siz
   isInvalid?: boolean
 }
 
-export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(({
-  label,
-  hint,
-  errorMessage,
-  isInvalid,
-  isIncome = true,
-  size = 'md',
-  ...props
-}, ref) => {
-  const hasError = isInvalid || Boolean(errorMessage);
-  const message = errorMessage || hint;
+export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(
+  (
+    {
+      label,
+      hint,
+      errorMessage,
+      isInvalid,
+      isIncome = true,
+      size = 'md',
+      ...props
+    },
+    ref
+  ) => {
+    const hasError = isInvalid || Boolean(errorMessage)
+    const message = errorMessage || hint
 
-  return (
-    <div>
-      <p className='font-display text-foreground text-xs font-semibold mb-1.5'>{label}</p>
-      <div className={makeStyles({ size, isInvalid: hasError })}>
-        <p className={`text-sm ${isIncome ? 'text-positive' : 'text-negative'} font-bold font-display`}>R$</p>
-        <input
-          ref={ref}
-          placeholder='0,00'
-          {...props}
-        />
-      </div>
-      {message && (
-        <p className={`text-xs pt-1.5 ${hasError ? 'text-negative' : 'text-muted-foreground'}`}>
-          {message}
+    return (
+      <div>
+        <p className='font-display text-foreground text-xs font-semibold mb-1.5'>
+          {label}
         </p>
-      )}
-    </div>
-  )
-})
+        <div className={makeStyles({ size, isInvalid: hasError })}>
+          <p
+            className={`text-sm ${isIncome ? 'text-positive' : 'text-negative'} font-bold font-display`}
+          >
+            R$
+          </p>
+          <input ref={ref} placeholder='0,00' {...props} />
+        </div>
+        {message && (
+          <p
+            className={`text-xs pt-1.5 ${hasError ? 'text-negative' : 'text-muted-foreground'}`}
+          >
+            {message}
+          </p>
+        )}
+      </div>
+    )
+  }
+)
 
 CurrencyField.displayName = 'CurrencyField'

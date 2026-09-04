@@ -2,12 +2,17 @@ const admin = require('firebase-admin')
 
 const getCredential = () => {
   if (process.env.FIREBASE_SERVICE_ACCOUNT_BASE64) {
-    const json = Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_BASE64, 'base64').toString('utf8')
+    const json = Buffer.from(
+      process.env.FIREBASE_SERVICE_ACCOUNT_BASE64,
+      'base64'
+    ).toString('utf8')
     return admin.credential.cert(JSON.parse(json))
   }
 
   if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
-    return admin.credential.cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON))
+    return admin.credential.cert(
+      JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON)
+    )
   }
 
   return null

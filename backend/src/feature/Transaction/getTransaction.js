@@ -1,10 +1,8 @@
-const DetailedAccountModel = require("../../models/DetailedAccount")
+const DetailedAccountModel = require('../../models/DetailedAccount')
 
-const getTransaction = async ({
-  filter, repository
-}) => {
+const getTransaction = async ({ filter, repository }) => {
   const result = await repository.get(filter)
-  return result?.map(transaction => new DetailedAccountModel(transaction))
+  return result?.map((transaction) => new DetailedAccountModel(transaction))
 }
 
-module.exports = getTransaction 
+module.exports = getTransaction

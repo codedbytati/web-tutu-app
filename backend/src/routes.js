@@ -19,7 +19,20 @@ router.get('/account', accountController.find.bind(accountController))
 
 router.post('/account', accountController.createAccount.bind(accountController))
 
-router.post('/account/card', accountController.createCard.bind(accountController))
+router.post(
+  '/account/card',
+  accountController.createCard.bind(accountController)
+)
+
+router.patch(
+  '/account/:id/block',
+  accountController.blockAccount.bind(accountController)
+)
+
+router.patch(
+  '/account/card/:id/block',
+  accountController.blockCard.bind(accountController)
+)
 
 /**
  * @swagger
@@ -56,7 +69,10 @@ router.post('/account/card', accountController.createCard.bind(accountController
  *       201:
  *         description: Transação criada com sucesso
  */
-router.post('/account/transaction', accountController.createTransaction.bind(accountController))
+router.post(
+  '/account/transaction',
+  accountController.createTransaction.bind(accountController)
+)
 
 /**
  * @swagger
@@ -84,7 +100,10 @@ router.post('/account/transaction', accountController.createTransaction.bind(acc
  *       404:
  *         description: Transação não encontrada
  */
-router.put('/account/transaction/:id', accountController.updateTransaction.bind(accountController))
+router.put(
+  '/account/transaction/:id',
+  accountController.updateTransaction.bind(accountController)
+)
 
 /**
  * @swagger
@@ -106,7 +125,10 @@ router.put('/account/transaction/:id', accountController.updateTransaction.bind(
  *       404:
  *         description: Transação não encontrada
  */
-router.delete('/account/transaction/:id', accountController.deleteTransaction.bind(accountController))
+router.delete(
+  '/account/transaction/:id',
+  accountController.deleteTransaction.bind(accountController)
+)
 
 /**
  * @swagger
@@ -129,6 +151,9 @@ router.delete('/account/transaction/:id', accountController.deleteTransaction.bi
  *       401:
  *         description: Token invalido
  */
-router.get('/account/:accountId/statement', accountController.getStatment.bind(accountController))
+router.get(
+  '/account/:accountId/statement',
+  accountController.getStatment.bind(accountController)
+)
 
 module.exports = router

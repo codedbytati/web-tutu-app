@@ -5,9 +5,9 @@ const Investment = require('./Investment')
 const DetailedAccount = require('./DetailedAccount')
 
 module.exports = {
-    User,
-    Card,
-    Account,
-    Investment,
-    DetailedAccount
+  User,
+  Card,
+  Account,
+  Investment,
+  DetailedAccount
 }

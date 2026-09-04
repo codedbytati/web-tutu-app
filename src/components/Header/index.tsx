@@ -11,7 +11,9 @@ export const Header = ({ icon: Icon, label }: HeaderProps) => {
       <div className='bg-primary/15 rounded-xl p-2'>
         <Icon size={22} className='text-foreground' />
       </div>
-      <h1 className='font-display font-bold text-foreground text-sm'>{label}</h1>
+      <h1 className='font-display font-bold text-foreground text-sm'>
+        {label}
+      </h1>
     </div>
   )
 }

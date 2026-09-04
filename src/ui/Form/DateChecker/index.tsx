@@ -20,7 +20,10 @@ const makeStyles = tv({
   }
 })
 
-type DateCheckerProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> & {
+type DateCheckerProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'size'
+> & {
   label: string
   hint?: string
   size?: 'sm' | 'md' | 'lg'
@@ -28,34 +31,29 @@ type DateCheckerProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'
   isInvalid?: boolean
 }
 
-export const DateChecker = forwardRef<HTMLInputElement, DateCheckerProps>(({
-  label,
-  hint,
-  errorMessage,
-  isInvalid,
-  size = 'md',
-  ...props
-}, ref) => {
-  const hasError = isInvalid || Boolean(errorMessage);
-  const message = errorMessage || hint;
+export const DateChecker = forwardRef<HTMLInputElement, DateCheckerProps>(
+  ({ label, hint, errorMessage, isInvalid, size = 'md', ...props }, ref) => {
+    const hasError = isInvalid || Boolean(errorMessage)
+    const message = errorMessage || hint
 
-  return (
-    <div>
-      <p className='font-display text-foreground text-xs font-semibold mb-1.5'>{label}</p>
-      <div className={makeStyles({ size, isInvalid: hasError })}>
-        <input
-          ref={ref}
-          type='date'
-          {...props}
-        />
-      </div>
-      {message && (
-        <p className={`text-xs pt-1.5 ${hasError ? 'text-negative' : 'text-muted-foreground'}`}>
-          {message}
+    return (
+      <div>
+        <p className='font-display text-foreground text-xs font-semibold mb-1.5'>
+          {label}
         </p>
-      )}
-    </div>
-  )
-})
+        <div className={makeStyles({ size, isInvalid: hasError })}>
+          <input ref={ref} type='date' {...props} />
+        </div>
+        {message && (
+          <p
+            className={`text-xs pt-1.5 ${hasError ? 'text-negative' : 'text-muted-foreground'}`}
+          >
+            {message}
+          </p>
+        )}
+      </div>
+    )
+  }
+)
 
 DateChecker.displayName = 'DateChecker'

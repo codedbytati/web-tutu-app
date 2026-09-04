@@ -4,7 +4,7 @@ import { LogIn } from './pages/LogIn'
 import { Register } from './pages/Register'
 import { Home } from './pages/Home'
 import { PageNotFound } from './pages/PageNotFound'
-import { Transactions } from './pages/Transactions'
+// import { Transactions } from './pages/Transactions'
 import { Profile } from './pages/Profile'
 import { ProtectedRoute } from './layouts/ProtectedRoute'
 import { Analysis } from './pages/Analysis'
@@ -14,11 +14,11 @@ export const router = createBrowserRouter([
   // Rotas Púbicas
   {
     path: '/login',
-    element: <LogIn />,
+    element: <LogIn />
   },
   {
     path: '/cadastro',
-    element: <Register />,
+    element: <Register />
   },
 
   // Rotas Protegidas
@@ -31,30 +31,30 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Home />,
+            element: <Home />
           },
-          {
-            path: '/transacoes',
-            element: <Transactions />,
-          },
+          // {
+          //   path: '/transacoes',
+          //   element: <Transactions />
+          // },
           {
             path: '/analises',
-            element: <Analysis />,
+            element: <Analysis />
           },
           {
             path: '/cartoes',
-            element: <Accounts />,
+            element: <Accounts />
           },
           {
             path: '/perfil',
-            element: <Profile />,
+            element: <Profile />
           },
           {
             path: '*',
-            element: <PageNotFound />,
-          },
-        ],
-      },
-    ],
-  },
+            element: <PageNotFound />
+          }
+        ]
+      }
+    ]
+  }
 ])

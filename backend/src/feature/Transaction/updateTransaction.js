@@ -1,4 +1,4 @@
-const DetailedAccountModel = require("../../models/DetailedAccount")
+const DetailedAccountModel = require('../../models/DetailedAccount')
 
 const updateTransaction = async ({
   transactionId,
@@ -9,11 +9,15 @@ const updateTransaction = async ({
   if (!currentTransaction) return null
 
   const dataToPersist = { ...updates }
-  const receivedValue = Object.prototype.hasOwnProperty.call(dataToPersist, 'value')
+  const receivedValue = Object.prototype.hasOwnProperty.call(
+    dataToPersist,
+    'value'
+  )
 
   if (receivedValue) {
     const effectiveType = dataToPersist.type ?? currentTransaction.type
-    const shouldReverseValue = (effectiveType === 'Debit' && dataToPersist.value > 0) ||
+    const shouldReverseValue =
+      (effectiveType === 'Debit' && dataToPersist.value > 0) ||
       (effectiveType === 'Credit' && dataToPersist.value < 0)
 
     if (shouldReverseValue) {

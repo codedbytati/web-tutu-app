@@ -16,48 +16,51 @@ Crie `backend/.env` a partir de `.env.example` e preencha `FIREBASE_SERVICE_ACCO
 docker compose up -d --build
 ```
 
+Rodando o projeto:
 
-Rodando o projeto: 
 - Docker
-    # Construir a imagem
-    docker build -t tech-challenge .
 
-    # Executar o container
-    docker run -p 3000:3000 tech-challenge
+  # Construir a imagem
+
+  docker build -t tech-challenge .
+
+  # Executar o container
+
+  docker run -p 3000:3000 tech-challenge
 
 - Sem docker
 
-    npm i
-    npm run dev
-
+  npm i
+  npm run dev
 
 ### Importando collection no postman
+
 - Neste projeto possui o arquivo tech-challenge-2.postman_collection que é uma collection do postman, você tendo o postman pode clicar no botão de import e selecionar esse arquivo lá na caixa de drop,
-após realizar a importação você terá todo os Requests desse projeto.
+  após realizar a importação você terá todo os Requests desse projeto.
 
 ![alt text](image.png)
 
 ![alt text](image-1.png)
-
 
 ### Swagger
 
 para acessar o Swagger basta você entrar na rota /docs
 as rotas que necessitam de Autenticação você pode colar o Bearer token no cadeado
 
-### Autenticando 
+### Autenticando
 
 #### Criando usuário
+
     "http:localhost:3000/user"
     body:
         {
             "username": "Aluno Carequinha",
             "email": "teste@gmail.com",
             "password": "testes"
-        }  
+        }
 
     cURL
-    ``` 
+    ```
         curl --location 'localhost:3000/user' \
         --header 'Content-Type: application/json' \
         --data-raw '{
@@ -82,8 +85,9 @@ as rotas que necessitam de Autenticação você pode colar o Bearer token no cad
     ```
 
 #### Autenticando
+
     "localhost:3000/user/auth"
-    Body: 
+    Body:
         {
             "email": "teste@gmail.com",
             "password": "testes"
@@ -113,6 +117,7 @@ as rotas que necessitam de Autenticação você pode colar o Bearer token no cad
 ### Conta
 
 #### Buscando conta
+
     "localhost:3000/account"
 
     Authorization: Bearer {{Token}}
@@ -158,7 +163,7 @@ as rotas que necessitam de Autenticação você pode colar o Bearer token no cad
                         "id": "67607133f840bb97892eb65b",
                         "accountId": "67607133f840bb97892eb659",
                         "type": "Debit",
-                        "is_blocked": false,
+                        "isDeactivate": false,
                         "number": "13748712374891010",
                         "dueDate": "2027-01-07T00:00:00.000Z",
                         "functions": "Debit",
@@ -172,6 +177,7 @@ as rotas que necessitam de Autenticação você pode colar o Bearer token no cad
     ```
 
 #### Criando Transação
+
     "localhost:3000/account/transaction"
 
     Body
@@ -207,6 +213,7 @@ as rotas que necessitam de Autenticação você pode colar o Bearer token no cad
         }
 
 #### Buscando extrato
+
     localhost:3000/account/{{accountId}}/statement
 
     Authorization Bearer {{Token}}

@@ -1,12 +1,14 @@
 import GoogleSVG from '../../assets/google.svg'
 
 type GoogleButtonProps = {
-  onClick: () => void;
-  isLogin?: boolean;
-};
+  onClick: () => void
+  isLogin?: boolean
+}
 
-export const GoogleButton = ({ onClick, isLogin = false }: GoogleButtonProps) => {
-
+export const GoogleButton = ({
+  onClick,
+  isLogin = false
+}: GoogleButtonProps) => {
   return (
     <button
       type='button'

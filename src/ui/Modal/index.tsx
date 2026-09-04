@@ -50,14 +50,14 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+      className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm'
       onClick={onClose}
     >
       <dialog
         ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        className="w-1/3 m-auto flex flex-col rounded-2xl bg-card shadow-lg border border-border overflow-hidden p-0 text-foreground"
+        role='dialog'
+        aria-modal='true'
+        className='w-1/3 m-auto flex flex-col rounded-2xl bg-card shadow-lg border border-border overflow-hidden p-0 text-foreground'
         onClick={(e) => e.stopPropagation()}
       >
         {children}
@@ -69,18 +69,21 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 
 Modal.Header = function ModalHeader({ children, onClose }: ModalHeaderProps) {
   return (
-    <header className="w-full flex items-center justify-between px-5 py-4 border-b border-border">
-      <div className="flex items-center gap-3 font-semibold text-lg">
+    <header className='w-full flex items-center justify-between px-5 py-4 border-b border-border'>
+      <div className='flex items-center gap-3 font-semibold text-lg'>
         {children}
       </div>
       {onClose && (
         <button
-          type="button"
+          type='button'
           onClick={onClose}
-          aria-label="Fechar"
-          className="flex items-center p-2 size-8 rounded-full cursor-pointer hover:bg-muted group"
+          aria-label='Fechar'
+          className='flex items-center p-2 size-8 rounded-full cursor-pointer hover:bg-muted group'
         >
-          <X size={18} className="text-muted-foreground group-hover:text-foreground" />
+          <X
+            size={18}
+            className='text-muted-foreground group-hover:text-foreground'
+          />
         </button>
       )}
     </header>
@@ -89,7 +92,7 @@ Modal.Header = function ModalHeader({ children, onClose }: ModalHeaderProps) {
 
 Modal.Body = function ModalBody({ children }: { children: ReactNode }) {
   return (
-    <main className="w-full flex flex-col gap-4 p-5 overflow-y-auto">
+    <main className='w-full flex flex-col gap-4 p-5 overflow-y-auto'>
       {children}
     </main>
   )
@@ -102,7 +105,7 @@ Modal.Footer = function ModalFooter({
   primaryButtonLabel
 }: ModalFooterProps) {
   return (
-    <footer className="w-full flex items-center justify-end gap-3 px-5 py-4 bg-muted/30 border-t border-border">
+    <footer className='w-full flex items-center justify-end gap-3 px-5 py-4 bg-muted/30 border-t border-border'>
       {secondaryButtonLabel && (
         <Button size='md' variant='danger' onClick={onSecondaryButtonClick}>
           {secondaryButtonLabel}

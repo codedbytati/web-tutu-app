@@ -1,25 +1,25 @@
-const { DetailedAccount } = require('../modelos');
+const { DetailedAccount } = require('../modelos')
 
 const create = async (action) => {
-    const detailedAccount = new DetailedAccount(action);
-    return detailedAccount.save();
-};
+  const detailedAccount = new DetailedAccount(action)
+  return detailedAccount.save()
+}
 
 const getById = async (id) => {
-  return DetailedAccount.findById(id);
-};
+  return DetailedAccount.findById(id)
+}
 
-const get = async (detailedAccount={}) => {
-    return DetailedAccount.find(detailedAccount);
-};
+const get = async (detailedAccount = {}) => {
+  return DetailedAccount.find(detailedAccount)
+}
 
 const updateById = async (id, updates = {}) => {
-  return DetailedAccount.findByIdAndUpdate(id, updates, { new: true });
-};
+  return DetailedAccount.findByIdAndUpdate(id, updates, { new: true })
+}
 
 const removeById = async (id) => {
-  return DetailedAccount.findByIdAndDelete(id);
-};
+  return DetailedAccount.findByIdAndDelete(id)
+}
 
 module.exports = {
   create,
@@ -27,4 +27,4 @@ module.exports = {
   get,
   updateById,
   removeById
-};
+}

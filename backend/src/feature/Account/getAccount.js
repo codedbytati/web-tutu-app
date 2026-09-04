@@ -1,10 +1,8 @@
-const Account = require("../../models/Account")
+const Account = require('../../models/Account')
 
-const getAccount = async ({
-  filter, repository
-}) => {
+const getAccount = async ({ filter, repository }) => {
   const result = await repository.get(filter)
-  return result?.map(user => new Account(user))
+  return result?.map((user) => new Account(user))
 }
 
 module.exports = getAccount

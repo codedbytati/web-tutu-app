@@ -1,17 +1,21 @@
-import { useMutation } from '@tanstack/react-query';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../services/firebase';
+import { useMutation } from '@tanstack/react-query'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../services/firebase'
 
 interface LoginParams {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export const useLogin = () => {
   return useMutation({
     mutationFn: async ({ email, password }: LoginParams) => {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      return userCredential.user;
-    },
-  });
-};
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+      return userCredential.user
+    }
+  })
+}

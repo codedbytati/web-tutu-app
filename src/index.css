@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap");
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
 
 @theme inline {
   --color-background: var(--background);
@@ -22,8 +22,8 @@
   --color-warning: var(--warning);
   --color-info: var(--info);
 
-  --font-display: "Plus Jakarta Sans", sans-serif;
-  --font-body: "Inter", sans-serif;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 
 /* ── Light mode ───────────────────────────────────────────────── */
@@ -34,7 +34,7 @@
   --card-foreground: #151521;
   --primary: #7b6cf6;
   --primary-foreground: #ffffff;
-  --primary-dark: #5A4CC4;
+  --primary-dark: #5a4cc4;
   --secondary: #e9e6f7;
   --secondary-foreground: #151521;
   --muted: #f0eef9;
@@ -57,7 +57,7 @@
   --card-foreground: #f0eef9;
   --primary: #7b6cf6;
   --primary-foreground: #ffffff;
-  --primary-dark: #5A4CC4;
+  --primary-dark: #5a4cc4;
   --secondary: #252340;
   --secondary-foreground: #c8c4e8;
   --muted: #1e1c33;
@@ -75,40 +75,40 @@
 /* ── @font-face for Figma-imported design assets ─────────────────── */
 
 @font-face {
-  font-family: "Inter:Regular";
+  font-family: 'Inter:Regular';
   font-style: normal;
   font-weight: 400;
-  src: url("https://static.figma.com/font/Inter_1") format("woff2");
+  src: url('https://static.figma.com/font/Inter_1') format('woff2');
 }
 
 @font-face {
-  font-family: "Inter:Semi Bold";
+  font-family: 'Inter:Semi Bold';
   font-style: normal;
   font-weight: 600;
-  src: url("https://static.figma.com/font/Inter_1") format("woff2");
+  src: url('https://static.figma.com/font/Inter_1') format('woff2');
 }
 
 @font-face {
-  font-family: "Inter:Medium";
+  font-family: 'Inter:Medium';
   font-style: normal;
   font-weight: 500;
-  src: url("https://static.figma.com/font/Inter_1") format("woff2");
+  src: url('https://static.figma.com/font/Inter_1') format('woff2');
 }
 
 @font-face {
-  font-family: "Plus Jakarta Sans:Medium";
+  font-family: 'Plus Jakarta Sans:Medium';
   font-style: normal;
   font-weight: 500;
-  src: url("https://static.figma.com/font/PlusJakartaSans_wght__2")
-    format("woff2");
+  src: url('https://static.figma.com/font/PlusJakartaSans_wght__2')
+    format('woff2');
 }
 
 @font-face {
-  font-family: "Plus Jakarta Sans:Regular";
+  font-family: 'Plus Jakarta Sans:Regular';
   font-style: normal;
   font-weight: 400;
-  src: url("https://static.figma.com/font/PlusJakartaSans_wght__2")
-    format("woff2");
+  src: url('https://static.figma.com/font/PlusJakartaSans_wght__2')
+    format('woff2');
 }
 
 /* ── Base ─────────────────────────────────────────────────────────── */

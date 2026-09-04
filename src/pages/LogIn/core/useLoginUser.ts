@@ -1,49 +1,49 @@
-import { useNavigate } from "react-router";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useGoogleLogin, useLogin } from "@tutu-hooks";
-import { loginSchema, type LoginFormData } from "@tutu-schemas";
+import { useNavigate } from 'react-router'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useGoogleLogin, useLogin } from '@tutu-hooks'
+import { loginSchema, type LoginFormData } from '@tutu-schemas'
 
 export const useLoginUser = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-    mode: "onSubmit",
-  });
+    mode: 'onSubmit'
+  })
 
-  const { mutate: loginWithGoogle } = useGoogleLogin();
-  const { mutate: loginUser } = useLogin();
+  const { mutate: loginWithGoogle } = useGoogleLogin()
+  const { mutate: loginUser } = useLogin()
 
   const onSubmit = (data: LoginFormData) => {
     loginUser(data, {
-      onSuccess: () => navigate("/"),
-    });
-  };
+      onSuccess: () => navigate('/')
+    })
+  }
 
   const handleGoogleLogin = () => {
     loginWithGoogle(undefined, {
       onSuccess: () => {
-        navigate("/");
-      },
-    });
-  };
+        navigate('/')
+      }
+    })
+  }
 
   return {
     onSubmit: handleSubmit(onSubmit),
     onGoogleRegister: handleGoogleLogin,
     onEmailProps: {
-      ...register("email"),
+      ...register('email'),
       isInvalid: Boolean(errors.email),
-      errorMessage: errors.email?.message,
+      errorMessage: errors.email?.message
     },
     onPasswordProps: {
-      ...register("password"),
+      ...register('password'),
       isInvalid: Boolean(errors.password),
-      errorMessage: errors.password?.message,
-    },
-  };
-};
+      errorMessage: errors.password?.message
+    }
+  }
+}

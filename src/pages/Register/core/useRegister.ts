@@ -1,52 +1,52 @@
-import { useNavigate } from "react-router";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useGoogleLogin, useRegisterUser } from "@tutu-hooks";
-import { registerSchema, type RegisterFormData } from "@tutu-schemas";
+import { useNavigate } from 'react-router'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useGoogleLogin, useRegisterUser } from '@tutu-hooks'
+import { registerSchema, type RegisterFormData } from '@tutu-schemas'
 
 export const useRegister = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
-    mode: "onSubmit",
-  });
+    mode: 'onSubmit'
+  })
 
-  const { mutate: registerUser } = useRegisterUser();
-  const { mutate: loginWithGoogle } = useGoogleLogin();
+  const { mutate: registerUser } = useRegisterUser()
+  const { mutate: loginWithGoogle } = useGoogleLogin()
 
   const onSubmit = (data: RegisterFormData) => {
     registerUser(data, {
-      onSuccess: () => navigate("/"),
-    });
-  };
+      onSuccess: () => navigate('/')
+    })
+  }
 
   const handleGoogleRegister = () => {
     loginWithGoogle(undefined, {
-      onSuccess: () => navigate("/"),
-    });
-  };
+      onSuccess: () => navigate('/')
+    })
+  }
 
   return {
     onSubmit: handleSubmit(onSubmit),
     onGoogleRegister: handleGoogleRegister,
     onNameProps: {
-      ...register("fullName"),
+      ...register('fullName'),
       isInvalid: Boolean(errors.fullName),
-      errorMessage: errors.fullName?.message,
+      errorMessage: errors.fullName?.message
     },
     onEmailProps: {
-      ...register("email"),
+      ...register('email'),
       isInvalid: Boolean(errors.email),
-      errorMessage: errors.email?.message,
+      errorMessage: errors.email?.message
     },
     onPasswordProps: {
-      ...register("password"),
+      ...register('password'),
       isInvalid: Boolean(errors.password),
-      errorMessage: errors.password?.message,
-    },
-  };
-};
+      errorMessage: errors.password?.message
+    }
+  }
+}

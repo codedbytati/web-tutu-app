@@ -1,7 +1,12 @@
-import { createElement, type ElementType, type ComponentPropsWithoutRef } from 'react'
+import {
+  createElement,
+  type ElementType,
+  type ComponentPropsWithoutRef
+} from 'react'
 import { tv } from 'tailwind-variants'
 
-type FontAppearanceKeys = 'display' | 'h1' | 'h2' | 'h3' | 'body1' | 'body2' | 'caption' | 'overline'
+type FontAppearanceKeys =
+  'display' | 'h1' | 'h2' | 'h3' | 'body1' | 'body2' | 'caption' | 'overline'
 
 type TextProps<T extends ElementType = 'p'> = {
   as?: T

@@ -19,12 +19,12 @@ const routeMap: Record<string, RouteConfig> = {
   '/transacoes': { label: 'Transações', icon: ArrowLeftRightIcon },
   '/analises': { label: 'Análises', icon: ChartSplineIcon },
   '/cartoes': { label: 'Cartões', icon: CreditCardIcon },
-  '/perfil': { label: 'Perfil', icon: UserIcon },
+  '/perfil': { label: 'Perfil', icon: UserIcon }
 }
 
 const defaultConfig: RouteConfig = {
   label: 'Início',
-  icon: HomeIcon,
+  icon: HomeIcon
 }
 
 export function AppLayout() {
@@ -32,11 +32,11 @@ export function AppLayout() {
   const currentRoute = routeMap[location.pathname] || defaultConfig
 
   return (
-    <div className="flex min-h-screen">
+    <div className='flex min-h-screen'>
       <Sidebar />
       <div className='flex-1'>
         <Header icon={currentRoute.icon} label={currentRoute.label} />
-        <main className="w-full flex mt-5 justify-center">
+        <main className='w-full flex mt-5 justify-center'>
           <Outlet />
         </main>
       </div>

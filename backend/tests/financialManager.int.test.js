@@ -31,12 +31,13 @@ describe('Financial manager API', () => {
   })
 
   test('creates a new user', async () => {
-    const response = await request(app)
-      .post('/user')
-      .send(userPayload)
+    const response = await request(app).post('/user').send(userPayload)
 
     expect(response.status).toBe(201)
-    expect(response.body).toHaveProperty('message', 'usuário criado com sucesso')
+    expect(response.body).toHaveProperty(
+      'message',
+      'usuário criado com sucesso'
+    )
     expect(response.body).toHaveProperty(['result', 'id'])
   })
 
@@ -128,7 +129,9 @@ describe('Financial manager API', () => {
 
     const transactions = response.body.result.transactions
     expect(Array.isArray(transactions)).toBe(true)
-    expect(transactions.find((transaction) => transaction.id === transactionId)).toBeTruthy()
+    expect(
+      transactions.find((transaction) => transaction.id === transactionId)
+    ).toBeTruthy()
   })
 
   test('deletes the transaction', async () => {

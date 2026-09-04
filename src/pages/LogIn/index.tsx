@@ -6,15 +6,23 @@ import { GoogleButton } from '@tutu-components'
 import { useLoginUser } from './core/useLoginUser'
 
 export const LogIn = () => {
-  const { onSubmit, onGoogleRegister, onEmailProps, onPasswordProps } = useLoginUser()
+  const { onSubmit, onGoogleRegister, onEmailProps, onPasswordProps } =
+    useLoginUser()
 
   return (
     <div className='bg-background flex flex-col items-center justify-center h-screen'>
       <div className='absolute -top-1/2 left-1/2 -translate-x-1/2 size-150 bg-primary opacity-5 rounded-full'></div>
       <div className='flex flex-col items-center'>
-        <img src={Logo} alt='Quadrado com bordas arredondadas com fundo violeta e a letra T maiúscula em branco' />
-        <h1 className='text-foreground text-2xl font-black font-display pb-1'>Bom te ver de volta!</h1>
-        <p className='text-muted-foreground text-sm'>Entre para acessar suas finanças.</p>
+        <img
+          src={Logo}
+          alt='Quadrado com bordas arredondadas com fundo violeta e a letra T maiúscula em branco'
+        />
+        <h1 className='text-foreground text-2xl font-black font-display pb-1'>
+          Bom te ver de volta!
+        </h1>
+        <p className='text-muted-foreground text-sm'>
+          Entre para acessar suas finanças.
+        </p>
       </div>
       <div className='w-1/4 flex flex-col items-center bg-card relative rounded-2xl p-6 mt-6 shadow-lg'>
         <GoogleButton onClick={onGoogleRegister} isLogin />
@@ -23,7 +31,11 @@ export const LogIn = () => {
           <p className='text-muted-foreground text-xs'>ou</p>
           <hr className='text-border w-34' />
         </div>
-        <form onSubmit={onSubmit} noValidate className='flex flex-col gap-4 w-full'>
+        <form
+          onSubmit={onSubmit}
+          noValidate
+          className='flex flex-col gap-4 w-full'
+        >
           <TextField
             label='E-mail'
             placeholder='nome@email.com'
@@ -35,11 +47,17 @@ export const LogIn = () => {
             placeholder='Digite sua senha'
             {...onPasswordProps}
           />
-          <Button size='lg' type='submit'>Entrar</Button>
+          <Button size='lg' type='submit'>
+            Entrar
+          </Button>
         </form>
       </div>
-      <p className='text-muted-foreground text-sm my-6'>Não tem uma conta?
-        <Link to='/cadastro' className='text-primary font-semibold'> Criar conta</Link>
+      <p className='text-muted-foreground text-sm my-6'>
+        Não tem uma conta?
+        <Link to='/cadastro' className='text-primary font-semibold'>
+          {' '}
+          Criar conta
+        </Link>
       </p>
     </div>
   )
