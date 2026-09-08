@@ -7,7 +7,6 @@ import {
   TrendingUpIcon
 } from 'lucide-react'
 import { useMemo, useState, type FormEvent } from 'react'
-import { useAccount, useCreateTransaction } from '@tutu-hooks'
 import type { Transaction, TransactionType } from '../../services/api'
 
 type Filter = 'all' | 'income' | 'expense'
@@ -21,6 +20,7 @@ const formatCurrency = (value: number) =>
 const formatDate = (date: string) => new Date(date).toLocaleDateString('pt-BR')
 
 const transactionDescription = (transaction: Transaction) => {
+  if (transaction.description) return transaction.description
   if (transaction.type === 'Transfer')
     return `${transaction.from || 'Origem'} para ${transaction.to || 'Destino'}`
   return transaction.type === 'Credit'

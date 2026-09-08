@@ -13,6 +13,17 @@ const get = async (card = {}) => {
   return Card.find(card)
 }
 
+const updateSpent = async (id, amount) => {
+  return Card.findByIdAndUpdate(
+    id,
+    [
+      { $set: { spent: { $add: ['$spent', amount] } } },
+      { $set: { available: { $subtract: ['$limit', '$spent'] } } }
+    ],
+    { new: true }
+  )
+}
+
 const block = async (id, userId) => {
   const card = await Card.findById(id).populate({
     path: 'accountId',
@@ -29,5 +40,6 @@ module.exports = {
   create,
   getById,
   get,
+  updateSpent,
   block
 }

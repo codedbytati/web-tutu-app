@@ -104,10 +104,16 @@ const DetailedAccountSchema = new Schema(
       type: Number,
       required: true
     },
+    description: {
+      type: String
+    },
     from: {
       type: String
     },
     to: {
+      type: String
+    },
+    category: {
       type: String
     },
     anexo: {

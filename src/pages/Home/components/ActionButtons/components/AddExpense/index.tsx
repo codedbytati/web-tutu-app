@@ -1,5 +1,17 @@
-import { Button, CurrencyField, DateChecker, Modal, Select, SelectItem, Text, TextField } from '@tutu-ui'
 import { MinusCircleIcon, TextAlignStartIcon } from 'lucide-react'
+import { Controller } from 'react-hook-form'
+import { useAddExpense } from './core/useAddExpense'
+import {
+  Button,
+  CurrencyField,
+  DateChecker,
+  Modal,
+  Select,
+  SelectItem,
+  Text,
+  TextField
+} from '@tutu-ui'
+import { AccountOptions } from '../AccountOptions'
 
 type AddNewExpenseProps = {
   isModalOpen: boolean
@@ -10,6 +22,15 @@ export const AddExpense = ({
   isModalOpen,
   setIsModalOpen
 }: AddNewExpenseProps) => {
+  const {
+    control,
+    register,
+    handleSubmit,
+    onSubmit,
+    isPending,
+    isError
+  } = useAddExpense({ onClose: () => setIsModalOpen(false) })
+
   return (
     <Modal isOpen={isModalOpen}>
       <Modal.Header onClose={() => setIsModalOpen(false)}>
@@ -26,26 +47,57 @@ export const AddExpense = ({
         </div>
       </Modal.Header>
       <Modal.Body>
-        <form className='flex flex-col gap-4'>
+        <form className='flex flex-col gap-4' onSubmit={handleSubmit(onSubmit)}>
           <TextField
-            label='Descrição'
             icon={TextAlignStartIcon}
+            label='Descrição'
             placeholder='Ex: Remuneração de agosto'
+            {...register('description', { required: true })}
           />
           <div className='grid grid-cols-2 gap-3'>
-            <DateChecker label='Data da transação' />
-            <CurrencyField label='Valor' type='expense' />
+            <DateChecker label='Data da transação' required {...register('date', { required: true })} />
+            <Controller
+              name='value'
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <CurrencyField label='Valor' type='expense' value={field.value} onChange={field.onChange} required />
+              )}
+            />
           </div>
-          <Select label='Categoria' placeholder='Selecione uma categoria'>
-            <SelectItem value='1'>Salário</SelectItem>
-            <SelectItem value='2'>Investimentos</SelectItem>
-            <SelectItem value='3'>Outros</SelectItem>
-          </Select>
-          <Select label='Conta' placeholder='Selecione a conta'>
-            <SelectItem value='1'>Conta corrente</SelectItem>
-            <SelectItem value='2'>Cartão de crédito</SelectItem>
-          </Select>
-          <Button type='submit' variant='danger'>Registrar despesa</Button>
+          <Controller
+            name='category'
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select label='Categoria' value={field.value} onChange={field.onChange} required>
+                <SelectItem value=''>Selecione uma categoria</SelectItem>
+                <SelectItem value='1'>Alimentação</SelectItem>
+                <SelectItem value='2'>Transporte</SelectItem>
+                <SelectItem value='3'>Educação</SelectItem>
+                <SelectItem value='4'>Saúde</SelectItem>
+                <SelectItem value='5'>Lazer</SelectItem>
+                <SelectItem value='6'>Outros</SelectItem>
+              </Select>
+            )}
+          />
+          <Controller
+            name='sourceId'
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select label='Conta' value={field.value} onChange={field.onChange} required>
+                <SelectItem value=''>Selecione a conta</SelectItem>
+                <AccountOptions />
+              </Select>
+            )}
+          />
+          {isError && (
+            <Text appearance='caption' className='text-negative'>Não foi possível registrar a despesa.</Text>
+          )}
+          <Button type='submit' variant='danger' disabled={isPending}>
+            {isPending ? 'Registrando...' : 'Registrar despesa'}
+          </Button>
         </form>
       </Modal.Body>
     </Modal>

@@ -3,8 +3,10 @@ class DetailedAccount {
     _id,
     type,
     value,
+    description,
     from,
     to,
+    category,
     date,
     accountId,
     anexo,
@@ -14,8 +16,10 @@ class DetailedAccount {
     this.accountId = accountId
     this.type = type
     this.value = value
+    this.description = description || to || from
     this.from = from
     this.to = to
+    this.category = category
     this.date = date
     this.anexo = anexo
     this.urlAnexo = urlAnexo

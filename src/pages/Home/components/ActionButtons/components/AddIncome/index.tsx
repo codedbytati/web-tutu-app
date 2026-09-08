@@ -9,6 +9,9 @@ import {
 } from '@tutu-ui'
 import { SelectItem } from '@tutu-ui/Form/Select'
 import { PlusCircleIcon, TextAlignStartIcon } from 'lucide-react'
+import { Controller } from 'react-hook-form'
+import { AccountOptions } from '../AccountOptions'
+import { useAddIncome } from './core/useAddIncome'
 
 type AddNewExpenseProps = {
   isModalOpen: boolean
@@ -19,6 +22,9 @@ export const AddIncome = ({
   isModalOpen,
   setIsModalOpen
 }: AddNewExpenseProps) => {
+  const { control, register, handleSubmit, onSubmit, isPending, isError } =
+    useAddIncome({ onClose: () => setIsModalOpen(false) })
+
   return (
     <Modal isOpen={isModalOpen}>
       <Modal.Header onClose={() => setIsModalOpen(false)}>
@@ -35,26 +41,52 @@ export const AddIncome = ({
         </div>
       </Modal.Header>
       <Modal.Body>
-        <form className='flex flex-col gap-4'>
+        <form className='flex flex-col gap-4' onSubmit={handleSubmit(onSubmit)}>
           <TextField
+            {...register('description', { required: true })}
             label='Descrição'
             icon={TextAlignStartIcon}
             placeholder='Ex: Remuneração de agosto'
           />
           <div className='grid grid-cols-2 gap-3'>
-            <DateChecker label='Data da transação' />
-            <CurrencyField label='Valor' type='income' />
+            <DateChecker label='Data da transação' required {...register('date', { required: true })} />
+            <Controller
+              name='value'
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => <CurrencyField label='Valor' type='income' value={field.value} onChange={field.onChange} required />}
+            />
           </div>
-          <Select label='Categoria' placeholder='Selecione uma categoria'>
-            <SelectItem value='1'>Salário</SelectItem>
-            <SelectItem value='2'>Investimentos</SelectItem>
-            <SelectItem value='3'>Outros</SelectItem>
-          </Select>
-          <Select label='Conta' placeholder='Selecione a conta'>
-            <SelectItem value='1'>Conta corrente</SelectItem>
-            <SelectItem value='2'>Cartão de crédito</SelectItem>
-          </Select>
-          <Button type='submit' variant='positive'>Registrar receita</Button>
+          <Controller
+            name='category'
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select label='Categoria' value={field.value} onChange={field.onChange} required>
+                <SelectItem value=''>Selecione uma categoria</SelectItem>
+                <SelectItem value='1'>Salário</SelectItem>
+                <SelectItem value='2'>Investimentos</SelectItem>
+                <SelectItem value='3'>Outros</SelectItem>
+              </Select>
+            )}
+          />
+          <Controller
+            name='sourceId'
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select label='Conta' value={field.value} onChange={field.onChange} required>
+                <SelectItem value=''>Selecione a conta</SelectItem>
+                <AccountOptions />
+              </Select>
+            )}
+          />
+          {isError && (
+            <Text appearance='caption' className='text-negative'>Não foi possível registrar a receita.</Text>
+          )}
+          <Button type='submit' variant='positive' disabled={isPending}>
+            {isPending ? 'Registrando...' : 'Registrar receita'}
+          </Button>
         </form>
       </Modal.Body>
     </Modal>

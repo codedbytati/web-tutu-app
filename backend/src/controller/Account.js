@@ -58,47 +58,118 @@ class AccountController {
   async createTransaction(req, res) {
     const {
       accountRepository,
+      cardRepository,
       getAccount,
       saveTransaction,
       transactionRepository
     } = this.di
-    const { accountId, value, type, from, to, anexo } = req.body
+    const {
+      accountId,
+      sourceId,
+      destinationId,
+      value,
+      type,
+      description,
+      from,
+      to,
+      category,
+      anexo,
+      date
+    } = req.body
+    const sourceSelection = sourceId || accountId
+    const sourceParts = String(sourceSelection).split(':')
+    const sourceKind = sourceParts.length > 1 ? sourceParts[0] : 'account'
+    const source = sourceParts.length > 1 ? sourceParts[1] : sourceParts[0]
+    const destinationSelection = destinationId
+    const destinationParts = String(destinationSelection || '').split(':')
+    const destinationKind = destinationParts.length > 1 ? destinationParts[0] : 'account'
+    const destination = destinationParts.length > 1 ? destinationParts[1] : destinationParts[0]
+    const valueText = String(value)
+    const normalizedValue = valueText.includes(',')
+      ? valueText.replace(/\./g, '').replace(',', '.')
+      : valueText
+    const parsedValue = Number(normalizedValue)
 
     if (
-      !accountId ||
-      !Number.isFinite(Number(value)) ||
-      Number(value) <= 0 ||
+      !source ||
+      !Number.isFinite(parsedValue) ||
+      parsedValue <= 0 ||
       !['Debit', 'Credit', 'Transfer'].includes(type)
     ) {
       return res.status(400).json({ message: 'Dados da transação inválidos' })
     }
 
-    let accounts
+    let sourceAccount
+    let sourceCard
+    let destinationAccount
     try {
-      accounts = await getAccount({
-        repository: accountRepository,
-        filter: { _id: accountId, userId: req.user.id }
-      })
+      if (sourceKind === 'account') {
+        const accounts = await getAccount({
+          repository: accountRepository,
+          filter: { _id: source, userId: req.user.id }
+        })
+        sourceAccount = accounts?.[0]
+      }
+
+      if (!sourceAccount && sourceKind === 'card') {
+        const cards = await cardRepository.get({ _id: source })
+        sourceCard = cards?.[0]
+        if (!sourceCard) throw new Error('Origem não encontrada')
+
+        const ownerAccounts = await getAccount({
+          repository: accountRepository,
+          filter: { _id: sourceCard.accountId, userId: req.user.id }
+        })
+        if (!ownerAccounts?.[0]) throw new Error('Cartão não pertence ao usuário')
+      }
+
+      if (type === 'Credit' && sourceAccount) {
+        destinationAccount = sourceAccount
+      } else if (
+        (type === 'Credit' || type === 'Transfer') &&
+        destinationKind === 'account'
+      ) {
+        const destinations = await getAccount({
+          repository: accountRepository,
+          filter: { _id: destination, userId: req.user.id }
+        })
+        destinationAccount = destinations?.[0]
+        if (!destinationAccount) throw new Error('Destino inválido')
+      }
     } catch (error) {
-      return res.status(400).json({ message: 'Conta inválida' })
-    }
-    if (!accounts?.[0]) {
-      return res.status(404).json({ message: 'Conta não encontrada' })
+      return res.status(400).json({ message: 'Origem ou destino inválido' })
     }
 
     const urlAnexo = req.body.urlAnexo ?? req.body.urlanexo ?? null
     const transactionDTO = new TransactionDTO({
-      accountId,
-      value: Number(value),
+      accountId: sourceAccount?.id || sourceCard?.accountId,
+      value: parsedValue,
+      description,
       from,
       to,
+      category,
       anexo,
       urlAnexo,
       type,
-      date: new Date()
+      date: date ? new Date(date) : new Date()
     })
 
     try {
+      if (type === 'Debit' && sourceCard) {
+        await cardRepository.updateSpent(sourceCard._id, parsedValue)
+      } else if (type === 'Debit' && sourceAccount) {
+        await accountRepository.updateBalance(sourceAccount.id, -parsedValue)
+      } else if (type === 'Credit' && destinationAccount) {
+        await accountRepository.updateBalance(destinationAccount.id, parsedValue)
+      } else if (type === 'Transfer' && sourceAccount && destinationAccount) {
+        await accountRepository.updateBalance(sourceAccount.id, -parsedValue)
+        await accountRepository.updateBalance(destinationAccount.id, parsedValue)
+      } else {
+        return res.status(400).json({
+          message: 'Cartões só podem ser usados como origem de despesas'
+        })
+      }
+
       const transaction = await saveTransaction({
         transaction: transactionDTO,
         repository: transactionRepository

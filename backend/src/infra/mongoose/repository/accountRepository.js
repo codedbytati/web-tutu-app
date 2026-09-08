@@ -13,6 +13,14 @@ const get = async (account = {}) => {
   return Account.find(account)
 }
 
+const updateBalance = async (id, amount) => {
+  return Account.findByIdAndUpdate(
+    id,
+    { $inc: { balance: amount } },
+    { new: true }
+  )
+}
+
 const block = async (id, userId) => {
   const account = await Account.findOne({ _id: id, userId })
   if (!account) return null
@@ -25,5 +33,6 @@ module.exports = {
   create,
   getById,
   get,
+  updateBalance,
   block
 }
