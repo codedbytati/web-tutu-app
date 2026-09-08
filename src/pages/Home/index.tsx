@@ -4,7 +4,7 @@ import { ActionButtons, Analysis, BalanceChart, UserBar } from './components'
 // import { HomeIcon } from 'lucide-react'
 // import { TransactionList } from '@tutu-components/TransactionList'
 import { Page } from '../../layouts/Page'
-// import { useAccount } from '@tutu-hooks'
+import { useGetTotalSum } from './core/useGetTotalSum'
 // import type { Transaction } from '../../services/api'
 
 // const formatCurrency = (value: number) =>
@@ -25,24 +25,23 @@ import { Page } from '../../layouts/Page'
 
 export const Home = () => {
   const { loggedUser } = useAuth()
-  // const { data, isLoading, isError } = useAccount()
+  const { balance } = useGetTotalSum()
+
   // const transactions: Transaction[] = data?.transactions || []
 
-  // const balance = transactions.reduce(
-  //   (total, transaction) => total + transaction.value,
-  //   0
-  // )
 
   return (
-    <div className='w-1/2'>
-      <UserBar name={loggedUser?.displayName ?? 'Boas vindas'} />
-      <Page>
+    <Page>
+      <Page.Header>
+        <UserBar name={loggedUser?.displayName ?? 'Boas vindas'} />
+      </Page.Header>
+      <Page.Body>
         <ColoredCard>
           <p className='text-card/65 uppercase font-semibold font-display text-xs'>
             Saldo total
           </p>
           <p className='font-display font-bold text-3xl text-card'>
-            {/* {formatCurrency(balance)} */}
+            R${balance}
           </p>
         </ColoredCard>
         <ActionButtons />
@@ -93,7 +92,7 @@ export const Home = () => {
             )}
           </TransactionList> */}
         </div>
-      </Page>
-    </div>
+      </Page.Body>
+    </Page>
   )
 }

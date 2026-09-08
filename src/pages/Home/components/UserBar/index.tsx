@@ -7,7 +7,7 @@ type UserBarProps = {
 
 export const UserBar = ({ name }: UserBarProps) => {
   return (
-    <div className='flex items-center justify-between mb-4 mx-5'>
+    <>
       <div className='flex items-center gap-3'>
         <div className='relative'>
           <Avatar name={name} />
@@ -34,6 +34,6 @@ export const UserBar = ({ name }: UserBarProps) => {
           />
         </div>
       </div>
-    </div>
+    </>
   )
 }

@@ -1,5 +1,5 @@
-import { Modal, Text, TextField } from '@tutu-ui'
-import { PlusCircleIcon, TextAlignStartIcon } from 'lucide-react'
+import { Button, CurrencyField, DateChecker, Modal, Select, SelectItem, Text, TextField } from '@tutu-ui'
+import { MinusCircleIcon, TextAlignStartIcon } from 'lucide-react'
 
 type AddNewExpenseProps = {
   isModalOpen: boolean
@@ -11,10 +11,10 @@ export const AddExpense = ({
   setIsModalOpen
 }: AddNewExpenseProps) => {
   return (
-    <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+    <Modal isOpen={isModalOpen}>
       <Modal.Header onClose={() => setIsModalOpen(false)}>
         <div className='bg-negative/10 rounded-2xl p-2'>
-          <PlusCircleIcon size={20} className='text-negative' />
+          <MinusCircleIcon size={20} className='text-negative' />
         </div>
         <div>
           <Text appearance='h2' className='text-base font-bold font-display'>
@@ -26,35 +26,28 @@ export const AddExpense = ({
         </div>
       </Modal.Header>
       <Modal.Body>
-        <TextField
-          label='Descrição'
-          icon={TextAlignStartIcon}
-          placeholder='Ex: Remuneração de agosto'
-        />
-        <div className='grid grid-cols-2 gap-3'>
+        <form className='flex flex-col gap-4'>
           <TextField
             label='Descrição'
             icon={TextAlignStartIcon}
             placeholder='Ex: Remuneração de agosto'
           />
-          <TextField
-            label='Descrição'
-            icon={TextAlignStartIcon}
-            placeholder='Ex: Remuneração de agosto'
-          />
-        </div>
-        <TextField
-          label='Descrição'
-          icon={TextAlignStartIcon}
-          placeholder='Ex: Remuneração de agosto'
-        />
-        <TextField
-          label='Descrição'
-          icon={TextAlignStartIcon}
-          placeholder='Ex: Remuneração de agosto'
-        />
+          <div className='grid grid-cols-2 gap-3'>
+            <DateChecker label='Data da transação' />
+            <CurrencyField label='Valor' type='expense' />
+          </div>
+          <Select label='Categoria' placeholder='Selecione uma categoria'>
+            <SelectItem value='1'>Salário</SelectItem>
+            <SelectItem value='2'>Investimentos</SelectItem>
+            <SelectItem value='3'>Outros</SelectItem>
+          </Select>
+          <Select label='Conta' placeholder='Selecione a conta'>
+            <SelectItem value='1'>Conta corrente</SelectItem>
+            <SelectItem value='2'>Cartão de crédito</SelectItem>
+          </Select>
+          <Button type='submit' variant='danger'>Registrar despesa</Button>
+        </form>
       </Modal.Body>
-      <Modal.Footer primaryButtonLabel='Registrar receita' />
     </Modal>
   )
 }

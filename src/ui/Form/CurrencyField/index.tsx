@@ -6,7 +6,8 @@ const makeStyles = tv({
     'flex items-center gap-2 border border-border py-2 transition-colors',
     'focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2',
     'disabled:opacity-40 disabled:cursor-not-allowed',
-    '[&_input]:outline-none [&_input]:w-full [&_input]:bg-transparent [&_input]:placeholder:text-muted-foreground'
+    '[&_input]:outline-none [&_input]:w-full [&_input]:bg-transparent [&_input]:placeholder:text-muted-foreground',
+    '[&_p]:text-sm [&_p]:font-bold [&_p]:font-display'
   ],
   variants: {
     size: {
@@ -16,6 +17,11 @@ const makeStyles = tv({
     },
     isInvalid: {
       true: ['border-2 border-negative']
+    },
+    type: {
+      income: '[&_p]:text-positive',
+      expense: '[&_p]:text-negative',
+      transfer: '[&_p]:text-primary'
     }
   }
 })
@@ -28,7 +34,7 @@ type CurrencyFieldProps = Omit<
   hint?: string
   size?: 'sm' | 'md' | 'lg'
   errorMessage?: string
-  isIncome?: boolean
+  type?: 'income' | 'expense' | 'transfer'
   isInvalid?: boolean
   value?: string | number
   onChange?: (value: string) => void
@@ -49,7 +55,7 @@ export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(
       hint,
       errorMessage,
       isInvalid,
-      isIncome = true,
+      type = 'transfer',
       size = 'md',
       value,
       onChange,
@@ -66,7 +72,6 @@ export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(
     const message = errorMessage || hint
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      // Extract digits only
       const digitsOnly = e.target.value.replace(/\D/g, '')
 
       if (!digitsOnly) {
@@ -88,12 +93,8 @@ export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(
         <p className='font-display text-foreground text-xs font-semibold mb-1.5'>
           {label}
         </p>
-        <div className={makeStyles({ size, isInvalid: hasError })}>
-          <p
-            className={`text-sm ${isIncome ? 'text-positive' : 'text-negative'} font-bold font-display`}
-          >
-            R$
-          </p>
+        <div className={makeStyles({ type, size, isInvalid: hasError })}>
+          <p>R$</p>
           <input
             type='text'
             inputMode='numeric'

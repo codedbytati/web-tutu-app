@@ -1,4 +1,5 @@
 import {
+  Button,
   CurrencyField,
   DateChecker,
   Modal,
@@ -19,7 +20,7 @@ export const AddIncome = ({
   setIsModalOpen
 }: AddNewExpenseProps) => {
   return (
-    <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+    <Modal isOpen={isModalOpen}>
       <Modal.Header onClose={() => setIsModalOpen(false)}>
         <div className='bg-positive/10 rounded-2xl p-2'>
           <PlusCircleIcon size={20} className='text-positive' />
@@ -34,26 +35,28 @@ export const AddIncome = ({
         </div>
       </Modal.Header>
       <Modal.Body>
-        <TextField
-          label='Descrição'
-          icon={TextAlignStartIcon}
-          placeholder='Ex: Remuneração de agosto'
-        />
-        <div className='grid grid-cols-2 gap-3'>
-          <DateChecker label='Data da transação' />
-          <CurrencyField label='Valor' />
-        </div>
-        <Select label='Categoria' placeholder='Selecione uma categoria'>
-          <SelectItem value='1'>Salário</SelectItem>
-          <SelectItem value='2'>Investimentos</SelectItem>
-          <SelectItem value='3'>Outros</SelectItem>
-        </Select>
-        <Select label='Conta' placeholder='Selecione a conta'>
-          <SelectItem value='1'>Conta corrente</SelectItem>
-          <SelectItem value='2'>Cartão de crédito</SelectItem>
-        </Select>
+        <form className='flex flex-col gap-4'>
+          <TextField
+            label='Descrição'
+            icon={TextAlignStartIcon}
+            placeholder='Ex: Remuneração de agosto'
+          />
+          <div className='grid grid-cols-2 gap-3'>
+            <DateChecker label='Data da transação' />
+            <CurrencyField label='Valor' type='income' />
+          </div>
+          <Select label='Categoria' placeholder='Selecione uma categoria'>
+            <SelectItem value='1'>Salário</SelectItem>
+            <SelectItem value='2'>Investimentos</SelectItem>
+            <SelectItem value='3'>Outros</SelectItem>
+          </Select>
+          <Select label='Conta' placeholder='Selecione a conta'>
+            <SelectItem value='1'>Conta corrente</SelectItem>
+            <SelectItem value='2'>Cartão de crédito</SelectItem>
+          </Select>
+          <Button type='submit' variant='positive'>Registrar receita</Button>
+        </form>
       </Modal.Body>
-      <Modal.Footer primaryButtonLabel='Registrar receita' />
     </Modal>
   )
 }
