@@ -14,9 +14,15 @@ export const AddAccountCard = ({ isOpen, onClose }: AddAccountCardProps) => {
     null
   )
 
+  const returnToMenu = () => setIsModalOpen(null)
+  const closeAllModals = () => {
+    setIsModalOpen(null)
+    onClose()
+  }
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <Modal.Header onClose={onClose}>
+    <Modal isOpen={isOpen}>
+      <Modal.Header onClose={closeAllModals}>
         <div>
           <Text appearance='h2' className='font-bold text-base'>
             O que deseja adicionar?
@@ -32,7 +38,7 @@ export const AddAccountCard = ({ isOpen, onClose }: AddAccountCardProps) => {
       <Modal.Body>
         <button
           onClick={() => setIsModalOpen('credit')}
-          className='flex items-center justify-between border border-border rounded-2xl p-4 cursor-pointer'
+          className='flex items-center justify-between border border-border rounded-2xl p-4 cursor-pointer hover:bg-muted hover:border hover:border-primary group'
         >
           <div className='flex items-center gap-4'>
             <div className='bg-primary/10 rounded-2xl p-2'>
@@ -46,11 +52,11 @@ export const AddAccountCard = ({ isOpen, onClose }: AddAccountCardProps) => {
             </div>
           </div>
           <button>
-            <ChevronRight size={16} className='text-muted-foreground' />
+            <ChevronRight size={16} className='text-muted-foreground group-hover:text-accent-foreground' />
           </button>
         </button>
         <button
-          className='flex items-center justify-between border border-border rounded-2xl p-4 cursor-pointer'
+          className='flex items-center justify-between border border-border rounded-2xl p-4 cursor-pointer hover:bg-muted hover:border hover:border-primary group'
           onClick={() => setIsModalOpen('account')}
         >
           <div className='flex items-center gap-4'>
@@ -65,17 +71,19 @@ export const AddAccountCard = ({ isOpen, onClose }: AddAccountCardProps) => {
             </div>
           </div>
           <button>
-            <ChevronRight size={16} className='text-muted-foreground' />
+            <ChevronRight size={16} className='text-muted-foreground group-hover:text-accent-foreground' />
           </button>
         </button>
       </Modal.Body>
       <NewCreditCard
         isOpen={isModalOpen === 'credit'}
-        onClose={() => setIsModalOpen(null)}
+        onReturn={returnToMenu}
+        onClose={closeAllModals}
       />
       <NewAccount
         isOpen={isModalOpen === 'account'}
-        onClose={() => setIsModalOpen(null)}
+        onReturn={returnToMenu}
+        onClose={closeAllModals}
       />
     </Modal>
   )

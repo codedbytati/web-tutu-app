@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useState } from 'react'
 import { tv } from 'tailwind-variants'
 
 const makeStyles = tv({
@@ -22,7 +22,7 @@ const makeStyles = tv({
 
 type CurrencyFieldProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
-  'size'
+  'size' | 'onChange' | 'value'
 > & {
   label: string
   hint?: string
@@ -30,6 +30,16 @@ type CurrencyFieldProps = Omit<
   errorMessage?: string
   isIncome?: boolean
   isInvalid?: boolean
+  value?: string | number
+  onChange?: (value: string) => void
+}
+
+const formatCentsToCurrency = (cents: number): string => {
+  const valueInReais = cents / 100
+  return valueInReais.toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })
 }
 
 export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(
@@ -41,12 +51,37 @@ export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(
       isInvalid,
       isIncome = true,
       size = 'md',
+      value,
+      onChange,
       ...props
     },
     ref
   ) => {
+    const [displayValue, setDisplayValue] = useState<string>(() => {
+      if (typeof value === 'number') return formatCentsToCurrency(value)
+      return value || ''
+    })
+
     const hasError = isInvalid || Boolean(errorMessage)
     const message = errorMessage || hint
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      // Extract digits only
+      const digitsOnly = e.target.value.replace(/\D/g, '')
+
+      if (!digitsOnly) {
+        setDisplayValue('')
+        onChange?.('')
+        return
+      }
+
+      // Convert digits to numeric value in cents
+      const cents = parseInt(digitsOnly, 10)
+      const formattedValue = formatCentsToCurrency(cents)
+
+      setDisplayValue(formattedValue)
+      onChange?.(formattedValue)
+    }
 
     return (
       <div>
@@ -59,7 +94,15 @@ export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(
           >
             R$
           </p>
-          <input ref={ref} placeholder='0,00' {...props} />
+          <input
+            type='text'
+            inputMode='numeric'
+            ref={ref}
+            placeholder='0,00'
+            value={displayValue}
+            onChange={handleChange}
+            {...props}
+          />
         </div>
         {message && (
           <p

@@ -1,6 +1,8 @@
-import { X } from 'lucide-react'
-import { Text } from '@tutu-ui'
+import { ArchiveIcon, ArchiveRestoreIcon } from 'lucide-react'
+import { Badge, ProgressBar, Text } from '@tutu-ui'
 import type { CardModel } from '../../../../domain'
+import { getBankPattern } from '../../../utils/getBankPatterns'
+import { formatCurrency } from '../../../utils'
 
 type CardProps = {
   card: CardModel
@@ -9,41 +11,48 @@ type CardProps = {
 
 export const CreditCard = ({ card, onBlock }: CardProps) => {
   const isBlocked = card.isDeactivate === true
+  const bankPattern = getBankPattern(card.bank)
+  const rawPercentage = card.limit > 0 ? (card.spent / card.limit) * 100 : 0;
+  const usedPercentage = Math.min(Math.max(rawPercentage, 0), 100);
 
   return (
     <div className={isBlocked ? 'opacity-60 grayscale' : ''}>
-      <div className='flex justify-between items-center p-6 bg-primary rounded-tl-3xl rounded-tr-3xl'>
+      <div className={`flex justify-between items-center p-6 ${bankPattern.background} rounded-tl-3xl rounded-tr-3xl`}>
         <div>
           <div className='flex items-center gap-2'>
             <Text className='text-white text-lg font-bold'>{card.nickname}</Text>
             {isBlocked && (
               <span className='bg-white/20 rounded-lg px-2 py-0.5 text-[10px] font-semibold text-white'>
-                Bloqueado
+                Desativado
               </span>
             )}
           </div>
           <Text appearance='caption' className='text-white'>
-            {card.bank}
+            {bankPattern.name}
           </Text>
         </div>
         <button
           type='button'
           aria-label={isBlocked ? 'Desbloquear cartão' : 'Bloquear cartão'}
           onClick={() => onBlock(card.id)}
-          className='bg-white/15 rounded-lg p-1 cursor-pointer'
+          className='bg-white/15 rounded-lg p-2 cursor-pointer'
         >
-          <X size={12} className='text-white/70' />
+          {isBlocked ? (
+            <ArchiveRestoreIcon size={12} className='text-white/70' />
+          ) : (
+            <ArchiveIcon size={12} className='text-white/70' />
+          )}
         </button>
       </div>
       <div className='bg-white px-5 py-4 rounded-bl-3xl rounded-br-3xl shadow-lg'>
-        <div className='flex justify-between'>
-          <Text appearance='caption' className='font-display font-semibold'>
-            Uso do limite
-          </Text>
-          <div className='flex items-center gap-1 bg-positive/15 py-0.5 px-2 rounded-lg'>
-            <div className='size-1.5 bg-positive rounded-full' />
-            <p className='text-positive text-[10px] font-semibold'>+8%</p>
+        <div className='flex flex-col gap-3'>
+          <div className='flex justify-between'>
+            <Text appearance='caption' className='font-display font-semibold'>
+              Uso do limite
+            </Text>
+            <Badge label={`${usedPercentage.toFixed(0)}%`} color='green' />
           </div>
+          <ProgressBar percentage={usedPercentage} />
         </div>
         <div className='flex justify-between mt-3'>
           <div>
@@ -54,7 +63,7 @@ export const CreditCard = ({ card, onBlock }: CardProps) => {
               Limite
             </Text>
             <Text appearance='body2' className='text-xs font-display font-bold'>
-              R${card.limit}
+              R${formatCurrency(card.limit)}
             </Text>
           </div>
           <div>
@@ -65,7 +74,7 @@ export const CreditCard = ({ card, onBlock }: CardProps) => {
               Usado
             </Text>
             <Text appearance='body2' className='text-xs font-display font-bold'>
-              R${card.spent}
+              R${formatCurrency(card.spent)}
             </Text>
           </div>
           <div>
@@ -76,7 +85,7 @@ export const CreditCard = ({ card, onBlock }: CardProps) => {
               Disponível
             </Text>
             <Text appearance='body2' className='text-xs font-display font-bold'>
-              R${card.available}
+              R${formatCurrency(card.available)}
             </Text>
           </div>
         </div>

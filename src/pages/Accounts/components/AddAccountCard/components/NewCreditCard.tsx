@@ -1,24 +1,30 @@
+import { useState, type SubmitEvent } from 'react'
+import { ChevronLeftIcon, TagIcon } from 'lucide-react'
+import { Button, CurrencyField, Modal, Select, SelectItem, Text, TextField } from '@tutu-ui'
 import { useCreateCreditCard } from '@tutu-services/account'
-import { Button, CurrencyField, Modal, Text, TextField } from '@tutu-ui'
-import { ChevronLeftIcon, LandmarkIcon, TagIcon } from 'lucide-react'
-import { useState } from 'react'
+import { bankOptions, type Bank } from '../../../../utils'
 
 type NewCreditCardProps = {
   isOpen: boolean
   onClose: () => void
+  onReturn: () => void
 }
 
-export const NewCreditCard = ({ isOpen, onClose }: NewCreditCardProps) => {
+export const NewCreditCard = ({
+  isOpen,
+  onClose,
+  onReturn
+}: NewCreditCardProps) => {
   const createCard = useCreateCreditCard()
-  const [bank, setBank] = useState('')
+  const [bank, setBank] = useState<Bank | ''>('')
   const [nickname, setNickname] = useState('')
   const [limit, setLimit] = useState('')
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
     const parsedLimit = Number(limit.replace(',', '.'))
     if (
-      !bank.trim() ||
+      !bank ||
       !nickname.trim() ||
       !Number.isFinite(parsedLimit) ||
       parsedLimit < 0
@@ -39,9 +45,16 @@ export const NewCreditCard = ({ isOpen, onClose }: NewCreditCardProps) => {
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen}>
       <Modal.Header onClose={onClose}>
-        <ChevronLeftIcon />
+        <button
+          type='button'
+          className='cursor-pointer p-1 rounded-lg hover:bg-muted'
+          onClick={onReturn}
+          aria-label='Voltar para opções de adição'
+        >
+          <ChevronLeftIcon size={16} className='text-muted-foreground' />
+        </button>
         <div>
           <Text appearance='h2' className='font-bold text-base'>
             Novo cartão de crédito
@@ -55,15 +68,20 @@ export const NewCreditCard = ({ isOpen, onClose }: NewCreditCardProps) => {
         </div>
       </Modal.Header>
       <Modal.Body>
-        <form onSubmit={handleSubmit}>
-          <TextField
+        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+          <Select
             label='Banco'
-            icon={LandmarkIcon}
-            placeholder='Ex: Banco do Brasil, Santander...'
             value={bank}
-            onChange={(event) => setBank(event.target.value)}
+            onChange={(event) => setBank(event.target.value as Bank | '')}
             required
-          />
+          >
+            <SelectItem value=''>Selecione um banco</SelectItem>
+            {bankOptions.map(([value, pattern]) => (
+              <SelectItem key={value} value={value}>
+                {pattern.name}
+              </SelectItem>
+            ))}
+          </Select>
           <TextField
             label='Apelido'
             icon={TagIcon}
@@ -75,16 +93,16 @@ export const NewCreditCard = ({ isOpen, onClose }: NewCreditCardProps) => {
           <CurrencyField
             label='Limite total'
             value={limit}
-            onChange={(event) => setLimit(event.target.value)}
+            onChange={(value) => setLimit(value)}
             inputMode='decimal'
             required
           />
           {createCard.isError && (
             <Text appearance='caption' className='text-negative'>
-              Não foi possível adicionar o cartão.
+              Não foi possível adicionar o cartão
             </Text>
           )}
-          <Button type='submit' disabled={createCard.isPending}>
+          <Button size='md' type='submit' disabled={createCard.isPending}>
             Adicionar cartão
           </Button>
         </form>

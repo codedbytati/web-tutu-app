@@ -1,28 +1,30 @@
-import { useCreateAccount } from '@tutu-services/account'
+import { useState, type SubmitEvent } from 'react'
+import { ChevronLeftIcon, TagIcon } from 'lucide-react'
 import { Button, CurrencyField, Modal, Select, Text, TextField } from '@tutu-ui'
+import { useCreateAccount } from '@tutu-services/account'
 import { SelectItem } from '@tutu-ui/Form/Select'
-import { ChevronLeftIcon, LandmarkIcon, TagIcon } from 'lucide-react'
-import { useState } from 'react'
+import { bankOptions, type Bank } from '../../../../utils'
 
 type NewAccountProps = {
   isOpen: boolean
   onClose: () => void
+  onReturn: () => void
 }
 
 type AccountType = 'CURRENT' | 'SAVINGS' | 'INVESTMENT'
 
-export const NewAccount = ({ isOpen, onClose }: NewAccountProps) => {
+export const NewAccount = ({ isOpen, onClose, onReturn }: NewAccountProps) => {
   const createAccount = useCreateAccount()
-  const [bank, setBank] = useState('')
+  const [bank, setBank] = useState<Bank | ''>('')
   const [nickname, setNickname] = useState('')
   const [type, setType] = useState<AccountType | ''>('')
   const [balance, setBalance] = useState('')
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
     const parsedBalance = Number(balance.replace(',', '.'))
     if (
-      !bank.trim() ||
+      !bank ||
       !nickname.trim() ||
       !type ||
       !Number.isFinite(parsedBalance)
@@ -44,12 +46,14 @@ export const NewAccount = ({ isOpen, onClose }: NewAccountProps) => {
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen}>
       <Modal.Header onClose={onClose}>
-        <ChevronLeftIcon />
+        <button className='cursor-pointer p-1 rounded-lg hover:bg-muted' onClick={onReturn}>
+          <ChevronLeftIcon size={16} className='text-muted-foreground' />
+        </button>
         <div>
           <Text appearance='h2' className='font-bold text-base'>
-            Nova conta bancária
+            Nova conta
           </Text>
           <Text
             appearance='caption'
@@ -60,15 +64,20 @@ export const NewAccount = ({ isOpen, onClose }: NewAccountProps) => {
         </div>
       </Modal.Header>
       <Modal.Body>
-        <form onSubmit={handleSubmit}>
-          <TextField
-            label='Banco'
-            icon={LandmarkIcon}
-            placeholder='Ex: Banco do Brasil, Santander...'
+        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+          <Select
+            label='Banco ou instituição'
             value={bank}
-            onChange={(event) => setBank(event.target.value)}
+            onChange={(event) => setBank(event.target.value as Bank)}
             required
-          />
+          >
+            <SelectItem value=''>Selecione um banco</SelectItem>
+            {bankOptions.map(([value, pattern]) => (
+              <SelectItem key={value} value={value}>
+                {pattern.name}
+              </SelectItem>
+            ))}
+          </Select>
           <TextField
             label='Apelido'
             icon={TagIcon}
@@ -81,7 +90,7 @@ export const NewAccount = ({ isOpen, onClose }: NewAccountProps) => {
             label='Tipo da conta'
             value={type}
             onChange={(event) =>
-              setType(event.target.value as AccountType | '')
+              setType(event.target.value as AccountType)
             }
             required
           >
@@ -93,17 +102,16 @@ export const NewAccount = ({ isOpen, onClose }: NewAccountProps) => {
           <CurrencyField
             label='Saldo inicial'
             value={balance}
-            onChange={(event) => setBalance(event.target.value)}
+            onChange={(value) => setBalance(value)}
             inputMode='decimal'
             required
           />
-
           {createAccount.isError && (
             <Text appearance='caption' className='text-negative'>
-              Não foi possível adicionar a conta.
+              Não foi possível adicionar a conta
             </Text>
           )}
-          <Button type='submit' disabled={createAccount.isPending}>
+          <Button variant='positive' size='md' type='submit' disabled={createAccount.isPending}>
             Adicionar conta
           </Button>
         </form>

@@ -5,7 +5,6 @@ import { Button } from '@tutu-ui/Button'
 
 interface ModalProps {
   isOpen: boolean
-  onClose: () => void
   children: ReactNode
 }
 
@@ -21,7 +20,7 @@ interface ModalFooterProps {
   onSecondaryButtonClick?: () => void
 }
 
-export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
+export const Modal = ({ isOpen, children }: ModalProps) => {
   const dialogRef = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
@@ -35,23 +34,11 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
     }
   }, [isOpen])
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isOpen) {
-        onClose()
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen, onClose])
-
   if (!isOpen) return null
 
   return createPortal(
     <div
       className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm'
-      onClick={onClose}
     >
       <dialog
         ref={dialogRef}

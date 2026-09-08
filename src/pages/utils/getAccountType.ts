@@ -1,4 +1,4 @@
-export type AccountType = 'CURRENT' | 'SAVINGS' | 'INVESTIMENT'
+export type AccountType = 'CURRENT' | 'SAVINGS' | 'INVESTMENT'
 
 interface AccountTypeConfig {
   label: string
@@ -14,7 +14,7 @@ export const ACCOUNT_TYPES: Record<AccountType, AccountTypeConfig> = {
     label: 'Poupança',
     color: 'green'
   },
-  INVESTIMENT: {
+  INVESTMENT: {
     label: 'Investimentos',
     color: 'yellow'
   }

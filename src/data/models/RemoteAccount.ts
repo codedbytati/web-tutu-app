@@ -11,7 +11,7 @@ export type RemoteAccount = {
   bank: string
   nickname: string
   balance: number
-  type: 'CURRENT' | 'SAVINGS' | 'INVESTIMENT'
+  type: 'CURRENT' | 'SAVINGS' | 'INVESTMENT'
   isDeactivate: boolean
 }
 

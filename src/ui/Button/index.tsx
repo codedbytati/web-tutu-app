@@ -3,7 +3,7 @@ import { tv } from 'tailwind-variants'
 
 const makeStyles = tv({
   base: [
-    'font-display font-semibold cursor-pointer py-2',
+    'font-display font-semibold cursor-pointer py-3',
     'transition-all duration-200 ease-in-out hover:opacity-90',
     'disabled:cursor-not-allowed disabled:opacity-40',
     'focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:outline-none'
