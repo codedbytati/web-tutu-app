@@ -237,6 +237,8 @@ class AccountController {
           bank: bank.trim(),
           nickname: nickname.trim(),
           limit: parsedLimit,
+          spent: 0,
+          available: parsedLimit,
           name: nickname.trim(),
           type: 'Credit',
           accountId: accounts[0].id

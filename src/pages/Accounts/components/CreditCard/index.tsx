@@ -1,6 +1,6 @@
 import { ArchiveIcon, ArchiveRestoreIcon } from 'lucide-react'
 import { Badge, ProgressBar, Text } from '@tutu-ui'
-import type { CardModel } from '../../../../domain'
+import type { CardModel } from '@tutu-domain'
 import { getBankPattern } from '../../../utils/getBankPatterns'
 import { formatCurrency } from '../../../utils'
 
@@ -12,8 +12,9 @@ type CardProps = {
 export const CreditCard = ({ card, onBlock }: CardProps) => {
   const isBlocked = card.isDeactivate === true
   const bankPattern = getBankPattern(card.bank)
-  const rawPercentage = card.limit > 0 ? (card.spent / card.limit) * 100 : 0;
-  const usedPercentage = Math.min(Math.max(rawPercentage, 0), 100);
+  const available = Math.max(card.limit - card.spent, 0)
+  const rawPercentage = card.limit > 0 ? (card.spent / card.limit) * 100 : 0
+  const usedPercentage = Math.min(Math.max(rawPercentage, 0), 100)
 
   return (
     <div className={isBlocked ? 'opacity-60 grayscale' : ''}>
@@ -85,7 +86,7 @@ export const CreditCard = ({ card, onBlock }: CardProps) => {
               Disponível
             </Text>
             <Text appearance='body2' className='text-xs font-display font-bold'>
-              R${formatCurrency(card.available)}
+              R${formatCurrency(available)}
             </Text>
           </div>
         </div>

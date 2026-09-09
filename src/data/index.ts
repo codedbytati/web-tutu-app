@@ -1,2 +1,4 @@
 export type { RemoteAccounts } from './models/RemoteAccount'
+export type { RemoteAccount } from './models/RemoteAccount'
+export type { RemoteCard } from './models/RemoteAccount'
 export type { RemoteTransaction } from './models/RemoteTransactions'

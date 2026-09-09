@@ -1,5 +1,5 @@
 import { useGetTransactions } from '@tutu-services/transaction'
-import type { RemoteTransaction } from '../../../../../data'
+import type { RemoteTransaction } from '@tutu-data'
 
 export const useGetNewestTransactions = () => {
   const { data, isLoading, isError } = useGetTransactions()

@@ -21,7 +21,10 @@ class Card {
     this.nickname = nickname
     this.limit = limit
     this.spent = spent
-    this.available = available
+    this.available = Math.max(
+      0,
+      Number(limit ?? 0) - Number(spent ?? 0)
+    )
     this.accountId = accountId
     this.type = type
     this.isDeactivate = isDeactivate

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@tutu-services/api'
 import endpoints from './endpoints'
-import type { RemoteAccounts } from '../../data'
+import type { RemoteAccounts } from '@tutu-data'
 
 export const useGetAccount = () => {
   return useQuery({

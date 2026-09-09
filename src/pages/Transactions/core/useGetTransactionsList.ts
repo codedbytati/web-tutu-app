@@ -1,6 +1,6 @@
 import { useMemo, useState, type ChangeEvent } from 'react'
 import { useGetTransactions } from '@tutu-services/transaction'
-import type { RemoteTransaction } from '../../../data'
+import type { RemoteTransaction } from '@tutu-data'
 
 export const useGetTransactionsList = () => {
   const { data: transactions = [], isLoading, isError } = useGetTransactions()

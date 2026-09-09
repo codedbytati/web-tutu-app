@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { api } from '../api'
-import type { RemoteTransaction } from '../../data'
+import type { RemoteTransaction } from '@tutu-data'
 import endpoints from './endpoints'
 
 type TransactionsResponse = {

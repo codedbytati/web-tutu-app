@@ -23,7 +23,9 @@ const CardSchema = new Schema(
     },
     available: {
       type: Number,
-      default: 0,
+      default: function () {
+        return Math.max(0, this.limit - (this.spent || 0))
+      },
       min: 0
     },
     type: {

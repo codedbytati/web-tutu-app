@@ -1,7 +1,7 @@
 import { Badge, Text } from '@tutu-ui'
 import { ArchiveIcon, ArchiveRestoreIcon, LandmarkIcon } from 'lucide-react'
 import { tv } from 'tailwind-variants'
-import type { AccountModel } from '../../../../domain'
+import type { AccountModel } from '@tutu-domain'
 import {
   ACCOUNT_TYPES,
   type Bank,

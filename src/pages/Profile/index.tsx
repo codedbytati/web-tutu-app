@@ -1,14 +1,46 @@
 import { ColoredCard } from '@tutu-components'
 import { Avatar, Button, Text } from '@tutu-ui'
-import {
-  ChevronRight,
-  CircleQuestionMarkIcon,
-  LockIcon,
-  UserIcon
-} from 'lucide-react'
+// import {
+//   ChevronRight,
+//   CircleQuestionMarkIcon,
+//   LockIcon,
+//   UserIcon,
+//   type LucideIcon
+// } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { useAuth } from '../../contexts/authContext'
 import { Page } from '../../layouts/Page'
+
+// type ProfileButtonProps = {
+//   title: string
+//   description: string
+//   Icon: LucideIcon
+//   onClick: () => void
+// }
+
+// const ProfileButton = ({ title, description, Icon, onClick }: ProfileButtonProps) => {
+//   return (
+//     <button
+//       className='flex items-center justify-between py-3.5 px-4 rounded-2xl bg-card border border-border'
+//       onClick={onClick}
+//     >
+//       <div className='flex gap-3'>
+//         <div className='bg-muted rounded-xl p-2'>
+//           <Icon size={20} />
+//         </div>
+//         <div>
+//           <Text className='font-semibold text-start font-display'>
+//             {title}
+//           </Text>
+//           <Text appearance='caption' className='text-muted-foreground '>
+//             {description}
+//           </Text>
+//         </div>
+//       </div>
+//       <ChevronRight size={16} className='text-muted-foreground' />
+//     </button>
+//   )
+// }
 
 export const Profile = () => {
   const { loggedUser, logout } = useAuth()
@@ -20,11 +52,13 @@ export const Profile = () => {
   }
 
   return (
-    <div className='w-1/2'>
-      <Text appearance='h3' as='h1' className='font-bold mb-4 mx-5'>
-        Perfil
-      </Text>
-      <Page>
+    <Page>
+      <Page.Header>
+        <Text appearance='h3' as='h1' className='font-bold'>
+          Perfil
+        </Text>
+      </Page.Header>
+      <Page.Body>
         <ColoredCard>
           <div className='flex items-center gap-4'>
             <Avatar size='xl' name={loggedUser?.displayName ?? ''} />
@@ -39,52 +73,21 @@ export const Profile = () => {
           </div>
         </ColoredCard>
         <div className='flex flex-col gap-4'>
-          <div className='flex items-center justify-between py-3.5 px-4 rounded-2xl bg-card border border-border'>
-            <div className='flex items-center gap-3'>
-              <div className='bg-muted rounded-xl p-2'>
-                <UserIcon size={20} />
-              </div>
-              <div>
-                <Text className='font-semibold font-display'>
-                  Dados pessoais
-                </Text>
-                <Text appearance='caption' className='text-muted-foreground '>
-                  Edite as suas informações pessoais
-                </Text>
-              </div>
-            </div>
-            <ChevronRight size={16} className='text-muted-foreground' />
-          </div>
-          <div className='flex items-center justify-between py-3.5 px-4 rounded-2xl bg-card border border-border'>
-            <div className='flex items-center gap-3'>
-              <div className='bg-muted rounded-xl p-2'>
-                <LockIcon size={20} />
-              </div>
-              <div>
-                <Text className='font-semibold font-display'>Segurança</Text>
-                <Text appearance='caption' className='text-muted-foreground '>
-                  Gerencie a sua senha
-                </Text>
-              </div>
-            </div>
-            <ChevronRight size={16} className='text-muted-foreground' />
-          </div>
-          <div className='flex items-center justify-between py-3.5 px-4 rounded-2xl bg-card border border-border'>
-            <div className='flex items-center gap-3'>
-              <div className='bg-muted rounded-xl p-2'>
-                <CircleQuestionMarkIcon size={20} />
-              </div>
-              <div>
-                <Text className='font-semibold font-display'>
-                  Ajuda & Suporte
-                </Text>
-                <Text appearance='caption' className='text-muted-foreground '>
-                  Central de ajuda, contato
-                </Text>
-              </div>
-            </div>
-            <ChevronRight size={16} className='text-muted-foreground' />
-          </div>
+          {/* <ProfileButton
+            title='Dados pessoais'
+            description='Edite as suas informações pessoais'
+            Icon={UserIcon}
+          />
+          <ProfileButton
+            title='Segurança'
+            description='Gerencie a sua senha'
+            Icon={LockIcon}
+          />
+          <ProfileButton
+            title='Ajuda & Suporte'
+            description='Central de ajuda, contato'
+            Icon={CircleQuestionMarkIcon}
+          /> */}
         </div>
         <Button
           size='md'
@@ -93,7 +96,7 @@ export const Profile = () => {
         >
           Sair da conta
         </Button>
-      </Page>
-    </div>
+      </Page.Body>
+    </Page>
   )
 }

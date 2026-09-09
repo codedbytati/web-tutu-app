@@ -17,7 +17,11 @@
       "@tutu-services": ["./src/services/index.ts"],
       "@tutu-services/*": ["./src/services/*"],
       "@tutu-contexts": ["./src/contexts/index.ts"],
-      "@tutu-contexts/*": ["./src/contexts/*"]
+      "@tutu-contexts/*": ["./src/contexts/*"],
+      "@tutu-data": ["./src/data/index.ts"],
+      "@tutu-data/*": ["./src/data/*"],
+      "@tutu-domain": ["./src/domain/index.ts"],
+      "@tutu-domain/*": ["./src/domain/*"]
     },
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,

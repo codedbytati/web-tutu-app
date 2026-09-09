@@ -22,7 +22,7 @@ export const NewCreditCard = ({
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const parsedLimit = Number(limit.replace(',', '.'))
+    const parsedLimit = Number(limit.replace(/\./g, '').replace(',', '.'))
     if (
       !bank ||
       !nickname.trim() ||

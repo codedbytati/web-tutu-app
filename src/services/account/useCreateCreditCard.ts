@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@tutu-services/api'
-import type { RemoteCard } from '../../data/models/RemoteAccount'
+import type { RemoteCard } from '@tutu-data'
 import endpoints from './endpoints'
 
 export const useCreateCreditCard = () => {

@@ -1,5 +1,5 @@
 import { useGetTransactions } from '@tutu-services/transaction'
-import type { RemoteTransaction } from '../../../../../data'
+import type { RemoteTransaction } from '@tutu-data'
 import { formatCurrency } from '../../../../utils'
 
 export const useGetAnalysis = () => {

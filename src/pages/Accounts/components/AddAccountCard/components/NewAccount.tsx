@@ -22,7 +22,7 @@ export const NewAccount = ({ isOpen, onClose, onReturn }: NewAccountProps) => {
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const parsedBalance = Number(balance.replace(',', '.'))
+    const parsedBalance = Number(balance.replace(/\./g, '').replace(',', '.'))
     if (
       !bank ||
       !nickname.trim() ||
