@@ -4,12 +4,14 @@ import { Page } from '../../layouts/Page'
 
 export const Analysis = () => {
   return (
-    <div className='w-1/2'>
-      <Text appearance='h3' as='h1' className='font-bold mb-4 mx-5'>
-        Análises
-      </Text>
-      <Page>
-        <div className='grid grid-cols-3 gap-3'>
+    <Page>
+      <Page.Header>
+        <Text appearance='h3' as='h1' className='font-bold'>
+          Análises
+        </Text>
+      </Page.Header>
+      <Page.Body>
+        {/* <div className='grid grid-cols-3 gap-3'>
           <div className='flex flex-col gap-1.5 rounded-2xl bg-white p-3.5 border border-border'>
             <Text appearance='overline' className='text-muted-foreground'>
               Saldo
@@ -40,9 +42,9 @@ export const Analysis = () => {
               <p className='text-positive text-[10px] font-semibold'>+8%</p>
             </div>
           </div>
-        </div>
+        </div> */}
         <DonutChart />
-      </Page>
-    </div>
+      </Page.Body>
+    </Page>
   )
 }
