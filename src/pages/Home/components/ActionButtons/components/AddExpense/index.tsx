@@ -72,12 +72,13 @@ export const AddExpense = ({
             render={({ field }) => (
               <Select label='Categoria' value={field.value} onChange={field.onChange} required>
                 <SelectItem value=''>Selecione uma categoria</SelectItem>
-                <SelectItem value='1'>Alimentação</SelectItem>
-                <SelectItem value='2'>Transporte</SelectItem>
-                <SelectItem value='3'>Educação</SelectItem>
-                <SelectItem value='4'>Saúde</SelectItem>
-                <SelectItem value='5'>Lazer</SelectItem>
-                <SelectItem value='6'>Outros</SelectItem>
+                <SelectItem value='FOOD'>Alimentação</SelectItem>
+                <SelectItem value='HOUSE'>Casa</SelectItem>
+                <SelectItem value='TRANSPORT'>Transporte</SelectItem>
+                <SelectItem value='EDUCATION'>Educação</SelectItem>
+                <SelectItem value='HEALTH'>Saúde</SelectItem>
+                <SelectItem value='LEISURE'>Lazer</SelectItem>
+                <SelectItem value='OTHER'>Outros</SelectItem>
               </Select>
             )}
           />

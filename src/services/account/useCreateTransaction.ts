@@ -25,7 +25,9 @@ export const useCreateTransaction = () => {
       )
       return data.result
     },
-    onSuccess: () =>
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['get-transactions'] })
+      queryClient.invalidateQueries({ queryKey: ['get-accounts'] })
+    }
   })
 }

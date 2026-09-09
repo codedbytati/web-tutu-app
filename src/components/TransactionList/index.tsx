@@ -3,10 +3,9 @@ import type { LucideIcon } from 'lucide-react'
 type TransactionItemProps = {
   icon: LucideIcon
   description: string
-  type: string
+  type: 'CREDIT' | 'DEBIT' | 'TRANSFER'
   date: string
   amount: string
-  isPositive?: boolean
 }
 
 export const TransactionList = ({
@@ -15,7 +14,7 @@ export const TransactionList = ({
   children: React.ReactNode
 }) => {
   return (
-    <div className='bg-card rounded-2xl p-1 border border-border mt-1'>
+    <div className='bg-card rounded-2xl p-1 border border-border mt-1 shadow-md'>
       {children}
     </div>
   )
@@ -27,13 +26,14 @@ TransactionList.Item = function TransactionItem({
   type,
   date,
   amount,
-  isPositive = false
 }: TransactionItemProps) {
   return (
     <div className='flex items-center justify-between p-3 cursor-pointer border-b border-b-border last:border-b-0 hover:bg-background hover:rounded-2xl'>
       <div className='flex items-center gap-3'>
         <div
-          className={`${isPositive ? 'bg-positive/15' : 'bg-negative/15'} rounded-2xl p-2`}
+          className={`${type === 'CREDIT' ? 'bg-positive/15'
+            : type === 'DEBIT' ? 'bg-negative/15' : 'bg-primary/15'}
+          rounded-2xl p-2`}
         >
           <Icon size={20} className='text-foreground' />
         </div>
@@ -42,14 +42,22 @@ TransactionList.Item = function TransactionItem({
             {description}
           </p>
           <p className='text-xs text-muted-foreground'>
-            {type} · {date}
+            {type === 'CREDIT'
+              ? 'Receita'
+              : type === 'TRANSFER'
+                ? 'Transferência'
+                : 'Despesa'
+            } · {date}
           </p>
         </div>
       </div>
       <p
-        className={`font-display font-bold text-sm ${isPositive ? 'text-positive' : 'text-negative'}`}
+        className={`font-display font-bold text-sm
+        ${type === 'CREDIT' ? 'text-positive'
+            : type === 'DEBIT' ?
+              'text-negative' : 'text-primary'}`}
       >
-        {isPositive ? '+' : '-'} R$ {amount}
+        R${amount}
       </p>
     </div>
   )

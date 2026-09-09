@@ -142,7 +142,7 @@ describe('Financial manager API', () => {
     const payload = {
       accountId,
       value: 200,
-      type: 'Debit',
+      type: 'DEBIT',
       from: 'Loja Exemplo',
       to: 'Carteira',
       anexo: 'Recibo de compra',
@@ -158,7 +158,7 @@ describe('Financial manager API', () => {
     expect(response.body).toHaveProperty('result.id')
     expect(response.body.result).toMatchObject({
       accountId,
-      type: 'Debit',
+       type: 'DEBIT',
       anexo: payload.anexo,
       urlAnexo: payload.urlAnexo
     })
@@ -170,7 +170,7 @@ describe('Financial manager API', () => {
   test('updates an existing transaction', async () => {
     const payload = {
       value: 150,
-      type: 'Credit',
+      type: 'CREDIT',
       urlAnexo: 'https://example.com/anexos/recibo-atualizado.pdf'
     }
 
@@ -183,7 +183,7 @@ describe('Financial manager API', () => {
     expect(response.body).toHaveProperty('result.id', transactionId)
     expect(response.body.result.value).toBe(150)
     expect(response.body.result).toMatchObject({
-      type: 'Credit',
+      type: 'CREDIT',
       urlAnexo: payload.urlAnexo
     })
   })

@@ -74,6 +74,11 @@ router.post(
   accountController.createTransaction.bind(accountController)
 )
 
+router.get(
+  '/transaction',
+  accountController.getTransactions.bind(accountController)
+)
+
 /**
  * @swagger
  * /account/transaction/{id}:

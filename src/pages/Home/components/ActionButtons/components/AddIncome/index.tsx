@@ -64,9 +64,10 @@ export const AddIncome = ({
             render={({ field }) => (
               <Select label='Categoria' value={field.value} onChange={field.onChange} required>
                 <SelectItem value=''>Selecione uma categoria</SelectItem>
-                <SelectItem value='1'>Salário</SelectItem>
-                <SelectItem value='2'>Investimentos</SelectItem>
-                <SelectItem value='3'>Outros</SelectItem>
+                <SelectItem value='SALARY'>Salário</SelectItem>
+                <SelectItem value='INVESTIMENT'>Investimentos</SelectItem>
+                <SelectItem value='SAVINGS'>Poupança</SelectItem>
+                <SelectItem value='OTHER'>Outros</SelectItem>
               </Select>
             )}
           />

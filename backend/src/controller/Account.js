@@ -68,7 +68,7 @@ class AccountController {
       sourceId,
       destinationId,
       value,
-      type,
+      type: requestedType,
       description,
       from,
       to,
@@ -89,12 +89,13 @@ class AccountController {
       ? valueText.replace(/\./g, '').replace(',', '.')
       : valueText
     const parsedValue = Number(normalizedValue)
+    const type = String(requestedType).toUpperCase()
 
     if (
       !source ||
       !Number.isFinite(parsedValue) ||
       parsedValue <= 0 ||
-      !['Debit', 'Credit', 'Transfer'].includes(type)
+      !['DEBIT', 'CREDIT', 'TRANSFER'].includes(type)
     ) {
       return res.status(400).json({ message: 'Dados da transação inválidos' })
     }
@@ -123,10 +124,10 @@ class AccountController {
         if (!ownerAccounts?.[0]) throw new Error('Cartão não pertence ao usuário')
       }
 
-      if (type === 'Credit' && sourceAccount) {
+      if (type === 'CREDIT' && sourceAccount) {
         destinationAccount = sourceAccount
       } else if (
-        (type === 'Credit' || type === 'Transfer') &&
+        (type === 'CREDIT' || type === 'TRANSFER') &&
         destinationKind === 'account'
       ) {
         const destinations = await getAccount({
@@ -155,13 +156,13 @@ class AccountController {
     })
 
     try {
-      if (type === 'Debit' && sourceCard) {
+      if (type === 'DEBIT' && sourceCard) {
         await cardRepository.updateSpent(sourceCard._id, parsedValue)
-      } else if (type === 'Debit' && sourceAccount) {
+      } else if (type === 'DEBIT' && sourceAccount) {
         await accountRepository.updateBalance(sourceAccount.id, -parsedValue)
-      } else if (type === 'Credit' && destinationAccount) {
+      } else if (type === 'CREDIT' && destinationAccount) {
         await accountRepository.updateBalance(destinationAccount.id, parsedValue)
-      } else if (type === 'Transfer' && sourceAccount && destinationAccount) {
+      } else if (type === 'TRANSFER' && sourceAccount && destinationAccount) {
         await accountRepository.updateBalance(sourceAccount.id, -parsedValue)
         await accountRepository.updateBalance(destinationAccount.id, parsedValue)
       } else {
@@ -181,6 +182,31 @@ class AccountController {
       })
     } catch (error) {
       res.status(500).json({ message: 'Erro ao criar transação' })
+    }
+  }
+
+  async getTransactions(req, res) {
+    const { accountRepository, getAccount, getTransaction, transactionRepository } = this.di
+
+    try {
+      const accounts = await getAccount({
+        repository: accountRepository,
+        filter: { userId: req.user.id }
+      })
+      const accountIds = accounts.map((account) => account.id)
+      const transactions = accountIds.length
+        ? await getTransaction({
+            filter: { accountId: { $in: accountIds } },
+            repository: transactionRepository
+          })
+        : []
+
+      res.status(200).json({
+        message: 'Transações carregadas com sucesso',
+        result: { transactions }
+      })
+    } catch (error) {
+      res.status(500).json({ message: 'Erro ao carregar transações' })
     }
   }
 
@@ -294,14 +320,16 @@ class AccountController {
   async updateTransaction(req, res) {
     const { updateTransaction, transactionRepository } = this.di
     const { id } = req.params
-    const { value, type, from, to, anexo } = req.body
+    const { value, type, description, from, to, category, anexo } = req.body
     const urlAnexo = req.body.urlAnexo ?? req.body.urlanexo
 
     const updates = {
       value,
-      type,
+      type: type ? String(type).toUpperCase() : type,
+      description,
       from,
       to,
+      category,
       anexo,
       urlAnexo
     }

@@ -4,7 +4,7 @@ import { LogIn } from './pages/LogIn'
 import { Register } from './pages/Register'
 import { Home } from './pages/Home'
 import { PageNotFound } from './pages/PageNotFound'
-// import { Transactions } from './pages/Transactions'
+import { Transactions } from './pages/Transactions'
 import { Profile } from './pages/Profile'
 import { ProtectedRoute } from './layouts/ProtectedRoute'
 import { Analysis } from './pages/Analysis'
@@ -33,10 +33,10 @@ export const router = createBrowserRouter([
             index: true,
             element: <Home />
           },
-          // {
-          //   path: '/transacoes',
-          //   element: <Transactions />
-          // },
+          {
+            path: '/transacoes',
+            element: <Transactions />
+          },
           {
             path: '/analises',
             element: <Analysis />

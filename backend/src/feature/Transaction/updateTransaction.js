@@ -9,6 +9,9 @@ const updateTransaction = async ({
   if (!currentTransaction) return null
 
   const dataToPersist = { ...updates }
+  if (dataToPersist.type) {
+    dataToPersist.type = String(dataToPersist.type).toUpperCase()
+  }
   const receivedValue = Object.prototype.hasOwnProperty.call(
     dataToPersist,
     'value'
@@ -17,8 +20,8 @@ const updateTransaction = async ({
   if (receivedValue) {
     const effectiveType = dataToPersist.type ?? currentTransaction.type
     const shouldReverseValue =
-      (effectiveType === 'Debit' && dataToPersist.value > 0) ||
-      (effectiveType === 'Credit' && dataToPersist.value < 0)
+      (effectiveType === 'DEBIT' && dataToPersist.value > 0) ||
+      (effectiveType === 'CREDIT' && dataToPersist.value < 0)
 
     if (shouldReverseValue) {
       dataToPersist.value = dataToPersist.value * -1
