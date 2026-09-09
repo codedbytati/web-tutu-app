@@ -1,6 +1,10 @@
 import { TrendingDownIcon, TrendingUpIcon } from 'lucide-react'
+import { Badge } from '@tutu-ui'
+import { useGetAnalysis } from './core/useGetAnalysis'
 
 export const Analysis = () => {
+  const { totalIncome, onBadgeIncome, totalExpense, onBagdeExpense } = useGetAnalysis()
+
   return (
     <div className='w-full flex gap-3'>
       <div className='w-1/2 flex flex-col items-start rounded-2xl p-4 border border-border bg-card'>
@@ -12,14 +16,11 @@ export const Analysis = () => {
             <TrendingUpIcon size={20} className='text-positive' />
           </div>
         </div>
-        <p className='font-display font-bold text-xl text-foreground pt-2'>
-          R$8.500,00
-        </p>
-        <div className='flex items-center gap-1 bg-positive/15 mt-1.5 px-2 rounded-lg'>
-          <div className='bg-positive size-1.5 rounded-full'></div>
-          <p className='text-positive font-semibold text-xs py-1 px-2'>
-            +12% vs Jun
+        <div>
+          <p className='font-display font-bold text-xl text-foreground pt-2'>
+            R${totalIncome}
           </p>
+          <Badge isActiveData {...onBadgeIncome} />
         </div>
       </div>
       <div className='w-1/2 flex flex-col items-start rounded-2xl p-4 border border-border bg-card'>
@@ -31,14 +32,11 @@ export const Analysis = () => {
             <TrendingDownIcon size={20} className='text-negative' />
           </div>
         </div>
-        <p className='font-display font-bold text-xl text-foreground pt-2'>
-          R$8.500,00
-        </p>
-        <div className='flex items-center gap-1 bg-negative/15 mt-1.5 px-2 rounded-lg'>
-          <div className='bg-negative size-1.5 rounded-full'></div>
-          <p className='text-negative font-semibold text-xs py-1 px-2'>
-            -10% vs Jun
+        <div>
+          <p className='font-display font-bold text-xl text-foreground pt-2'>
+            R${totalExpense}
           </p>
+          <Badge isActiveData {...onBagdeExpense} />
         </div>
       </div>
     </div>
