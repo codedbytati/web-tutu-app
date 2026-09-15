@@ -1,5 +1,4 @@
 import { MinusCircleIcon, TextAlignStartIcon } from 'lucide-react'
-import { Controller } from 'react-hook-form'
 import { useAddExpense } from './core/useAddExpense'
 import {
   Button,
@@ -23,12 +22,14 @@ export const AddExpense = ({
   setIsModalOpen
 }: AddNewExpenseProps) => {
   const {
-    control,
-    register,
     handleSubmit,
     onSubmit,
-    isPending,
-    isError
+    onDescriptionProps,
+    onDateProps,
+    onValueProps,
+    onCategoryProps,
+    onSourceIdProps,
+    isPending
   } = useAddExpense({ onClose: () => setIsModalOpen(false) })
 
   return (
@@ -49,58 +50,34 @@ export const AddExpense = ({
       <Modal.Body>
         <form className='flex flex-col gap-4' onSubmit={handleSubmit(onSubmit)}>
           <TextField
-            icon={TextAlignStartIcon}
             label='Descrição'
+            icon={TextAlignStartIcon}
             placeholder='Ex: Remuneração de agosto'
-            {...register('description', { required: true })}
+            {...onDescriptionProps}
           />
           <div className='grid grid-cols-2 gap-3'>
-            <DateChecker label='Data da transação' required {...register('date', { required: true })} />
-            <Controller
-              name='value'
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CurrencyField label='Valor' type='expense' value={field.value} onChange={field.onChange} required />
-              )}
-            />
+            <DateChecker label='Data da transação' {...onDateProps} />
+            <CurrencyField label='Valor' type='expense' {...onValueProps} />
           </div>
-          <Controller
-            name='category'
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <Select label='Categoria' value={field.value} onChange={field.onChange} required>
-                <SelectItem value=''>Selecione uma categoria</SelectItem>
-                <SelectItem value='FOOD'>Alimentação</SelectItem>
-                <SelectItem value='HOUSE'>Casa</SelectItem>
-                <SelectItem value='TRANSPORT'>Transporte</SelectItem>
-                <SelectItem value='EDUCATION'>Educação</SelectItem>
-                <SelectItem value='HEALTH'>Saúde</SelectItem>
-                <SelectItem value='LEISURE'>Lazer</SelectItem>
-                <SelectItem value='OTHER'>Outros</SelectItem>
-              </Select>
-            )}
-          />
-          <Controller
-            name='sourceId'
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <Select label='Conta' value={field.value} onChange={field.onChange} required>
-                <SelectItem value=''>Selecione a conta</SelectItem>
-                <AccountOptions />
-              </Select>
-            )}
-          />
-          {isError && (
-            <Text appearance='caption' className='text-negative'>Não foi possível registrar a despesa.</Text>
-          )}
-          <Button type='submit' variant='danger' disabled={isPending}>
+          <Select label='Categoria' {...onCategoryProps}>
+            <SelectItem value=''>Selecione uma categoria</SelectItem>
+            <SelectItem value='FOOD'>Alimentação</SelectItem>
+            <SelectItem value='HOUSE'>Casa</SelectItem>
+            <SelectItem value='TRANSPORT'>Transporte</SelectItem>
+            <SelectItem value='EDUCATION'>Educação</SelectItem>
+            <SelectItem value='HEALTH'>Saúde</SelectItem>
+            <SelectItem value='LEISURE'>Lazer</SelectItem>
+            <SelectItem value='OTHER'>Outros</SelectItem>
+          </Select>
+          <Select label='Conta' {...onSourceIdProps}>
+            <SelectItem value=''>Selecione a conta</SelectItem>
+            <AccountOptions />
+          </Select>
+          <Button type='submit' variant='positive' disabled={isPending}>
             {isPending ? 'Registrando...' : 'Registrar despesa'}
           </Button>
         </form>
       </Modal.Body>
-    </Modal>
+    </Modal >
   )
 }

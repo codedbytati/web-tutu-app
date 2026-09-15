@@ -93,7 +93,7 @@ export const NewCreditCard = ({
           <CurrencyField
             label='Limite total'
             value={limit}
-            onChange={(value) => setLimit(value)}
+            onChange={(event) => setLimit(event.target.value)}
             inputMode='decimal'
             required
           />

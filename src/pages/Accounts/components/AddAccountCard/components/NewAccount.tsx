@@ -102,7 +102,7 @@ export const NewAccount = ({ isOpen, onClose, onReturn }: NewAccountProps) => {
           <CurrencyField
             label='Saldo inicial'
             value={balance}
-            onChange={(value) => setBalance(value)}
+            onChange={(event) => setBalance(event.target.value)}
             inputMode='decimal'
             required
           />

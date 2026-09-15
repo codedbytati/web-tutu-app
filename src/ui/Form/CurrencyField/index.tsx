@@ -37,7 +37,7 @@ type CurrencyFieldProps = Omit<
   type?: 'income' | 'expense' | 'transfer'
   isInvalid?: boolean
   value?: string | number
-  onChange?: (value: string) => void
+  onChange?: React.ChangeEventHandler<HTMLInputElement>
 }
 
 const formatCentsToCurrency = (cents: number): string => {
@@ -76,7 +76,10 @@ export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(
 
       if (!digitsOnly) {
         setDisplayValue('')
-        onChange?.('')
+        onChange?.({
+          ...e,
+          target: { ...e.target, value: '' }
+        })
         return
       }
 
@@ -85,7 +88,10 @@ export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(
       const formattedValue = formatCentsToCurrency(cents)
 
       setDisplayValue(formattedValue)
-      onChange?.(formattedValue)
+      onChange?.({
+        ...e,
+        target: { ...e.target, value: formattedValue }
+      })
     }
 
     return (

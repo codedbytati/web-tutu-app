@@ -16,7 +16,7 @@ export const useLoginUser = () => {
   })
 
   const { mutate: loginWithGoogle } = useGoogleLogin()
-  const { mutate: loginUser } = useLogin()
+  const { mutate: loginUser, isError: isLoginError } = useLogin()
 
   const onSubmit = (data: LoginFormData) => {
     loginUser(data, {
@@ -33,6 +33,7 @@ export const useLoginUser = () => {
   }
 
   return {
+    isLoginError,
     onSubmit: handleSubmit(onSubmit),
     onGoogleRegister: handleGoogleLogin,
     onEmailProps: {

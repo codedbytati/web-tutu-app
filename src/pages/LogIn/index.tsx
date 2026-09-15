@@ -1,12 +1,12 @@
 import { Link } from 'react-router'
 import { Mail } from 'lucide-react'
-import Logo from '../../assets/logo.png'
 import { Button, PasswordField, TextField } from '@tutu-ui'
 import { GoogleButton } from '@tutu-components'
 import { useLoginUser } from './core/useLoginUser'
+import Logo from '../../assets/logo.png'
 
 export const LogIn = () => {
-  const { onSubmit, onGoogleRegister, onEmailProps, onPasswordProps } =
+  const { onSubmit, onGoogleRegister, isLoginError, onEmailProps, onPasswordProps } =
     useLoginUser()
 
   return (
@@ -47,6 +47,11 @@ export const LogIn = () => {
             placeholder='Digite sua senha'
             {...onPasswordProps}
           />
+          {isLoginError && (
+            <p className='text-negative text-xs'>
+              Não foi possível realizar o login no momento. Verifique suas credenciais e tente novamente.
+            </p>
+          )}
           <Button size='lg' type='submit'>
             Entrar
           </Button>

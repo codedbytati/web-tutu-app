@@ -1,5 +1,6 @@
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { useCreateTransaction } from '@tutu-services/account'
+import { useToast } from '@tutu-ui'
 
 type ExpenseFormData = {
   description: string
@@ -14,7 +15,7 @@ type UseAddExpenseProps = {
 }
 
 export const useAddExpense = ({ onClose }: UseAddExpenseProps) => {
-  const { mutateAsync, isPending, isError } = useCreateTransaction()
+  const { mutateAsync, isPending } = useCreateTransaction()
   const form = useForm<ExpenseFormData>({
     defaultValues: {
       description: '',
@@ -40,8 +41,17 @@ export const useAddExpense = ({ onClose }: UseAddExpenseProps) => {
       })
       form.reset()
       onClose()
+      useToast.add({
+        title: 'Sucesso!',
+        description: 'A despesa foi registrada com sucesso.',
+        status: 'success'
+      })
     } catch {
-      // Keep the form values so the user can retry.
+      useToast.add({
+        title: 'Tente novamente',
+        description: 'Ocorreu um erro ao registrar a despesa.',
+        status: 'error'
+      })
     }
   }
 
@@ -49,6 +59,40 @@ export const useAddExpense = ({ onClose }: UseAddExpenseProps) => {
     ...form,
     onSubmit,
     isPending,
-    isError
+    onDescriptionProps: {
+      ...form.register('description', {
+        required: 'Informe a descrição da despesa.'
+      }),
+      isInvalid: Boolean(form.formState.errors.description),
+      errorMessage: form.formState.errors.description?.message
+    },
+    onDateProps: {
+      ...form.register('date', {
+        required: 'Informe a data da despesa.'
+      }),
+      isInvalid: Boolean(form.formState.errors.date),
+      errorMessage: form.formState.errors.date?.message
+    },
+    onValueProps: {
+      ...form.register('value', {
+        required: 'Informe o valor da despesa.'
+      }),
+      isInvalid: Boolean(form.formState.errors.value),
+      errorMessage: form.formState.errors.value?.message
+    },
+    onCategoryProps: {
+      ...form.register('category', {
+        required: 'Informe a categoria da despesa.'
+      }),
+      isInvalid: Boolean(form.formState.errors.category),
+      errorMessage: form.formState.errors.category?.message
+    },
+    onSourceIdProps: {
+      ...form.register('sourceId', {
+        required: 'Informe a conta da despesa.'
+      }),
+      isInvalid: Boolean(form.formState.errors.sourceId),
+      errorMessage: form.formState.errors.sourceId?.message
+    }
   }
 }
