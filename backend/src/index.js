@@ -9,7 +9,6 @@ const UserController = require('./controller/User')
 const cors = require('cors')
 const firebaseAuth = require('./infra/firebaseAdmin')
 const userRepository = require('./infra/mongoose/repository/userRepository')
-const accountRepository = require('./infra/mongoose/repository/accountRepository')
 
 app.use(Express.json())
 
@@ -40,17 +39,6 @@ app.use(async (req, res, next) => {
           username: decodedToken.name || decodedToken.email.split('@')[0],
           email: decodedToken.email,
           password: `firebase:${decodedToken.uid}`
-        })
-      }
-
-      const accounts = await accountRepository.get({ userId: user._id })
-      if (!accounts[0]) {
-        await accountRepository.create({
-          userId: user._id,
-          bank: 'Não informado',
-          nickname: 'Conta principal',
-          balance: 0,
-          type: 'CURRENT'
         })
       }
 

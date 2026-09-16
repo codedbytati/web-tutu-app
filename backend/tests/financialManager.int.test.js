@@ -54,38 +54,51 @@ describe('Financial manager API', () => {
     expect(typeof token).toBe('string')
   })
 
-  test('retrieves accounts related to the authenticated user', async () => {
-    const response = await request(app)
+  test('does not create an account automatically for the user', async () => {
+    const emptyAccountsResponse = await request(app)
       .get('/account')
       .set('Authorization', `Bearer ${token}`)
 
-    expect(response.status).toBe(200)
-    expect(response.body).toHaveProperty('result.account')
+    expect(emptyAccountsResponse.status).toBe(200)
+    expect(emptyAccountsResponse.body.result.account).toEqual([])
+    expect(emptyAccountsResponse.body.result.cards).toEqual([])
 
-    const accounts = response.body.result.account
-    expect(Array.isArray(accounts)).toBe(true)
-    expect(accounts.length).toBeGreaterThan(0)
-    expect(accounts[0]).toMatchObject({
-      bank: 'Não informado',
-      nickname: 'Conta principal',
+    const accountResponse = await request(app)
+      .post('/account')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        bank: 'Banco de teste',
+        nickname: 'Conta corrente',
+        balance: 0,
+        type: 'CURRENT'
+      })
+
+    expect(accountResponse.status).toBe(201)
+    const account = accountResponse.body.result
+    expect(account).toMatchObject({
+      bank: 'Banco de teste',
+      nickname: 'Conta corrente',
       balance: 0,
-      type: 'CURRENT',
-      isDeactivate: false
+      type: 'CURRENT'
     })
 
-    const cards = response.body.result.cards
-    expect(Array.isArray(cards)).toBe(true)
-    expect(cards[0]).toMatchObject({
-      bank: 'Não informado',
-      nickname: 'Cartão principal',
+    const cardResponse = await request(app)
+      .post('/account/card')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ bank: 'Banco de teste', nickname: 'Cartão de teste', limit: 0 })
+
+    expect(cardResponse.status).toBe(201)
+    expect(cardResponse.body.result).toMatchObject({
+      bank: 'Banco de teste',
+      nickname: 'Cartão de teste',
       limit: 0,
       spent: 0,
       available: 0,
       isDeactivate: false
     })
 
-    accountId = accounts[0].id
-    cardId = cards[0].id
+    accountId = account.id
+    cardId = cardResponse.body.result.id
     expect(accountId).toBeDefined()
     expect(cardId).toBeDefined()
   })

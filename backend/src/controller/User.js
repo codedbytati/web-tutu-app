@@ -1,6 +1,4 @@
 const userDTO = require('../models/User')
-const accountDTO = require('../models/Account')
-const cardDTO = require('../models/Card')
 const jwt = require('jsonwebtoken')
 const JWT_SECRET = 'tech-challenge'
 
@@ -9,12 +7,7 @@ class UserController {
     this.di = Object.assign(
       {
         userRepository: require('../infra/mongoose/repository/userRepository'),
-        accountRepository: require('../infra/mongoose/repository/accountRepository'),
-        cardRepository: require('../infra/mongoose/repository/cardRepository'),
-
-        saveCard: require('../feature/Card/saveCard'),
         salvarUsuario: require('../feature/User/salvarUsuario'),
-        saveAccount: require('../feature/Account/saveAccount'),
         getUser: require('../feature/User/getUser')
       },
       di
@@ -23,14 +16,7 @@ class UserController {
 
   async create(req, res) {
     const user = new userDTO(req.body)
-    const {
-      userRepository,
-      accountRepository,
-      cardRepository,
-      salvarUsuario,
-      saveAccount,
-      saveCard
-    } = this.di
+    const { userRepository, salvarUsuario } = this.di
 
     if (!user.isValid())
       return res.status(400).json({ message: 'não houve informações enviadas' })
@@ -38,37 +24,6 @@ class UserController {
       const userCreated = await salvarUsuario({
         user,
         repository: userRepository
-      })
-
-      const accountCreated = await saveAccount({
-        account: new accountDTO({
-          userId: userCreated.id,
-          bank: 'Não informado',
-          nickname: 'Conta principal',
-          balance: 0,
-          type: 'CURRENT'
-        }),
-        repository: accountRepository
-      })
-
-      const firstCard = new cardDTO({
-        bank: 'Não informado',
-        nickname: 'Cartão principal',
-        limit: 0,
-        type: 'GOLD',
-        number: 13748712374891010,
-        dueDate: '2027-01-07',
-        functions: 'Debit',
-        cvc: '505',
-        paymentDate: null,
-        name: userCreated.username,
-        accountId: accountCreated.id,
-        type: 'Debit'
-      })
-
-      const cardCreated = await saveCard({
-        card: firstCard,
-        repository: cardRepository
       })
 
       res.status(201).json({

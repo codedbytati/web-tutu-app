@@ -3,7 +3,7 @@ import { tv } from 'tailwind-variants'
 
 const makeStyles = tv({
   base: [
-    'flex items-center gap-2 border border-border py-2 transition-colors',
+    'flex items-center gap-2 bg-white border border-border py-2 transition-colors',
     'focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2',
     'disabled:opacity-40 disabled:cursor-not-allowed',
     '[&_input]:outline-none [&_input]:w-full [&_input]:bg-transparent [&_input]:placeholder:text-muted-foreground',
@@ -102,13 +102,13 @@ export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(
         <div className={makeStyles({ type, size, isInvalid: hasError })}>
           <p>R$</p>
           <input
+            {...props}
             type='text'
             inputMode='numeric'
             ref={ref}
             placeholder='0,00'
             value={displayValue}
             onChange={handleChange}
-            {...props}
           />
         </div>
         {message && (

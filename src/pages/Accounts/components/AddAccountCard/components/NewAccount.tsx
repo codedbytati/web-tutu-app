@@ -1,9 +1,9 @@
-import { useState, type SubmitEvent } from 'react'
-import { ChevronLeftIcon, TagIcon } from 'lucide-react'
-import { Button, CurrencyField, Modal, Select, Text, TextField } from '@tutu-ui'
+import { useForm, type SubmitHandler } from 'react-hook-form'
+import { ChevronLeftIcon } from 'lucide-react'
+import { Modal, Text } from '@tutu-ui'
 import { useCreateAccount } from '@tutu-services/account'
-import { SelectItem } from '@tutu-ui/Form/Select'
-import { bankOptions, type Bank } from '../../../../utils'
+import { AddAccountForm } from '@tutu-components'
+import { type AccountType, type Bank } from '../../../../utils'
 
 type NewAccountProps = {
   isOpen: boolean
@@ -11,34 +11,38 @@ type NewAccountProps = {
   onReturn: () => void
 }
 
-type AccountType = 'CURRENT' | 'SAVINGS' | 'INVESTMENT'
+type AccountFormData = {
+  bank: Bank | ''
+  nickname: string
+  type: AccountType | ''
+  balance: string
+}
 
 export const NewAccount = ({ isOpen, onClose, onReturn }: NewAccountProps) => {
-  const createAccount = useCreateAccount()
-  const [bank, setBank] = useState<Bank | ''>('')
-  const [nickname, setNickname] = useState('')
-  const [type, setType] = useState<AccountType | ''>('')
-  const [balance, setBalance] = useState('')
+  const { mutate, isError, isPending } = useCreateAccount()
+  const {
+    reset,
+    handleSubmit,
+    register,
+    formState: { errors }
+  } = useForm<AccountFormData>({
+    defaultValues: { bank: '', nickname: '', type: '', balance: '' }
+  })
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const parsedBalance = Number(balance.replace(/\./g, '').replace(',', '.'))
-    if (
-      !bank ||
-      !nickname.trim() ||
-      !type ||
-      !Number.isFinite(parsedBalance)
-    )
-      return
+  const onSubmit: SubmitHandler<AccountFormData> = (data) => {
+    const parsedBalance = Number(data.balance.replace(/\./g, '').replace(',', '.'))
+    if (!Number.isFinite(parsedBalance)) return
 
-    createAccount.mutate(
-      { bank, nickname, type, balance: parsedBalance },
+    mutate(
+      {
+        bank: data.bank as Bank,
+        nickname: data.nickname.trim(),
+        type: data.type as AccountType,
+        balance: parsedBalance
+      },
       {
         onSuccess: () => {
-          setBank('')
-          setNickname('')
-          setType('')
-          setBalance('')
+          reset()
           onClose()
         }
       }
@@ -64,57 +68,35 @@ export const NewAccount = ({ isOpen, onClose, onReturn }: NewAccountProps) => {
         </div>
       </Modal.Header>
       <Modal.Body>
-        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-          <Select
-            label='Banco ou instituição'
-            value={bank}
-            onChange={(event) => setBank(event.target.value as Bank)}
-            required
-          >
-            <SelectItem value=''>Selecione um banco</SelectItem>
-            {bankOptions.map(([value, pattern]) => (
-              <SelectItem key={value} value={value}>
-                {pattern.name}
-              </SelectItem>
-            ))}
-          </Select>
-          <TextField
-            label='Apelido'
-            icon={TagIcon}
-            placeholder='Ex: Principal, Viagens...'
-            value={nickname}
-            onChange={(event) => setNickname(event.target.value)}
-            required
-          />
-          <Select
-            label='Tipo da conta'
-            value={type}
-            onChange={(event) =>
-              setType(event.target.value as AccountType)
-            }
-            required
-          >
-            <SelectItem value=''>Selecione um tipo</SelectItem>
-            <SelectItem value='CURRENT'>Corrente</SelectItem>
-            <SelectItem value='SAVINGS'>Poupança</SelectItem>
-            <SelectItem value='INVESTMENT'>Investimento</SelectItem>
-          </Select>
-          <CurrencyField
-            label='Saldo inicial'
-            value={balance}
-            onChange={(event) => setBalance(event.target.value)}
-            inputMode='decimal'
-            required
-          />
-          {createAccount.isError && (
-            <Text appearance='caption' className='text-negative'>
-              Não foi possível adicionar a conta
-            </Text>
-          )}
-          <Button variant='positive' size='md' type='submit' disabled={createAccount.isPending}>
-            Adicionar conta
-          </Button>
-        </form>
+        <AddAccountForm
+          onSubmit={handleSubmit(onSubmit)}
+          bankProps={{
+            ...register('bank', { required: 'Selecione um banco.' }),
+            isInvalid: Boolean(errors.bank),
+            errorMessage: errors.bank?.message
+          }}
+          nicknameProps={{
+            ...register('nickname', { required: 'Informe um apelido.' }),
+            isInvalid: Boolean(errors.nickname),
+            errorMessage: errors.nickname?.message
+          }}
+          typeProps={{
+            ...register('type', { required: 'Selecione o tipo da conta.' }),
+            isInvalid: Boolean(errors.type),
+            errorMessage: errors.type?.message
+          }}
+          balanceProps={{
+            ...register('balance', { required: 'Informe o saldo inicial.' }),
+            isInvalid: Boolean(errors.balance),
+            errorMessage: errors.balance?.message
+          }}
+          errorMessage={
+            isError
+              ? 'Não foi possível adicionar a conta.'
+              : undefined
+          }
+          isDisabled={isPending}
+        />
       </Modal.Body>
     </Modal>
   )

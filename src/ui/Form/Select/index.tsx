@@ -3,7 +3,7 @@ import { tv } from 'tailwind-variants'
 
 const makeSelectStyles = tv({
   base: [
-    'w-full flex items-center gap-2 border border-border p-2 transition-colors relative cursor-pointer',
+    'w-full flex items-center gap-2 bg-white border border-border p-2 transition-colors relative cursor-pointer',
     'focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2',
     'has-[:disabled]:opacity-40 has-[:disabled]:cursor-not-allowed',
     '[&_select]:outline-none [&_select]:w-full [&_select]:bg-transparent [&_select]:appearance-none',

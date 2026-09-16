@@ -1,4 +1,6 @@
 export { ColoredCard } from './ColoredCard'
+export { AddAccountForm } from './Forms/AddAccountForm'
+export { AddCreditCardForm } from './Forms/AddCreditCardForm'
 export { GoogleButton } from './GoogleButton'
 export { Header } from './Header'
 export { Sidebar } from './Sidebar'

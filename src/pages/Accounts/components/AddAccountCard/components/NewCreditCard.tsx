@@ -1,8 +1,9 @@
-import { useState, type SubmitEvent } from 'react'
-import { ChevronLeftIcon, TagIcon } from 'lucide-react'
-import { Button, CurrencyField, Modal, Select, SelectItem, Text, TextField } from '@tutu-ui'
+import { ChevronLeftIcon } from 'lucide-react'
+import { Modal, Text } from '@tutu-ui'
+import { AddCreditCardForm } from '@tutu-components'
 import { useCreateCreditCard } from '@tutu-services/account'
-import { bankOptions, type Bank } from '../../../../utils'
+import { useForm, type SubmitHandler } from 'react-hook-form'
+import type { Bank } from '../../../../utils'
 
 type NewCreditCardProps = {
   isOpen: boolean
@@ -10,34 +11,40 @@ type NewCreditCardProps = {
   onReturn: () => void
 }
 
+type CreditCardFormData = {
+  bank: string
+  nickname: string
+  limit: string
+}
+
 export const NewCreditCard = ({
   isOpen,
   onClose,
   onReturn
 }: NewCreditCardProps) => {
-  const createCard = useCreateCreditCard()
-  const [bank, setBank] = useState<Bank | ''>('')
-  const [nickname, setNickname] = useState('')
-  const [limit, setLimit] = useState('')
+  const { mutate, isError, isPending } = useCreateCreditCard()
+  const {
+    reset,
+    handleSubmit,
+    register,
+    formState: { errors }
+  } = useForm({
+    defaultValues: { bank: '', nickname: '', limit: '' }
+  })
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const parsedLimit = Number(limit.replace(/\./g, '').replace(',', '.'))
-    if (
-      !bank ||
-      !nickname.trim() ||
-      !Number.isFinite(parsedLimit) ||
-      parsedLimit < 0
-    )
-      return
+  const onSubmit: SubmitHandler<CreditCardFormData> = (data) => {
+    const parsedLimit = Number(data.limit.replace(/\./g, '').replace(',', '.'))
+    if (!Number.isFinite(parsedLimit)) return
 
-    createCard.mutate(
-      { bank, nickname, limit: parsedLimit },
+    mutate(
+      {
+        bank: data.bank as Bank,
+        nickname: data.nickname.trim(),
+        limit: parsedLimit
+      },
       {
         onSuccess: () => {
-          setBank('')
-          setNickname('')
-          setLimit('')
+          reset()
           onClose()
         }
       }
@@ -68,44 +75,30 @@ export const NewCreditCard = ({
         </div>
       </Modal.Header>
       <Modal.Body>
-        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-          <Select
-            label='Banco'
-            value={bank}
-            onChange={(event) => setBank(event.target.value as Bank | '')}
-            required
-          >
-            <SelectItem value=''>Selecione um banco</SelectItem>
-            {bankOptions.map(([value, pattern]) => (
-              <SelectItem key={value} value={value}>
-                {pattern.name}
-              </SelectItem>
-            ))}
-          </Select>
-          <TextField
-            label='Apelido'
-            icon={TagIcon}
-            placeholder='Ex: Principal, Viagens...'
-            value={nickname}
-            onChange={(event) => setNickname(event.target.value)}
-            required
-          />
-          <CurrencyField
-            label='Limite total'
-            value={limit}
-            onChange={(event) => setLimit(event.target.value)}
-            inputMode='decimal'
-            required
-          />
-          {createCard.isError && (
-            <Text appearance='caption' className='text-negative'>
-              Não foi possível adicionar o cartão
-            </Text>
-          )}
-          <Button size='md' type='submit' disabled={createCard.isPending}>
-            Adicionar cartão
-          </Button>
-        </form>
+        <AddCreditCardForm
+          onSubmit={handleSubmit(onSubmit)}
+          bankProps={{
+            ...register('bank', { required: 'Selecione um banco' }),
+            isInvalid: Boolean(errors.bank),
+            errorMessage: errors.bank?.message
+          }}
+          nicknameProps={{
+            ...register('nickname', { required: 'Informe um apelido' }),
+            isInvalid: Boolean(errors.nickname),
+            errorMessage: errors.nickname?.message
+          }}
+          limitProps={{
+            ...register('limit', { required: 'Informe o limite' }),
+            isInvalid: Boolean(errors.limit),
+            errorMessage: errors.limit?.message
+          }}
+          errorMessage={
+            isError
+              ? 'Não foi possível adicionar o cartão de crédito.'
+              : undefined
+          }
+          isDisabled={isPending}
+        />
       </Modal.Body>
     </Modal>
   )

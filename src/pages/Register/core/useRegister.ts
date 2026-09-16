@@ -1,11 +1,13 @@
-import { useNavigate } from 'react-router'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useGoogleLogin, useRegisterUser } from '@tutu-hooks'
 import { registerSchema, type RegisterFormData } from '@tutu-schemas'
 
-export const useRegister = () => {
-  const navigate = useNavigate()
+type UseRegisterProps = {
+  onRegistered: () => void
+}
+
+export const useRegister = ({ onRegistered }: UseRegisterProps) => {
   const {
     register,
     handleSubmit,
@@ -20,13 +22,13 @@ export const useRegister = () => {
 
   const onSubmit = (data: RegisterFormData) => {
     registerUser(data, {
-      onSuccess: () => navigate('/')
+      onSuccess: onRegistered
     })
   }
 
   const handleGoogleRegister = () => {
     loginWithGoogle(undefined, {
-      onSuccess: () => navigate('/')
+      onSuccess: onRegistered
     })
   }
 

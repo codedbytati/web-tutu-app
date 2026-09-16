@@ -1,18 +1,23 @@
+import { useState } from 'react'
 import { Link } from 'react-router'
 import { Mail, User } from 'lucide-react'
 import { Button, PasswordField, TextField } from '@tutu-ui'
 import { GoogleButton } from '@tutu-components'
-import Logo from '../../assets/logo.png'
 import { useRegister } from './core/useRegister'
+import { CreateWallet } from './components/CreateWallet'
+import Logo from '../../assets/logo.png'
 
 export const Register = () => {
+  const [isRegistered, setIsRegistered] = useState(false)
   const {
     onSubmit,
     onNameProps,
     onEmailProps,
     onPasswordProps,
     onGoogleRegister
-  } = useRegister()
+  } = useRegister({ onRegistered: () => setIsRegistered(true) })
+
+  if (isRegistered) return <CreateWallet />
 
   return (
     <div className='bg-background flex flex-col items-center justify-center h-screen'>
