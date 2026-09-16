@@ -320,7 +320,12 @@ class AccountController {
   }
 
   async updateTransaction(req, res) {
-    const { updateTransaction, transactionRepository } = this.di
+    const {
+      accountRepository,
+      getAccount,
+      updateTransaction,
+      transactionRepository
+    } = this.di
     const { id } = req.params
     const { value, type, description, from, to, category, anexo } = req.body
     const urlAnexo = req.body.urlAnexo ?? req.body.urlanexo
@@ -341,6 +346,18 @@ class AccountController {
     )
 
     try {
+      const currentTransaction = await transactionRepository.getById(id)
+      const accounts = currentTransaction
+        ? await getAccount({
+            repository: accountRepository,
+            filter: { _id: currentTransaction.accountId, userId: req.user.id }
+          })
+        : []
+
+      if (!currentTransaction || !accounts[0]) {
+        return res.status(404).json({ message: 'Transação não encontrada' })
+      }
+
       const transaction = await updateTransaction({
         transactionId: id,
         updates,
@@ -361,10 +378,27 @@ class AccountController {
   }
 
   async deleteTransaction(req, res) {
-    const { deleteTransaction, transactionRepository } = this.di
+    const {
+      accountRepository,
+      deleteTransaction,
+      getAccount,
+      transactionRepository
+    } = this.di
     const { id } = req.params
 
     try {
+      const currentTransaction = await transactionRepository.getById(id)
+      const accounts = currentTransaction
+        ? await getAccount({
+            repository: accountRepository,
+            filter: { _id: currentTransaction.accountId, userId: req.user.id }
+          })
+        : []
+
+      if (!currentTransaction || !accounts[0]) {
+        return res.status(404).json({ message: 'Transação não encontrada' })
+      }
+
       const deleted = await deleteTransaction({
         transactionId: id,
         repository: transactionRepository

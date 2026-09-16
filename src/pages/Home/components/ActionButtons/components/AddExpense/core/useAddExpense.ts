@@ -57,7 +57,7 @@ export const useAddExpense = ({ onClose }: UseAddExpenseProps) => {
 
   return {
     ...form,
-    onSubmit,
+    onSubmit: form.handleSubmit(onSubmit),
     isPending,
     onDescriptionProps: {
       ...form.register('description', {

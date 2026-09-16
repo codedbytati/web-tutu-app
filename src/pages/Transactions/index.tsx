@@ -5,10 +5,14 @@ import { Page } from '../../layouts/Page'
 import { formatCurrency } from '../utils'
 import { useGetTransactionsList } from './core/useGetTransactionsList'
 import { TRANSACTION_CATEGORIES } from '../utils/getTransactionCategory'
+import { Details } from '@tutu-components'
+import type { RemoteTransaction } from '@tutu-data'
+import { useState } from 'react'
 
 const formatDate = (date: string) => new Date(date).toLocaleDateString('pt-BR')
 
 export const Transactions = () => {
+  const [selectedTransaction, setSelectedTransaction] = useState<RemoteTransaction | null>(null)
   const {
     transactions,
     income,
@@ -101,6 +105,7 @@ export const Transactions = () => {
               .map((transaction) => (
                 <TransactionList.Item
                   key={transaction.id}
+                  transaction={transaction}
                   icon={
                     transaction.category
                       ? TRANSACTION_CATEGORIES[transaction.category]?.icon ??
@@ -111,11 +116,17 @@ export const Transactions = () => {
                   type={transaction.type}
                   date={formatDate(transaction.date)}
                   amount={formatCurrency(Math.abs(transaction.value))}
+                  onClick={setSelectedTransaction}
                 />
               ))}
           </TransactionList>
         </div>
       </Page.Body>
+      <Details
+        isOpen={selectedTransaction !== null}
+        transaction={selectedTransaction}
+        onClose={() => setSelectedTransaction(null)}
+      />
     </Page>
   )
 }

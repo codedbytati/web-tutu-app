@@ -1,10 +1,13 @@
-import { TransactionList } from '@tutu-components'
+import { Details, TransactionList } from '@tutu-components'
 import { useGetNewestTransactions } from './core/useGetNewestTransactions'
 import { TRANSACTION_CATEGORIES } from '../../../utils/getTransactionCategory'
 import { ArrowUpDownIcon } from 'lucide-react'
 import { formatCurrency } from '../../../utils'
+import { useState } from 'react'
+import type { RemoteTransaction } from '@tutu-data'
 
 export const Transactions = () => {
+  const [selectedTransaction, setSelectedTransaction] = useState<RemoteTransaction | null>(null)
   const { transactions, description, isError, isLoading } = useGetNewestTransactions()
   const formatDate = (date: string) => new Date(date).toLocaleDateString('pt-BR')
 
@@ -27,6 +30,7 @@ export const Transactions = () => {
           .map((transaction) => (
             <TransactionList.Item
               key={transaction.id}
+              transaction={transaction}
               icon={transaction.category
                 ? TRANSACTION_CATEGORIES[transaction.category]?.icon ??
                 ArrowUpDownIcon
@@ -35,6 +39,7 @@ export const Transactions = () => {
               type={transaction.type}
               date={formatDate(transaction.date)}
               amount={formatCurrency(transaction.value)}
+              onClick={setSelectedTransaction}
             />
           ))}
         {isLoading && (
@@ -51,6 +56,11 @@ export const Transactions = () => {
           </p>
         )}
       </TransactionList>
+      <Details
+        isOpen={selectedTransaction !== null}
+        transaction={selectedTransaction}
+        onClose={() => setSelectedTransaction(null)}
+      />
     </div>
   )
 }

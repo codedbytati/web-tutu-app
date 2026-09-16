@@ -9,7 +9,7 @@ import {
 } from '@tutu-ui'
 import { SelectItem } from '@tutu-ui/Form/Select'
 import { PlusCircleIcon, TextAlignStartIcon } from 'lucide-react'
-import { AccountOptions } from '../AccountOptions'
+import { AccountOptions } from '../../../../../../components/Forms/AccountOptions'
 import { useAddIncome } from './core/useAddIncome'
 
 type AddNewExpenseProps = {

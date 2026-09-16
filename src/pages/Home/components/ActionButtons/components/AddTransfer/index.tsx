@@ -1,6 +1,6 @@
 import { Button, CurrencyField, DateChecker, Modal, Select, SelectItem, Text, TextField } from '@tutu-ui'
 import { ArrowUpDownIcon, TextAlignStartIcon } from 'lucide-react'
-import { AccountOptions } from '../AccountOptions'
+import { AccountOptions } from '../../../../../../components/Forms/AccountOptions'
 import { useAddTransfer } from './core/useAddTransfer'
 
 type AddNewExpenseProps = {

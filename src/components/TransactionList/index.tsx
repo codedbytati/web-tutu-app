@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
+import type { RemoteTransaction } from '@tutu-data'
 
 type TransactionItemProps = {
   icon: LucideIcon
@@ -6,6 +7,8 @@ type TransactionItemProps = {
   type: 'CREDIT' | 'DEBIT' | 'TRANSFER'
   date: string
   amount: string
+  transaction: RemoteTransaction
+  onClick: (transaction: RemoteTransaction) => void
 }
 
 export const TransactionList = ({
@@ -26,9 +29,14 @@ TransactionList.Item = function TransactionItem({
   type,
   date,
   amount,
+  transaction,
+  onClick
 }: TransactionItemProps) {
   return (
-    <div className='flex items-center justify-between p-3 cursor-pointer border-b border-b-border last:border-b-0 hover:bg-background hover:rounded-2xl'>
+    <button
+      className='w-full flex items-center justify-between p-3 cursor-pointer border-b border-b-border last:border-b-0 hover:bg-background hover:rounded-2xl'
+      onClick={() => onClick(transaction)}
+    >
       <div className='flex items-center gap-3'>
         <div
           className={`${type === 'CREDIT' ? 'bg-positive/15'
@@ -59,6 +67,6 @@ TransactionList.Item = function TransactionItem({
       >
         R${amount}
       </p>
-    </div>
+    </button>
   )
 }

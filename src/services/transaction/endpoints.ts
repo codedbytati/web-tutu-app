@@ -1,3 +1,4 @@
 export default {
-  getTransactions: '/transaction'
+  getTransactions: '/transaction',
+  editTransaction: '/account/transaction/:id'
 } as const
