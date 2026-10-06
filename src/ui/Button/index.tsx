@@ -12,7 +12,7 @@ const makeStyles = tv({
     variant: {
       primary: 'bg-primary text-card',
       secondary: 'bg-lavender text-foreground',
-      ghost: 'bg-transparent text-foreground',
+      ghost: 'bg-transparent text-foreground hover:bg-muted',
       positive: 'bg-positive text-card',
       danger: 'bg-negative text-card'
     },
