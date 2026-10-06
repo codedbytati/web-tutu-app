@@ -1,4 +1,4 @@
-import { useGetTransactions } from '@tutu-services/transaction'
+import { useGetTransactions } from '@tutu-services/account'
 import type { RemoteTransaction } from '@tutu-data'
 
 export const useGetNewestTransactions = () => {

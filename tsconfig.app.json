@@ -12,8 +12,8 @@
       "@tutu-components/*": ["./src/presentation/components/*"],
       "@tutu-schemas": ["./src/schemas/index.ts"],
       "@tutu-schemas/*": ["./src/schemas/*"],
-      "@tutu-hooks": ["./src/presentation/hooks/index.ts"],
-      "@tutu-hooks/*": ["./src/presentation/hooks/*"],
+      "@tutu-hooks": ["./src/services/login/index.ts"],
+      "@tutu-hooks/*": ["./src/services/login/*"],
       "@tutu-services": ["./src/services/index.ts"],
       "@tutu-services/*": ["./src/services/*"],
       "@tutu-contexts": ["./src/contexts/index.ts"],
@@ -22,7 +22,6 @@
       "@tutu-data/*": ["./src/data/*"],
       "@tutu-domain": ["./src/domain/index.ts"],
       "@tutu-domain/*": ["./src/domain/*"]
-      ,"@tutu-infrastructure/*": ["./src/infrastructure/*"]
     },
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,

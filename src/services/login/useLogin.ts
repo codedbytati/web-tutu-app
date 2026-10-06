@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
-import { authGateway } from '@tutu-infrastructure/auth/FirebaseAuthGateway'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '@tutu-services/firebase'
 
 interface LoginParams {
   email: string
@@ -9,7 +10,11 @@ interface LoginParams {
 export const useLogin = () => {
   return useMutation({
     mutationFn: async ({ email, password }: LoginParams) => {
-      const userCredential = await authGateway.login(email, password)
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
       return userCredential.user
     }
   })

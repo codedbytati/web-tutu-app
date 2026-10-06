@@ -4,7 +4,7 @@ import { ArrowUpDownIcon } from 'lucide-react'
 import { Button, Modal, Text, useToast } from '@tutu-ui'
 import { AddExpenseForm, AddIncomeForm, AddTransferForm } from '@tutu-components'
 import type { RemoteTransaction } from '@tutu-data'
-import { useDeleteTransaction, useUpdateTransaction } from '@tutu-services/transaction'
+import { useDeleteTransaction, useUpdateTransaction } from '@tutu-services/account'
 import { TRANSACTION_CATEGORIES } from '../../../pages/utils/getTransactionCategory'
 
 type DetailsProps = {

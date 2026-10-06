@@ -1,6 +1,6 @@
 import type { ApexOptions } from 'apexcharts'
 import Chart from 'react-apexcharts'
-import { useGetTransactions } from '@tutu-services/transaction'
+import { useGetTransactions } from '@tutu-services/account'
 import type { RemoteTransaction } from '@tutu-data'
 
 interface SeriesData {

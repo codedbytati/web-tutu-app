@@ -1,14 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
-import { queryKeys } from '../queryKeys'
-import { accountRepository } from '@tutu-infrastructure/account/HttpAccountRepository'
-import { getAccounts } from '@tutu-domain/account/use-cases/GetAccounts'
+import { api } from '@tutu-services/api'
+import endpoints from './endpoints'
+import type { RemoteAccounts } from '@tutu-data'
 
 export const accountsQueryOptions = {
-  queryKey: queryKeys.accounts,
-  queryFn: () => getAccounts(accountRepository),
-  staleTime: 60_000,
-  gcTime: 10 * 60_000
-} as const
+  queryKey: ['get-accounts'] as const,
+  queryFn: async () => {
+    const { data } = await api.get<RemoteAccounts>(endpoints.getAccount)
+    return data.result
+  }
+}
 
 export const useGetAccount = () => {
   return useQuery(accountsQueryOptions)

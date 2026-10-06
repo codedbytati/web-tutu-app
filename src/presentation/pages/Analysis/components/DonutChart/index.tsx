@@ -1,6 +1,6 @@
 import Chart from 'react-apexcharts'
 import type { ApexOptions } from 'apexcharts'
-import { useGetTransactions } from '@tutu-services/transaction'
+import { useGetTransactions } from '@tutu-services/account'
 import { TRANSACTION_CATEGORIES } from '../../../utils/getTransactionCategory'
 import { formatCurrency } from '../../../utils'
 

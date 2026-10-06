@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useGoogleLogin, useRegisterUser } from '@tutu-hooks'
+import { useGoogleLogin, useRegisterUser } from '@tutu-services/login'
 import { registerSchema, type RegisterFormData } from '@tutu-schemas'
 
 type UseRegisterProps = {

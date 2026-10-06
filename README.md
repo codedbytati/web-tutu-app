@@ -9,14 +9,13 @@ O frontend usa uma separação por camadas:
 ```text
 src/
   domain/          Entidades, contratos e casos de uso sem dependências de UI
-  infrastructure/ Adaptadores HTTP e Firebase
-  services/       Integração dos casos de uso com React Query
+  services/        Chamadas de API e autenticação, agrupadas pelo endpoint
   presentation/   Páginas, layouts e componentes de interface
   contexts/       Estado de autenticação e composição da aplicação
   store/          Estado global de cliente com Zustand
 ```
 
-As verticais de transações, contas/cartões e autenticação possuem contratos de domínio e implementações de infraestrutura. React Query gerencia o estado remoto, enquanto o estado local permanece nos componentes/hooks de apresentação.
+As chamadas para os endpoints de contas, cartões e transações ficam em `services/account`, pois usam a raiz `/account`. A autenticação Firebase fica em `services/login`. React Query gerencia o estado remoto, enquanto o estado local permanece nos componentes/hooks de apresentação.
 Zustand gerencia somente estado global de cliente, como o layout do sidebar; ele não duplica contas, cartões ou transações.
 
 ## Performance

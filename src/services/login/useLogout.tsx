@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router'
+import { signOut } from 'firebase/auth'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { authGateway } from '@tutu-infrastructure/auth/FirebaseAuthGateway'
+import { auth } from '@tutu-services/firebase'
 
 export const useLogout = () => {
   const navigate = useNavigate()
@@ -8,7 +9,7 @@ export const useLogout = () => {
 
   return useMutation({
     mutationFn: async () => {
-      await authGateway.logout()
+      await signOut(auth)
     },
     onSuccess: () => {
       queryClient.clear()

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useGoogleLogin, useLogin } from '@tutu-hooks'
+import { useGoogleLogin, useLogin } from '@tutu-services/login'
 import { loginSchema, type LoginFormData } from '@tutu-schemas'
 
 export const useLoginUser = () => {

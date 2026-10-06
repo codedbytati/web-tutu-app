@@ -1,5 +1,5 @@
 import { useMemo, useState, type ChangeEvent } from 'react'
-import { useGetTransactions } from '@tutu-services/transaction'
+import { useGetTransactions } from '@tutu-services/account'
 import {
   getTransactionDescription,
   getTransactionTotals

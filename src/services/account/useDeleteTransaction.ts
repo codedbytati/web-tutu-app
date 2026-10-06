@@ -2,14 +2,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@tutu-services/api'
 import endpoints from './endpoints'
 
-export const useDeactivateCreditCard = () => {
+export const useDeleteTransaction = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (cardId: string) => {
-      await api.patch(endpoints.deactivateCard.replace(':cardId', cardId))
+    mutationFn: async (id: string) => {
+      await api.delete(endpoints.editTransaction.replace(':id', id))
     },
-    onSuccess: () =>
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['get-transactions'] })
       queryClient.invalidateQueries({ queryKey: ['get-accounts'] })
+    }
   })
 }

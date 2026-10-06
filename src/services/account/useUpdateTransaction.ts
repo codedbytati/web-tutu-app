@@ -1,27 +1,29 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { api } from '../api'
 import type { RemoteTransaction } from '@tutu-data'
+import { api } from '@tutu-services/api'
 import endpoints from './endpoints'
 
-export const useCreateTransaction = () => {
+export const useUpdateTransaction = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (transaction: {
-      accountId?: string
-      sourceId?: string
-      destinationId?: string
+    mutationFn: async ({
+      id,
+      ...updates
+    }: {
+      id: string
       value: number
-      type: 'DEBIT' | 'CREDIT' | 'TRANSFER'
+      type: RemoteTransaction['type']
       description?: string
+      date?: string
+      category?: string
+      accountId?: string
       from?: string
       to?: string
-      category?: string
-      date?: string
     }) => {
-      const { data } = await api.post<{ result: RemoteTransaction }>(
-        endpoints.getTransactions,
-        transaction
+      const { data } = await api.put<{ result: RemoteTransaction }>(
+        endpoints.editTransaction.replace(':id', id),
+        updates
       )
       return data.result
     },

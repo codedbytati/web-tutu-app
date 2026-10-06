@@ -19,8 +19,7 @@ export default defineConfig({
       '@tutu-services': path.resolve(__dirname, './src/services'),
       '@tutu-contexts': path.resolve(__dirname, './src/contexts'),
       '@tutu-data': path.resolve(__dirname, './src/data'),
-      '@tutu-domain': path.resolve(__dirname, './src/domain'),
-      '@tutu-infrastructure': path.resolve(__dirname, './src/infrastructure'),
+      '@tutu-domain': path.resolve(__dirname, './src/domain')
     }
   }
 })
