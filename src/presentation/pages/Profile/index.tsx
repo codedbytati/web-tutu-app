@@ -8,7 +8,7 @@ import {
 } from 'lucide-react'
 import { Avatar, Button, Text } from '@tutu-ui'
 import { ColoredCard } from '@tutu-components'
-import { useAuth } from '../../contexts/authContext'
+import { useAuth } from '../../../contexts/authContext'
 import { Page } from '../../layouts/Page'
 import { useState } from 'react'
 import { EditProfileInfo } from './components/EditProfileInfo'

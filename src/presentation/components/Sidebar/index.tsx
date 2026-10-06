@@ -1,8 +1,8 @@
 import { useAuth } from '@tutu-contexts/authContext'
-import Logo from '../../assets/logo.png'
+import Logo from '../../../assets/logo.png'
 import { Menu, ProfileInfo } from './components'
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
-import { useUiStore } from '../../store/uiStore'
+import { useUiStore } from '../../../store/uiStore'
 
 export const Sidebar = () => {
   const { loggedUser } = useAuth()

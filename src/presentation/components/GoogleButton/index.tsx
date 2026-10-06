@@ -1,4 +1,4 @@
-import GoogleSVG from '../../assets/google.svg'
+import GoogleSVG from '../../../assets/google.svg'
 
 type GoogleButtonProps = {
   onClick: () => void

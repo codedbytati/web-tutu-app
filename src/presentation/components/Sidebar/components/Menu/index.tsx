@@ -7,10 +7,10 @@ import {
 } from 'lucide-react'
 import { NavLink } from 'react-router'
 import { makeStyles } from './style'
-import { preloadRoutes } from '../../../../routeLoaders'
-import { queryClient } from '../../../../services/queryClient'
-import { accountsQueryOptions } from '../../../../services/account/useGetAccounts'
-import { transactionsQueryOptions } from '../../../../services/transaction/useGetTransactions'
+import { preloadRoutes } from '../../../../../routeLoaders'
+import { queryClient } from '../../../../../services/queryClient'
+import { accountsQueryOptions } from '../../../../../services/account/useGetAccounts'
+import { transactionsQueryOptions } from '../../../../../services/transaction/useGetTransactions'
 
 const menuItems = [
   { to: '/', label: 'Início', icon: HomeIcon, color: 'violet' },

@@ -1,23 +1,23 @@
 export const loadLogIn = () =>
-  import('./pages/LogIn').then(({ LogIn }) => ({ default: LogIn }))
+  import('./presentation/pages/LogIn').then(({ LogIn }) => ({ default: LogIn }))
 export const loadRegister = () =>
-  import('./pages/Register').then(({ Register }) => ({ default: Register }))
+  import('./presentation/pages/Register').then(({ Register }) => ({ default: Register }))
 export const loadHome = () =>
-  import('./pages/Home').then(({ Home }) => ({ default: Home }))
+  import('./presentation/pages/Home').then(({ Home }) => ({ default: Home }))
 export const loadPageNotFound = () =>
-  import('./pages/PageNotFound').then(({ PageNotFound }) => ({
+  import('./presentation/pages/PageNotFound').then(({ PageNotFound }) => ({
     default: PageNotFound
   }))
 export const loadTransactions = () =>
-  import('./pages/Transactions').then(({ Transactions }) => ({
+  import('./presentation/pages/Transactions').then(({ Transactions }) => ({
     default: Transactions
   }))
 export const loadProfile = () =>
-  import('./pages/Profile').then(({ Profile }) => ({ default: Profile }))
+  import('./presentation/pages/Profile').then(({ Profile }) => ({ default: Profile }))
 export const loadAnalysis = () =>
-  import('./pages/Analysis').then(({ Analysis }) => ({ default: Analysis }))
+  import('./presentation/pages/Analysis').then(({ Analysis }) => ({ default: Analysis }))
 export const loadAccounts = () =>
-  import('./pages/Accounts').then(({ Accounts }) => ({ default: Accounts }))
+  import('./presentation/pages/Accounts').then(({ Accounts }) => ({ default: Accounts }))
 
 export const preloadRoutes = {
   '/': loadHome,

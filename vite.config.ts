@@ -12,10 +12,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@tutu-ui': path.resolve(__dirname, './src/ui'),
-      '@tutu-components': path.resolve(__dirname, './src/components'),
+      '@tutu-ui': path.resolve(__dirname, './src/presentation/ui'),
+      '@tutu-components': path.resolve(__dirname, './src/presentation/components'),
       '@tutu-schemas': path.resolve(__dirname, './src/schemas'),
-      '@tutu-hooks': path.resolve(__dirname, './src/hooks'),
+      '@tutu-hooks': path.resolve(__dirname, './src/presentation/hooks'),
       '@tutu-services': path.resolve(__dirname, './src/services'),
       '@tutu-contexts': path.resolve(__dirname, './src/contexts'),
       '@tutu-data': path.resolve(__dirname, './src/data'),

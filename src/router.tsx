@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router'
-import { AppLayout } from './layouts/AppLayout'
-import { ProtectedRoute } from './layouts/ProtectedRoute'
+import { AppLayout } from './presentation/layouts/AppLayout'
+import { ProtectedRoute } from './presentation/layouts/ProtectedRoute'
 import {
   Accounts,
   Analysis,

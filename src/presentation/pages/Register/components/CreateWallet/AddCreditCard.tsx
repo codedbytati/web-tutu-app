@@ -2,44 +2,42 @@ import { useNavigate } from 'react-router'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ChevronLeftIcon } from 'lucide-react'
 import { Text } from '@tutu-ui'
-import { AddAccountForm } from '@tutu-components'
-import { useCreateAccount } from '@tutu-services/account'
-import type { AccountType, Bank } from '../../../utils'
-import Logo from '../../../../assets/logo.png'
+import { AddCreditCardForm } from '@tutu-components'
+import { useCreateCreditCard } from '@tutu-services/account'
+import Logo from '../../../../../assets/logo.png'
+import type { Bank } from '../../../utils'
 
-type AccountFormData = {
-  bank: Bank | ''
-  nickname: string
-  type: AccountType | ''
-  balance: string
-}
-
-type AddAccountProps = {
+type AddCreditCardProps = {
   onClose: () => void
 }
 
-export const AddAccount = ({ onClose }: AddAccountProps) => {
+type CreditCardFormData = {
+  bank: string
+  nickname: string
+  limit: string
+}
+
+export const AddCreditCard = ({ onClose }: AddCreditCardProps) => {
   const navigate = useNavigate()
-  const { mutate, isError, isPending } = useCreateAccount()
+  const { mutate, isError, isPending } = useCreateCreditCard()
   const {
     reset,
     handleSubmit,
     register,
     formState: { errors }
-  } = useForm<AccountFormData>({
-    defaultValues: { bank: '', nickname: '', type: '', balance: '' }
+  } = useForm({
+    defaultValues: { bank: '', nickname: '', limit: '' }
   })
 
-  const onSubmit: SubmitHandler<AccountFormData> = (data) => {
-    const parsedBalance = Number(data.balance.replace(/\./g, '').replace(',', '.'))
-    if (!Number.isFinite(parsedBalance)) return
+  const onSubmit: SubmitHandler<CreditCardFormData> = (data) => {
+    const parsedLimit = Number(data.limit.replace(/\./g, '').replace(',', '.'))
+    if (!Number.isFinite(parsedLimit)) return
 
     mutate(
       {
         bank: data.bank as Bank,
         nickname: data.nickname.trim(),
-        type: data.type as AccountType,
-        balance: parsedBalance
+        limit: parsedLimit
       },
       {
         onSuccess: () => {
@@ -71,31 +69,26 @@ export const AddAccount = ({ onClose }: AddAccountProps) => {
           Você pode adicionar mais contas depois.
         </Text>
       </div>
-      <AddAccountForm
+      <AddCreditCardForm
         onSubmit={handleSubmit(onSubmit)}
         bankProps={{
-          ...register('bank', { required: 'Selecione um banco.' }),
+          ...register('bank', { required: 'Selecione um banco' }),
           isInvalid: Boolean(errors.bank),
           errorMessage: errors.bank?.message
         }}
         nicknameProps={{
-          ...register('nickname', { required: 'Informe um apelido.' }),
+          ...register('nickname', { required: 'Informe um apelido' }),
           isInvalid: Boolean(errors.nickname),
           errorMessage: errors.nickname?.message
         }}
-        typeProps={{
-          ...register('type', { required: 'Selecione o tipo da conta.' }),
-          isInvalid: Boolean(errors.type),
-          errorMessage: errors.type?.message
-        }}
-        balanceProps={{
-          ...register('balance', { required: 'Informe o saldo inicial.' }),
-          isInvalid: Boolean(errors.balance),
-          errorMessage: errors.balance?.message
+        limitProps={{
+          ...register('limit', { required: 'Informe o limite' }),
+          isInvalid: Boolean(errors.limit),
+          errorMessage: errors.limit?.message
         }}
         errorMessage={
           isError
-            ? 'Não foi possível adicionar a conta.'
+            ? 'Não foi possível adicionar o cartão de crédito.'
             : undefined
         }
         isDisabled={isPending}

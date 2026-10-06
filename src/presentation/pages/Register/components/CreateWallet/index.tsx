@@ -4,7 +4,7 @@ import { Text } from '@tutu-ui'
 import { useAuth } from '@tutu-contexts/authContext'
 import { AddAccount } from './AddAccount'
 import { AddCreditCard } from './AddCreditCard'
-import Logo from '../../../../assets/logo.png'
+import Logo from '../../../../../assets/logo.png'
 
 export const CreateWallet = () => {
   const { loggedUser } = useAuth()

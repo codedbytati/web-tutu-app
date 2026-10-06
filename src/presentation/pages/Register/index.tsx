@@ -5,7 +5,7 @@ import { Button, PasswordField, TextField } from '@tutu-ui'
 import { GoogleButton } from '@tutu-components'
 import { useRegister } from './core/useRegister'
 import { CreateWallet } from './components/CreateWallet'
-import Logo from '../../assets/logo.png'
+import Logo from '../../../assets/logo.png'
 
 export const Register = () => {
   const [isRegistered, setIsRegistered] = useState(false)

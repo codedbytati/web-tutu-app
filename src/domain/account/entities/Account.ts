@@ -1,7 +1,21 @@
-import type { RemoteAccount, RemoteCard } from '@tutu-data'
+export type Account = {
+  id: string
+  bank: string
+  nickname: string
+  balance: number
+  type: 'CURRENT' | 'SAVINGS' | 'INVESTMENT'
+  isDeactivate: boolean
+}
 
-export type Account = RemoteAccount
-export type Card = RemoteCard
+export type Card = {
+  id: string
+  bank: string
+  nickname: string
+  limit: number
+  spent: number
+  available: number
+  isDeactivate: boolean
+}
 
 export type CreateAccountInput = {
   bank: string

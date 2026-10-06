@@ -1,7 +1,26 @@
-import type { RemoteTransaction, TransactionType } from '@tutu-data'
+export type Transaction = {
+  id: string
+  accountId: string
+  category?:
+    | 'HOUSE'
+    | 'FOOD'
+    | 'TRANSPORT'
+    | 'EDUCATION'
+    | 'HEALTH'
+    | 'LEISURE'
+    | 'OTHER'
+    | 'SALARY'
+    | 'INVESTIMENT'
+    | 'SAVINGS'
+  type: TransactionType
+  value: number
+  description?: string
+  from?: string
+  to?: string
+  date: string
+}
 
-export type Transaction = RemoteTransaction
-export type { TransactionType }
+export type TransactionType = 'DEBIT' | 'CREDIT' | 'TRANSFER'
 
 export type CreateTransactionInput = {
   accountId?: string
