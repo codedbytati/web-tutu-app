@@ -9,15 +9,31 @@ const UserController = require('./controller/User')
 const cors = require('cors')
 const firebaseAuth = require('./infra/firebaseAdmin')
 const userRepository = require('./infra/mongoose/repository/userRepository')
+const { hashPassword } = require('./infra/security/password')
+const { createRateLimiter, securityHeaders } = require('./middleware/security')
 
-app.use(Express.json())
+app.use(Express.json({ limit: '100kb' }))
+app.use(securityHeaders)
+
+const corsOrigins = (process.env.CORS_ORIGINS ||
+  'http://localhost:5173,http://127.0.0.1:5173')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean)
 
 app.use(
   cors({
-    origin: '*'
+    origin: (origin, callback) => {
+      if (!origin || corsOrigins.includes(origin)) {
+        return callback(null, true)
+      }
+
+      return callback(new Error('Origem não permitida pelo CORS'))
+    }
   })
 )
 
+app.use('/user/auth', createRateLimiter({ windowMs: 15 * 60 * 1000, max: 10 }))
 app.use(publicRoutes)
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 app.use(async (req, res, next) => {
@@ -38,7 +54,7 @@ app.use(async (req, res, next) => {
         user = await userRepository.create({
           username: decodedToken.name || decodedToken.email.split('@')[0],
           email: decodedToken.email,
-          password: `firebase:${decodedToken.uid}`
+          password: await hashPassword(`firebase:${decodedToken.uid}`)
         })
       }
 

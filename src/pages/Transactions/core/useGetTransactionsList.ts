@@ -1,20 +1,14 @@
 import { useMemo, useState, type ChangeEvent } from 'react'
 import { useGetTransactions } from '@tutu-services/transaction'
-import type { RemoteTransaction } from '@tutu-data'
+import {
+  getTransactionDescription,
+  getTransactionTotals
+} from '../../../domain/transaction/transactionPresentation'
 
 export const useGetTransactionsList = () => {
   const { data: transactions = [], isLoading, isError } = useGetTransactions()
   const [filter, setFilter] = useState<'all' | 'income' | 'expense'>('all')
   const [search, setSearch] = useState('')
-
-  const transactionDescription = (transaction: RemoteTransaction) => {
-    if (transaction.description) return transaction.description
-    if (transaction.type === 'TRANSFER')
-      return `${transaction.from || 'Origem'} para ${transaction.to || 'Destino'}`
-    return transaction.type === 'CREDIT'
-      ? transaction.from || transaction.to || 'Entrada'
-      : transaction.to || transaction.from || 'Saída'
-  }
 
   const filteredTransactions = useMemo(
     () =>
@@ -26,7 +20,7 @@ export const useGetTransactionsList = () => {
             : transaction.type === 'DEBIT')
         return (
           matchesFilter &&
-          transactionDescription(transaction)
+          getTransactionDescription(transaction)
             .toLocaleLowerCase()
             .includes(search.toLocaleLowerCase())
         )
@@ -34,12 +28,7 @@ export const useGetTransactionsList = () => {
     [filter, search, transactions]
   )
 
-  const income = transactions
-    .filter(({ type }) => type === 'CREDIT')
-    .reduce((sum, transaction) => sum + Math.abs(transaction.value), 0)
-  const expenses = transactions
-    .filter(({ type }) => type === 'DEBIT')
-    .reduce((sum, transaction) => sum + Math.abs(transaction.value), 0)
+  const { income, expenses } = getTransactionTotals(transactions)
 
   return {
     income,
@@ -48,7 +37,7 @@ export const useGetTransactionsList = () => {
     isError,
     isLoading,
     transactions: filteredTransactions,
-    description: transactionDescription,
+    description: getTransactionDescription,
     onFilterClick: setFilter,
     onSearchProps: {
       value: search,

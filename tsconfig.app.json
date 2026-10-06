@@ -22,6 +22,7 @@
       "@tutu-data/*": ["./src/data/*"],
       "@tutu-domain": ["./src/domain/index.ts"],
       "@tutu-domain/*": ["./src/domain/*"]
+      ,"@tutu-infrastructure/*": ["./src/infrastructure/*"]
     },
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,

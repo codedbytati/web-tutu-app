@@ -9,6 +9,14 @@ class User {
   isValid() {
     return this.username && this.email && this.password
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      username: this.username,
+      email: this.email
+    }
+  }
 }
 
 module.exports = User

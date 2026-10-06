@@ -1,35 +1,39 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { RemoteTransaction } from '@tutu-data'
-import { api } from '../api'
-import endpoints from './endpoints'
+import { queryKeys } from '../queryKeys'
+import type { UpdateTransactionInput } from '@tutu-domain/transaction/entities/Transaction'
+import { updateTransaction } from '@tutu-domain/transaction/use-cases/UpdateTransaction'
+import { transactionRepository } from '@tutu-infrastructure/transaction/HttpTransactionRepository'
+import type { Transaction } from '@tutu-domain/transaction/entities/Transaction'
 
 export const useUpdateTransaction = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({
-      id,
-      ...updates
-    }: {
-      id: string
-      value: number
-      type: RemoteTransaction['type']
-      description?: string
-      date?: string
-      category?: string
-      accountId?: string
-      from?: string
-      to?: string
-    }) => {
-      const { data } = await api.put<{ result: RemoteTransaction }>(
-        endpoints.editTransaction.replace(':id', id),
-        updates
+    mutationFn: (input: UpdateTransactionInput) =>
+      updateTransaction(transactionRepository, input),
+    onMutate: async (input) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.transactions })
+      const previous = queryClient.getQueryData<Transaction[]>(
+        queryKeys.transactions
       )
-      return data.result
+      queryClient.setQueryData(
+        queryKeys.transactions,
+        previous?.map((transaction) =>
+          transaction.id === input.id
+            ? { ...transaction, ...input }
+            : transaction
+        )
+      )
+      return { previous }
+    },
+    onError: (_error, _input, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(queryKeys.transactions, context.previous)
+      }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['get-transactions'] })
-      queryClient.invalidateQueries({ queryKey: ['get-accounts'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.transactions })
+      queryClient.invalidateQueries({ queryKey: queryKeys.accounts })
     }
   })
 }

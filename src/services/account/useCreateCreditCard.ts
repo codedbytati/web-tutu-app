@@ -1,24 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { api } from '@tutu-services/api'
-import type { RemoteCard } from '@tutu-data'
-import endpoints from './endpoints'
+import { queryKeys } from '../queryKeys'
+import type { CreateCardInput } from '@tutu-domain/account/entities/Account'
+import { createCard } from '@tutu-domain/account/use-cases/CreateCard'
+import { accountRepository } from '@tutu-infrastructure/account/HttpAccountRepository'
 
 export const useCreateCreditCard = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (card: {
-      bank: string
-      nickname: string
-      limit: number
-    }) => {
-      const { data } = await api.post<{ result: RemoteCard }>(
-        endpoints.createCard,
-        card
-      )
-      return data.result
-    },
+    mutationFn: (card: CreateCardInput) => createCard(accountRepository, card),
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ['get-accounts'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.accounts })
   })
 }

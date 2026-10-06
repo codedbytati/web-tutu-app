@@ -1,17 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { api } from '@tutu-services/api'
-import endpoints from './endpoints'
+import { queryKeys } from '../queryKeys'
+import { deactivateAccount } from '@tutu-domain/account/use-cases/DeactivateAccount'
+import { accountRepository } from '@tutu-infrastructure/account/HttpAccountRepository'
 
 export const useDeactivateAccount = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (accountId: string) => {
-      await api.patch(
-        endpoints.deactivateAccount.replace(':accountId', accountId)
-      )
-    },
+    mutationFn: (accountId: string) =>
+      deactivateAccount(accountRepository, accountId),
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ['get-accounts'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.accounts })
   })
 }

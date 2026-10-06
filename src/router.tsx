@@ -1,14 +1,16 @@
 import { createBrowserRouter } from 'react-router'
 import { AppLayout } from './layouts/AppLayout'
-import { LogIn } from './pages/LogIn'
-import { Register } from './pages/Register'
-import { Home } from './pages/Home'
-import { PageNotFound } from './pages/PageNotFound'
-import { Transactions } from './pages/Transactions'
-import { Profile } from './pages/Profile'
 import { ProtectedRoute } from './layouts/ProtectedRoute'
-import { Analysis } from './pages/Analysis'
-import { Accounts } from './pages/Accounts'
+import {
+  Accounts,
+  Analysis,
+  Home,
+  LogIn,
+  PageNotFound,
+  Profile,
+  Register,
+  Transactions
+} from './routePages'
 
 export const router = createBrowserRouter([
   // Rotas Púbicas

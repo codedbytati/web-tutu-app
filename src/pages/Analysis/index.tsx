@@ -1,6 +1,12 @@
+import { Suspense, lazy } from 'react'
 import { Text } from '@tutu-ui'
-import { DonutChart } from './components/DonutChart'
 import { Page } from '../../layouts/Page'
+
+const DonutChart = lazy(() =>
+  import('./components/DonutChart').then(({ DonutChart }) => ({
+    default: DonutChart
+  }))
+)
 
 export const Analysis = () => {
   return (
@@ -43,7 +49,15 @@ export const Analysis = () => {
             </div>
           </div>
         </div> */}
-        <DonutChart />
+        <Suspense
+          fallback={
+            <div className='flex min-h-64 items-center justify-center'>
+              Carregando gráfico...
+            </div>
+          }
+        >
+          <DonutChart />
+        </Suspense>
       </Page.Body>
     </Page>
   )

@@ -6,8 +6,11 @@ import {
   type ReactNode,
   createElement
 } from 'react'
-import { type User, onAuthStateChanged, signOut } from 'firebase/auth'
-import { auth } from '../services/firebase'
+import { type User } from 'firebase/auth'
+import { authGateway } from '@tutu-infrastructure/auth/FirebaseAuthGateway'
+import { queryClient } from '../services/queryClient'
+import { accountsQueryOptions } from '../services/account/useGetAccounts'
+import { transactionsQueryOptions } from '../services/transaction/useGetTransactions'
 
 interface AuthContextType {
   loggedUser: User | null
@@ -26,15 +29,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = authGateway.subscribe((currentUser) => {
       setLoggedUser(currentUser)
       setLoading(false)
+
+      if (currentUser) {
+        Promise.all([
+          queryClient.prefetchQuery(accountsQueryOptions),
+          queryClient.prefetchQuery(transactionsQueryOptions)
+        ]).catch((error: unknown) => {
+          console.error('Falha ao pré-carregar dados da aplicação.', error)
+        })
+      } else {
+        queryClient.clear()
+      }
     })
 
     return () => unsubscribe()
   }, [])
 
-  const logout = () => signOut(auth)
+  const logout = () => authGateway.logout()
 
   return createElement(
     AuthContext.Provider,

@@ -1,28 +1,11 @@
 import { useMutation } from '@tanstack/react-query'
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { auth } from '../services/firebase'
-
-interface RegisterParams {
-  fullName: string
-  email: string
-  password: string
-}
+import type { RegisterInput } from '@tutu-domain/auth/AuthGateway'
+import { authGateway } from '@tutu-infrastructure/auth/FirebaseAuthGateway'
 
 export const useRegisterUser = () => {
   return useMutation({
-    mutationFn: async ({ fullName, email, password }: RegisterParams) => {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      )
-
-      if (userCredential.user) {
-        await updateProfile(userCredential.user, {
-          displayName: fullName
-        })
-      }
-
+    mutationFn: async (input: RegisterInput) => {
+      const userCredential = await authGateway.register(input)
       return userCredential.user
     }
   })

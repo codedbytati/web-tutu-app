@@ -341,6 +341,32 @@ class AccountController {
       urlAnexo
     }
 
+    const allowedTypes = ['DEBIT', 'CREDIT', 'TRANSFER']
+    const allowedCategories = [
+      'HOUSE',
+      'FOOD',
+      'TRANSPORT',
+      'EDUCATION',
+      'HEALTH',
+      'LEISURE',
+      'OTHER',
+      'SALARY',
+      'INVESTIMENT',
+      'SAVINGS'
+    ]
+
+    if (
+      (value !== undefined &&
+        (!Number.isFinite(Number(value)) || Number(value) <= 0)) ||
+      (type !== undefined && !allowedTypes.includes(String(type).toUpperCase())) ||
+      (category !== undefined && !allowedCategories.includes(category)) ||
+      (description !== undefined && String(description).length > 500) ||
+      (from !== undefined && String(from).length > 200) ||
+      (to !== undefined && String(to).length > 200)
+    ) {
+      return res.status(400).json({ message: 'Dados da transação inválidos' })
+    }
+
     Object.keys(updates).forEach(
       (key) => updates[key] === undefined && delete updates[key]
     )
