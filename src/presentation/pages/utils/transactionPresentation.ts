@@ -1,7 +1,7 @@
-import type { RemoteTransaction } from '@tutu-data'
+import type { TransactionModel } from '@tutu-domain'
 
 export const getTransactionDescription = (
-  transaction: RemoteTransaction
+  transaction: TransactionModel
 ) => {
   if (transaction.description) return transaction.description
   if (transaction.type === 'TRANSFER') {
@@ -13,7 +13,7 @@ export const getTransactionDescription = (
     : transaction.to || transaction.from || 'Saída'
 }
 
-export const getTransactionTotals = (transactions: RemoteTransaction[]) => ({
+export const getTransactionTotals = (transactions: TransactionModel[]) => ({
   income: transactions
     .filter(({ type }) => type === 'CREDIT')
     .reduce((sum, transaction) => sum + Math.abs(transaction.value), 0),

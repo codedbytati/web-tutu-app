@@ -1,4 +1,4 @@
-import type { Transaction } from '@tutu-domain/transaction/entities/Transaction'
+import type { TransactionModel } from '@tutu-domain'
 
 export type MonthlyTotals = {
   income: number
@@ -9,7 +9,7 @@ const getMonthKey = (date: Date) =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
 
 export const getMonthlyTotals = (
-  transactions: Transaction[],
+  transactions: TransactionModel[],
   date: Date
 ): MonthlyTotals => {
   const monthKey = getMonthKey(date)

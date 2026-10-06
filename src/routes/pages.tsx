@@ -8,7 +8,7 @@ import {
   loadProfile,
   loadRegister,
   loadTransactions
-} from './routeLoaders'
+} from './loaders'
 
 export const LogIn = lazy(loadLogIn)
 export const Register = lazy(loadRegister)

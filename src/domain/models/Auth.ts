@@ -1,16 +1,16 @@
-export interface RegisterInput {
+export type RegisterInput = {
   fullName: string
   email: string
   password: string
 }
 
-export interface User {
+export type User = {
   id: string
   fullName: string
   email: string
 }
 
-export interface AuthResponse {
+export type AuthResponse = {
   user: User
   token: string
 }

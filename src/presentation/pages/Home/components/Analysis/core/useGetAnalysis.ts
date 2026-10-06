@@ -3,7 +3,7 @@ import { formatCurrency } from '../../../../utils'
 import {
   getMonthlyTotals,
   getPreviousMonth
-} from '../../../../../../domain/analysis/monthlyTotals'
+} from '../../../../../../utils/monthlyTotals'
 
 export const useGetAnalysis = () => {
   const { data: transactions = [] } = useGetTransactions()

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router'
-import { AppLayout } from './presentation/layouts/AppLayout'
-import { ProtectedRoute } from './presentation/layouts/ProtectedRoute'
+import { AppLayout } from '../presentation/layouts/AppLayout'
+import { ProtectedRoute } from '../presentation/layouts/ProtectedRoute'
 import {
   Accounts,
   Analysis,
@@ -10,7 +10,7 @@ import {
   Profile,
   Register,
   Transactions
-} from './routePages'
+} from './pages'
 
 export const router = createBrowserRouter([
   // Rotas Púbicas

@@ -7,7 +7,7 @@ import {
 } from 'lucide-react'
 import { NavLink } from 'react-router'
 import { makeStyles } from './style'
-import { preloadRoutes } from '../../../../../routeLoaders'
+import { preloadRoutes } from '../../../../../routes/loaders'
 import { queryClient } from '../../../../../services/queryClient'
 import { accountsQueryOptions } from '../../../../../services/account/useGetAccounts'
 import { transactionsQueryOptions } from '../../../../../services/account/useGetTransactions'

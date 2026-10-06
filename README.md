@@ -8,25 +8,32 @@ O frontend usa uma separação por camadas:
 
 ```text
 src/
-  domain/          Entidades, contratos e casos de uso sem dependências de UI
-  services/        Chamadas de API e autenticação, agrupadas pelo endpoint
-  presentation/   Páginas, layouts e componentes de interface
-  contexts/       Estado de autenticação e composição da aplicação
-  store/          Estado global de cliente com Zustand
+  data/            Tipos que representam as respostas da API
+    models/        Tipos Remote... retornados pela API
+  domain/          Tipos usados pela aplicação
+    models/        Tipos consumidos pela apresentação
+  services/        Chamadas de API e autenticação
+    account/       Endpoints /account, incluindo transações e cartões
+    login/         Autenticação Firebase
+  presentation/    Páginas, layouts e componentes de interface
+  routes/          Loaders lazy, páginas lazy e configuração do router
+  utils/           Funções utilitárias reutilizáveis
+  contexts/        Estado de autenticação e composição da aplicação
+  store/           Reservado para estado global de cliente
 ```
 
-As chamadas para os endpoints de contas, cartões e transações ficam em `services/account`, pois usam a raiz `/account`. A autenticação Firebase fica em `services/login`. React Query gerencia o estado remoto, enquanto o estado local permanece nos componentes/hooks de apresentação.
-Zustand gerencia somente estado global de cliente, como o layout do sidebar; ele não duplica contas, cartões ou transações.
+Os tipos `Remote...` em `data/models` representam as respostas da API. Os tipos usados pela aplicação ficam em `domain/models`, como contas, cartões, transações e autenticação. As chamadas para os endpoints de contas, cartões e transações ficam em `services/account`, pois usam a raiz `/account`. A autenticação Firebase fica em `services/login`.
+
+O projeto mantém uma estrutura simples: os serviços fazem diretamente as chamadas HTTP e integram o React Query; não há camadas separadas de entities, repositories ou use-cases para operações que não possuem regras de negócio complexas. O React Query gerencia o estado remoto, enquanto os hooks e componentes de apresentação gerenciam o estado específico das telas. O Zustand permanece disponível como dependência para futuros estados globais de interface, mas atualmente não existe uma store ativa utilizando-o.
 
 ## Performance
 
 - Páginas são carregadas com lazy loading e code splitting.
 - Rotas e dados de contas/transações são pré-carregados após autenticação e ao focar/passar o mouse no menu.
-- Cache usa `staleTime` e `gcTime` específicos por recurso.
+- O cache compartilhado do React Query usa `staleTime`, `gcTime`, retry limitado e não refaz consultas ao focar a janela.
 - O cache é limpo no logout.
 - O gráfico de Análises e ApexCharts são carregados somente quando necessários.
-- Edição e exclusão de transações usam atualização otimista com rollback em caso de erro.
-- O estado de layout usa seletores de uma store Zustand para limitar re-renderizações.
+- Os dados são invalidados após mutações de contas e transações para manter as telas atualizadas.
 
 ## Segurança
 

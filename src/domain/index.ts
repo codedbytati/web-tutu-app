@@ -1,2 +1,5 @@
 export type { AccountModel } from './models/Accounts'
 export type { CardModel } from './models/Accounts'
+export type { TransactionModel } from './models/Transactions'
+export type { AuthResponse, RegisterInput, User } from './models/Auth'
+export { getFirstName } from './models/Auth'

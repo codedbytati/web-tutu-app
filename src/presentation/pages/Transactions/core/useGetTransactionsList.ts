@@ -3,7 +3,7 @@ import { useGetTransactions } from '@tutu-services/account'
 import {
   getTransactionDescription,
   getTransactionTotals
-} from '../../../../domain/transaction/transactionPresentation'
+} from '../../utils/transactionPresentation'
 
 export const useGetTransactionsList = () => {
   const { data: transactions = [], isLoading, isError } = useGetTransactions()

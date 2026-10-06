@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { RouterProvider } from 'react-router'
-import { router } from './router'
+import { router } from './routes/router'
 import { AuthProvider } from './contexts/authContext'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { GlobalToasts } from '@tutu-ui/Toast'
