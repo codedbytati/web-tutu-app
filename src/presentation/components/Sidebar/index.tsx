@@ -6,15 +6,15 @@ export const Sidebar = () => {
   const { loggedUser } = useAuth()
 
   return (
-    <div className='bg-card border-r border-r-border'>
-      <div className='flex items-center gap-2 p-6 border-b border-b-border'>
+    <div className='bg-card border-b border-border md:min-w-64 md:border-b-0 md:border-r'>
+      <div className='flex items-center gap-2 p-4 md:p-6 border-b border-b-border'>
         <img
           src={Logo}
           alt='Quadrado com bordas arredondadas com fundo violeta e a letra T maiúscula em branco'
         />
         <h1 className='font-display font-black text-foreground'>tutu</h1>
       </div>
-      <div className='p-6 border-b border-b-border'>
+      <div className='hidden p-6 border-b border-b-border md:block'>
         <ProfileInfo
           name={loggedUser?.displayName ?? ''}
           email={loggedUser?.email ?? ''}

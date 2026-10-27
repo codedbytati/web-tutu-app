@@ -65,7 +65,10 @@ app.use(async (req, res, next) => {
     }
   }
 
-  const user = UserController.getToken(token)
+  const user =
+    process.env.JWT_SECRET || process.env.NODE_ENV === 'test'
+      ? UserController.getToken(token)
+      : null
   if (!user) return res.status(401).json({ message: 'Token inválido' })
   req.user = user
   next()

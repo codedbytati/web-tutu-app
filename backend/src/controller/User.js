@@ -22,7 +22,7 @@ class UserController {
   }
 
   async create(req, res) {
-    const user = new userDTO(req.body)
+    const user = new userDTO(req.body || {})
     const { userRepository, salvarUsuario } = this.di
 
     if (
@@ -33,7 +33,8 @@ class UserController {
       user.username.length > 120 ||
       user.email.length > 254 ||
       user.password.length < 8 ||
-      user.password.length > 128
+      user.password.length > 128 ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email)
     )
       return res.status(400).json({ message: 'não houve informações enviadas' })
     try {
@@ -67,8 +68,14 @@ class UserController {
   }
   async auth(req, res) {
     const { userRepository } = this.di
-    const { email, password } = req.body
-    if (typeof email !== 'string' || typeof password !== 'string') {
+    const { email, password } = req.body || {}
+    if (
+      typeof email !== 'string' ||
+      typeof password !== 'string' ||
+      email.length > 254 ||
+      password.length > 128 ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    ) {
       return res.status(400).json({ message: 'Credenciais inválidas' })
     }
 

@@ -57,7 +57,7 @@ export const Menu = () => {
   }
 
   return (
-    <nav className='p-3 flex flex-col gap-1'>
+    <nav className='flex gap-1 overflow-x-auto p-2 md:flex-col md:p-3'>
       {menuItems.map(({ to, label, icon: Icon, color }) => (
         <NavLink
           key={to}

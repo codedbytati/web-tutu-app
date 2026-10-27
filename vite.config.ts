@@ -12,14 +12,20 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@tutu-ui': path.resolve(__dirname, './src/presentation/ui'),
-      '@tutu-components': path.resolve(__dirname, './src/presentation/components'),
-      '@tutu-schemas': path.resolve(__dirname, './src/schemas'),
-      '@tutu-hooks': path.resolve(__dirname, './src/presentation/hooks'),
-      '@tutu-services': path.resolve(__dirname, './src/services'),
-      '@tutu-contexts': path.resolve(__dirname, './src/contexts'),
-      '@tutu-data': path.resolve(__dirname, './src/data'),
-      '@tutu-domain': path.resolve(__dirname, './src/domain')
+      '@tutu-ui': path.resolve(import.meta.dirname, './src/presentation/ui'),
+      '@tutu-components': path.resolve(
+        import.meta.dirname,
+        './src/presentation/components'
+      ),
+      '@tutu-schemas': path.resolve(import.meta.dirname, './src/schemas'),
+      '@tutu-hooks': path.resolve(
+        import.meta.dirname,
+        './src/presentation/hooks'
+      ),
+      '@tutu-services': path.resolve(import.meta.dirname, './src/services'),
+      '@tutu-contexts': path.resolve(import.meta.dirname, './src/contexts'),
+      '@tutu-data': path.resolve(import.meta.dirname, './src/data'),
+      '@tutu-domain': path.resolve(import.meta.dirname, './src/domain')
     }
   }
 })

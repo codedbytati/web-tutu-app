@@ -32,7 +32,7 @@ export function AppLayout() {
   const currentRoute = routeMap[location.pathname] || defaultConfig
 
   return (
-    <div className='flex min-h-screen'>
+    <div className='flex min-h-screen flex-col md:flex-row'>
       <Sidebar />
       <div className='flex-1'>
         <Header icon={currentRoute.icon} label={currentRoute.label} />

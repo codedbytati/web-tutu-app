@@ -4,6 +4,13 @@ const createRateLimiter = ({ windowMs, max }) => {
   return (req, res, next) => {
     const key = req.ip || req.socket.remoteAddress || 'unknown'
     const now = Date.now()
+
+    if (attempts.size > 10000) {
+      for (const [attemptKey, attempt] of attempts) {
+        if (now - attempt.startedAt >= windowMs) attempts.delete(attemptKey)
+      }
+    }
+
     const current = attempts.get(key)
 
     if (!current || now - current.startedAt >= windowMs) {

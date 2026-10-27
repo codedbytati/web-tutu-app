@@ -17,6 +17,7 @@ describe('Financial manager API', () => {
   let accountId
   let cardId
   let transactionId
+  let otherUserToken
 
   beforeAll(async () => {
     if (app.ready) {
@@ -52,6 +53,28 @@ describe('Financial manager API', () => {
 
     token = response.body.result.token
     expect(typeof token).toBe('string')
+  })
+
+  test('does not expose the public user list', async () => {
+    const response = await request(app).get('/user')
+
+    expect(response.status).toBe(401)
+  })
+
+  test('rejects invalid financial payloads', async () => {
+    const accountResponse = await request(app)
+      .post('/account')
+      .set('Authorization', ['Bearer', token].join(' '))
+      .send({ bank: 123, nickname: 'Conta', type: 'CURRENT' })
+
+    expect(accountResponse.status).toBe(400)
+
+    const transactionResponse = await request(app)
+      .post('/account/transaction')
+      .set('Authorization', ['Bearer', token].join(' '))
+      .send({ accountId: 'invalid', value: 0, type: 'DEBIT' })
+
+    expect(transactionResponse.status).toBe(400)
   })
 
   test('does not create an account automatically for the user', async () => {
@@ -101,6 +124,35 @@ describe('Financial manager API', () => {
     cardId = cardResponse.body.result.id
     expect(accountId).toBeDefined()
     expect(cardId).toBeDefined()
+  })
+
+  test('does not allow another user to access financial resources', async () => {
+    await request(app).post('/user').send({
+      username: 'Other User',
+      email: 'other-user@example.com',
+      password: 'password123'
+    })
+
+    const authResponse = await request(app)
+      .post('/user/auth')
+      .send({ email: 'other-user@example.com', password: 'password123' })
+
+    otherUserToken = authResponse.body.result.token
+    expect(authResponse.status).toBe(200)
+
+    const accountsResponse = await request(app)
+      .get('/account')
+      .set('Authorization', ['Bearer', otherUserToken].join(' '))
+
+    expect(accountsResponse.status).toBe(200)
+    expect(accountsResponse.body.result.account).toEqual([])
+    expect(accountsResponse.body.result.cards).toEqual([])
+
+    const blockResponse = await request(app)
+      .patch(`/account/${accountId}/block`)
+      .set('Authorization', ['Bearer', otherUserToken].join(' '))
+
+    expect(blockResponse.status).toBe(404)
   })
 
   test('toggles account activation when blocking it twice', async () => {
@@ -199,6 +251,13 @@ describe('Financial manager API', () => {
       type: 'CREDIT',
       urlAnexo: payload.urlAnexo
     })
+
+    const unauthorizedResponse = await request(app)
+      .put(`/account/transaction/${transactionId}`)
+      .set('Authorization', ['Bearer', otherUserToken].join(' '))
+      .send({ value: 300 })
+
+    expect(unauthorizedResponse.status).toBe(404)
   })
 
   test('returns the account statement with transactions', async () => {

@@ -1,43 +1,50 @@
 import Chart from 'react-apexcharts'
 import type { ApexOptions } from 'apexcharts'
+import { useMemo } from 'react'
 import { useGetTransactions } from '@tutu-services/transaction'
 import { TRANSACTION_CATEGORIES } from '../../../utils/getTransactionCategory'
 import { formatCurrency } from '../../../utils'
 
 export const DonutChart = () => {
   const { data: transactions = [] } = useGetTransactions()
-  const currentDate = new Date()
-  const categoryTotals = new Map<string, number>()
+  const { labels, series, totalExpenses } = useMemo(() => {
+    const currentDate = new Date()
+    const categoryTotals = new Map<string, number>()
 
-  transactions.forEach((transaction) => {
-    const transactionDate = new Date(transaction.date)
-    const isCurrentMonth =
-      transactionDate.getFullYear() === currentDate.getFullYear() &&
-      transactionDate.getMonth() === currentDate.getMonth()
+    transactions.forEach((transaction) => {
+      const transactionDate = new Date(transaction.date)
+      const isCurrentMonth =
+        transactionDate.getFullYear() === currentDate.getFullYear() &&
+        transactionDate.getMonth() === currentDate.getMonth()
 
-    if (
-      Number.isNaN(transactionDate.getTime()) ||
-      !isCurrentMonth ||
-      transaction.type !== 'DEBIT'
-    ) {
-      return
-    }
+      if (
+        Number.isNaN(transactionDate.getTime()) ||
+        !isCurrentMonth ||
+        transaction.type !== 'DEBIT'
+      ) {
+        return
+      }
 
-    const category = transaction.category ?? 'OTHER'
-    categoryTotals.set(
-      category,
-      (categoryTotals.get(category) ?? 0) + Math.abs(transaction.value)
+      const category = transaction.category ?? 'OTHER'
+      categoryTotals.set(
+        category,
+        (categoryTotals.get(category) ?? 0) + Math.abs(transaction.value)
+      )
+    })
+
+    const categories = [...categoryTotals.entries()].sort(
+      ([, firstTotal], [, secondTotal]) => secondTotal - firstTotal
     )
-  })
+    const series = categories.map(([, total]) => total)
 
-  const categories = [...categoryTotals.entries()].sort(
-    ([, firstTotal], [, secondTotal]) => secondTotal - firstTotal
-  )
-  const series = categories.map(([, total]) => total)
-  const labels = categories.map(
-    ([category]) => TRANSACTION_CATEGORIES[category]?.name ?? 'Outros'
-  )
-  const totalExpenses = series.reduce((total, value) => total + value, 0)
+    return {
+      series,
+      labels: categories.map(
+        ([category]) => TRANSACTION_CATEGORIES[category]?.name ?? 'Outros'
+      ),
+      totalExpenses: series.reduce((total, value) => total + value, 0)
+    }
+  }, [transactions])
 
   const options: ApexOptions = {
     chart: {
@@ -78,15 +85,23 @@ export const DonutChart = () => {
       },
       formatter: function (seriesName, opts) {
         const value = opts?.w.globals.series[opts.seriesIndex]
-        const percentage = totalExpenses > 0
-          ? (value / totalExpenses) * 100
-          : 0
+        const percentage = totalExpenses > 0 ? (value / totalExpenses) * 100 : 0
         return `<div style="display: flex; justify-content: space-between; width: 260px; color: #9CA3AF;">
                   <span>${seriesName}</span>
                   <strong style="color: #111827;">${percentage.toFixed(1)}%</strong>
                 </div>`
       }
     },
+    responsive: [
+      {
+        breakpoint: 640,
+        options: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    ],
     plotOptions: {
       pie: {
         donut: {

@@ -37,14 +37,12 @@ export const Modal = ({ isOpen, children }: ModalProps) => {
   if (!isOpen) return null
 
   return createPortal(
-    <div
-      className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm'
-    >
+    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm'>
       <dialog
         ref={dialogRef}
         role='dialog'
         aria-modal='true'
-        className='w-1/3 m-auto flex flex-col rounded-2xl bg-card shadow-lg border border-border overflow-hidden p-0 text-foreground'
+        className='m-auto flex max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] max-w-xl flex-col overflow-hidden rounded-2xl border border-border bg-card p-0 text-foreground shadow-lg md:w-1/3'
         onClick={(e) => e.stopPropagation()}
       >
         {children}

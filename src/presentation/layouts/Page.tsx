@@ -1,5 +1,5 @@
 export const Page = ({ children }: { children: React.ReactNode }) => {
-  return <div className='w-1/2'>{children}</div>
+  return <div className='w-full max-w-4xl'>{children}</div>
 }
 
 Page.Header = function PageHeader({ children }: { children: React.ReactNode }) {

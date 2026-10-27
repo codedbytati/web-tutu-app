@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { api } from '@tutu-services/api'
 import type { RemoteTransaction } from '@tutu-data'
 import endpoints from './endpoints'
+import { queryKeys } from '../queryKeys'
 
 type TransactionsResponse = {
   result: {
@@ -10,7 +11,7 @@ type TransactionsResponse = {
 }
 
 export const transactionsQueryOptions = {
-  queryKey: ['get-transactions'] as const,
+  queryKey: queryKeys.transactions,
   queryFn: async () => {
     const { data } = await api.get<TransactionsResponse>(
       endpoints.getTransactions

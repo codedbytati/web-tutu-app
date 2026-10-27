@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@tutu-services/api'
 import type { RemoteTransaction } from '@tutu-data'
 import endpoints from './endpoints'
+import { invalidateFinancialQueries } from '../queryClient'
 
 export const useCreateTransaction = () => {
   const queryClient = useQueryClient()
@@ -25,9 +26,6 @@ export const useCreateTransaction = () => {
       )
       return data.result
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['get-transactions'] })
-      queryClient.invalidateQueries({ queryKey: ['get-accounts'] })
-    }
+    onSuccess: () => invalidateFinancialQueries(queryClient)
   })
 }

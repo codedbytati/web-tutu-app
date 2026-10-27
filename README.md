@@ -88,9 +88,11 @@ refetchOnWindowFocus: false
 - O backend mantém compatibilidade com o fluxo JWT legado;
 - Senhas do fluxo legado são armazenadas com `scrypt`, salt aleatório e comparação em tempo constante;
 - O backend aplica limite de payload JSON;
+- Payloads de contas, cartões e transações são validados no backend, incluindo tipos, limites, valores e datas;
 - CORS é controlado pela variável `CORS_ORIGINS`;
 - O backend aplica headers básicos de segurança;
 - Há rate limiting para as rotas de autenticação;
+- Recursos financeiros são filtrados pelo usuário autenticado, e a listagem pública de usuários não está disponível;
 - Credenciais do Firebase Admin, MongoDB e JWT devem permanecer somente no ambiente do backend.
 
 A configuração Web do Firebase usa variáveis `VITE_FIREBASE_*`. Essas variáveis são incorporadas ao bundle do frontend e não devem ser tratadas como secrets. Segredos do Firebase Admin nunca devem ser expostos ao frontend.
@@ -186,6 +188,7 @@ npm.cmd run build     # Executa type-check e build de produção
 npm.cmd run lint      # Executa o ESLint
 npm.cmd run preview   # Serve o build de produção localmente
 npm.cmd run prettier  # Verifica a formatação
+npm.cmd run test:unit # Executa os testes unitários do frontend
 ```
 
 ### Backend

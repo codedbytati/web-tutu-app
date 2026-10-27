@@ -1,5 +1,11 @@
 const { Router } = require('express')
 const AccountController = require('./controller/Account')
+const {
+  validateAccount,
+  validateCard,
+  validateObjectIdParam,
+  validateTransaction
+} = require('./middleware/validation')
 const accountController = new AccountController({})
 const router = Router()
 
@@ -17,20 +23,27 @@ const router = Router()
  */
 router.get('/account', accountController.find.bind(accountController))
 
-router.post('/account', accountController.createAccount.bind(accountController))
+router.post(
+  '/account',
+  validateAccount,
+  accountController.createAccount.bind(accountController)
+)
 
 router.post(
   '/account/card',
+  validateCard,
   accountController.createCard.bind(accountController)
 )
 
 router.patch(
   '/account/:id/block',
+  validateObjectIdParam('id'),
   accountController.blockAccount.bind(accountController)
 )
 
 router.patch(
   '/account/card/:id/block',
+  validateObjectIdParam('id'),
   accountController.blockCard.bind(accountController)
 )
 
@@ -71,6 +84,7 @@ router.patch(
  */
 router.post(
   '/account/transaction',
+  validateTransaction(),
   accountController.createTransaction.bind(accountController)
 )
 
@@ -107,6 +121,8 @@ router.get(
  */
 router.put(
   '/account/transaction/:id',
+  validateObjectIdParam('id'),
+  validateTransaction({ partial: true }),
   accountController.updateTransaction.bind(accountController)
 )
 
@@ -132,6 +148,7 @@ router.put(
  */
 router.delete(
   '/account/transaction/:id',
+  validateObjectIdParam('id'),
   accountController.deleteTransaction.bind(accountController)
 )
 
@@ -158,6 +175,7 @@ router.delete(
  */
 router.get(
   '/account/:accountId/statement',
+  validateObjectIdParam('accountId'),
   accountController.getStatment.bind(accountController)
 )
 

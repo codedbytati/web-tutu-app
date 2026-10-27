@@ -7,33 +7,6 @@ const router = Router()
 /**
  * @swagger
  * /user:
- *   get:
- *     summary: Busca usuários
- *     tags: [Users]
- *     responses:
- *       200:
- *         description: Lista de usuários encontrada com sucesso
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                   name:
- *                     type: string
- *                   email:
- *                     type: string
- *       404:
- *         description: Nenhum usuário encontrado
- */
-router.get('/user', userController.find.bind(userController))
-
-/**
- * @swagger
- * /user:
  *   post:
  *     summary: Cria um novo usuário
  *     tags: [Users]
