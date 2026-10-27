@@ -1,4 +1,4 @@
-import { useGetTransactions } from '@tutu-services/account'
+import { useGetTransactions } from '@tutu-services/transaction'
 import { formatCurrency } from '../../../../utils'
 import {
   getMonthlyTotals,

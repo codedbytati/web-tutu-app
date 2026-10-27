@@ -81,12 +81,12 @@ export const Profile = () => {
             </div>
           </ColoredCard>
           <div className='flex flex-col gap-4'>
-            <ProfileButton
+            {/* <ProfileButton
               title='Dados pessoais'
               description='Edite as suas informações pessoais'
               Icon={UserIcon}
               onClick={() => setSelectedOption('profile')}
-            />
+            /> */}
             {/* <ProfileButton
             title='Segurança'
             description='Gerencie a sua senha'

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { api } from '../api'
+import { api } from '@tutu-services/api'
 import type { RemoteTransaction } from '@tutu-data'
 import endpoints from './endpoints'
 
@@ -20,7 +20,7 @@ export const useCreateTransaction = () => {
       date?: string
     }) => {
       const { data } = await api.post<{ result: RemoteTransaction }>(
-        endpoints.getTransactions,
+        endpoints.createTransaction,
         transaction
       )
       return data.result

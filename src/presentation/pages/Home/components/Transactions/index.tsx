@@ -38,7 +38,7 @@ export const Transactions = () => {
               description={description(transaction)}
               type={transaction.type}
               date={formatDate(transaction.date)}
-              amount={formatCurrency(transaction.value)}
+              amount={formatCurrency(Math.abs(transaction.value))}
               onClick={setSelectedTransaction}
             />
           ))}

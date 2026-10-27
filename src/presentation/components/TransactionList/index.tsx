@@ -46,7 +46,7 @@ TransactionList.Item = function TransactionItem({
           <Icon size={20} className='text-foreground' />
         </div>
         <div className='flex flex-col gap-0.5'>
-          <p className='font-display font-semibold text-sm text-foreground'>
+          <p className='font-display text-start font-semibold text-sm text-foreground'>
             {description}
           </p>
           <p className='text-xs text-muted-foreground'>

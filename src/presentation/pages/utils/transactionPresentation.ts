@@ -1,9 +1,8 @@
 import type { TransactionModel } from '@tutu-domain'
 
-export const getTransactionDescription = (
-  transaction: TransactionModel
-) => {
-  if (transaction.description) return transaction.description
+export const getTransactionDescription = (transaction: TransactionModel) => {
+  const description = transaction.description?.trim()
+  if (description) return description
   if (transaction.type === 'TRANSFER') {
     return `${transaction.from || 'Origem'} para ${transaction.to || 'Destino'}`
   }

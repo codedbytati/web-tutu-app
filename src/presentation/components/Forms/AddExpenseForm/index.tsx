@@ -58,7 +58,7 @@ export const AddExpenseForm = ({
         <SelectItem value=''>Selecione a conta</SelectItem>
         <AccountOptions />
       </Select>
-      <Button type='submit' variant='positive' disabled={isPending}>
+      <Button type='submit' variant='danger' disabled={isPending}>
         {isPending ? 'Registrando...' : 'Registrar despesa'}
       </Button>
     </form>

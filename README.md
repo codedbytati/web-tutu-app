@@ -13,7 +13,8 @@ src/
   domain/          Tipos usados pela aplicação
     models/        Tipos consumidos pela apresentação
   services/        Chamadas de API e autenticação
-    account/       Endpoints /account, incluindo transações e cartões
+    account/       Endpoints /account de contas e cartões
+    transaction/   Endpoints de transações
     login/         Autenticação Firebase
   presentation/    Páginas, layouts e componentes de interface
   routes/          Loaders lazy, páginas lazy e configuração do router
@@ -22,7 +23,7 @@ src/
   store/           Reservado para estado global de cliente
 ```
 
-Os tipos `Remote...` em `data/models` representam as respostas da API. Os tipos usados pela aplicação ficam em `domain/models`, como contas, cartões, transações e autenticação. As chamadas para os endpoints de contas, cartões e transações ficam em `services/account`, pois usam a raiz `/account`. A autenticação Firebase fica em `services/login`.
+Os tipos `Remote...` em `data/models` representam as respostas da API. Os tipos usados pela aplicação ficam em `domain/models`, como contas, cartões, transações e autenticação. As chamadas de contas e cartões ficam em `services/account`. As chamadas de transações ficam em `services/transaction`, respeitando os endpoints definidos pela API, como `/transaction` e `/account/transaction`. A autenticação Firebase fica em `services/login`.
 
 O projeto mantém uma estrutura simples: os serviços fazem diretamente as chamadas HTTP e integram o React Query; não há camadas separadas de entities, repositories ou use-cases para operações que não possuem regras de negócio complexas. O React Query gerencia o estado remoto, enquanto os hooks e componentes de apresentação gerenciam o estado específico das telas. O Zustand permanece disponível como dependência para futuros estados globais de interface, mas atualmente não existe uma store ativa utilizando-o.
 

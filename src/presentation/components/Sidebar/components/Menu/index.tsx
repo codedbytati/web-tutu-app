@@ -10,7 +10,7 @@ import { makeStyles } from './style'
 import { preloadRoutes } from '../../../../../routes/loaders'
 import { queryClient } from '../../../../../services/queryClient'
 import { accountsQueryOptions } from '../../../../../services/account/useGetAccounts'
-import { transactionsQueryOptions } from '../../../../../services/account/useGetTransactions'
+import { transactionsQueryOptions } from '../../../../../services/transaction/useGetTransactions'
 
 const menuItems = [
   { to: '/', label: 'Início', icon: HomeIcon, color: 'violet' },

@@ -1,10 +1,17 @@
 import { useEffect } from 'react'
-import { useForm, type SubmitHandler } from 'react-hook-form'
+import { useForm, useWatch, type SubmitHandler } from 'react-hook-form'
 import { ArrowUpDownIcon } from 'lucide-react'
 import { Button, Modal, Text, useToast } from '@tutu-ui'
-import { AddExpenseForm, AddIncomeForm, AddTransferForm } from '@tutu-components'
+import {
+  AddExpenseForm,
+  AddIncomeForm,
+  AddTransferForm
+} from '@tutu-components'
 import type { RemoteTransaction } from '@tutu-data'
-import { useDeleteTransaction, useUpdateTransaction } from '@tutu-services/account'
+import {
+  useDeleteTransaction,
+  useUpdateTransaction
+} from '@tutu-services/transaction'
 import { TRANSACTION_CATEGORIES } from '../../../pages/utils/getTransactionCategory'
 
 type DetailsProps = {
@@ -23,16 +30,23 @@ type TransactionFormData = {
   to: string
 }
 
-const formatDateInput = (date: string) => new Date(date).toISOString().slice(0, 10)
-const formatCurrencyInput = (value: number) => Math.abs(value).toLocaleString('pt-BR', {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2
-})
+const formatDateInput = (date: string) => date.slice(0, 10)
+const formatDisplayDate = (date: string) => {
+  const [year, month, day] = formatDateInput(date).split('-')
+  return `${day}/${month}/${year}`
+}
+
+const formatCurrencyInput = (value: number) =>
+  Math.abs(value).toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })
 
 export const Details = ({ isOpen, onClose, transaction }: DetailsProps) => {
   const updateTransaction = useUpdateTransaction()
   const deleteTransaction = useDeleteTransaction()
   const form = useForm<TransactionFormData>()
+  const formValues = useWatch({ control: form.control })
 
   useEffect(() => {
     if (!transaction) return
@@ -51,8 +65,7 @@ export const Details = ({ isOpen, onClose, transaction }: DetailsProps) => {
   if (!transaction) return null
 
   const Icon = transaction.category
-    ? TRANSACTION_CATEGORIES[transaction.category]?.icon ??
-    ArrowUpDownIcon
+    ? (TRANSACTION_CATEGORIES[transaction.category]?.icon ?? ArrowUpDownIcon)
     : ArrowUpDownIcon
 
   const onSubmit: SubmitHandler<TransactionFormData> = async (data) => {
@@ -70,36 +83,55 @@ export const Details = ({ isOpen, onClose, transaction }: DetailsProps) => {
         from: data.from.trim() || undefined,
         to: data.to.trim() || undefined
       })
-      useToast.add({ title: 'Sucesso!', description: 'Transação atualizada com sucesso.', status: 'success' })
+      useToast.add({
+        title: 'Sucesso!',
+        description: 'Transação atualizada com sucesso.',
+        status: 'success'
+      })
       onClose()
     } catch {
-      useToast.add({ title: 'Tente novamente', description: 'Não foi possível atualizar a transação.', status: 'error' })
+      useToast.add({
+        title: 'Tente novamente',
+        description: 'Não foi possível atualizar a transação.',
+        status: 'error'
+      })
     }
   }
 
   const onDelete = async () => {
     try {
       await deleteTransaction.mutateAsync(transaction.id)
-      useToast.add({ title: 'Sucesso!', description: 'Transação excluída com sucesso.', status: 'success' })
+      useToast.add({
+        title: 'Sucesso!',
+        description: 'Transação excluída com sucesso.',
+        status: 'success'
+      })
       onClose()
     } catch {
-      useToast.add({ title: 'Tente novamente', description: 'Não foi possível excluir a transação.', status: 'error' })
+      useToast.add({
+        title: 'Tente novamente',
+        description: 'Não foi possível excluir a transação.',
+        status: 'error'
+      })
     }
   }
 
   const commonProps = {
     onDescriptionProps: {
       ...form.register('description', { required: 'Informe a descrição.' }),
+      value: formValues.description || '',
       isInvalid: Boolean(form.formState.errors.description),
       errorMessage: form.formState.errors.description?.message
     },
     onDateProps: {
       ...form.register('date', { required: 'Informe a data.' }),
+      value: formValues.date || '',
       isInvalid: Boolean(form.formState.errors.date),
       errorMessage: form.formState.errors.date?.message
     },
     onValueProps: {
       ...form.register('value', { required: 'Informe o valor.' }),
+      value: formValues.value || '',
       isInvalid: Boolean(form.formState.errors.value),
       errorMessage: form.formState.errors.value?.message
     },
@@ -113,11 +145,18 @@ export const Details = ({ isOpen, onClose, transaction }: DetailsProps) => {
           <Icon size={20} className='text-primary' />
         </div>
         <div>
-          <Text appearance='h2' className='text-base font-bold font-display'>{transaction.description}</Text>
+          <Text appearance='h2' className='text-base font-bold font-display'>
+            {transaction.description}
+          </Text>
           <Text appearance='caption' className='text-muted-foreground'>
-            {transaction.category ? TRANSACTION_CATEGORIES[transaction.category]?.name : undefined}
-            ·
-            {transaction.date}
+            {transaction.category
+              ? TRANSACTION_CATEGORIES[transaction.category]?.name
+              : transaction.type === 'CREDIT'
+                ? 'Receita'
+                : transaction.type === 'DEBIT'
+                  ? 'Despesa'
+                  : 'Transferência'}
+            · {formatDisplayDate(transaction.date)}
           </Text>
         </div>
       </Modal.Header>
@@ -126,24 +165,39 @@ export const Details = ({ isOpen, onClose, transaction }: DetailsProps) => {
           <AddExpenseForm
             onSubmit={form.handleSubmit(onSubmit)}
             {...commonProps}
-            onCategoryProps={{ ...form.register('category') }}
-            onSourceIdProps={{ ...form.register('sourceId') }}
+            onCategoryProps={{
+              ...form.register('category'),
+              value: formValues.category || ''
+            }}
+            onSourceIdProps={{
+              ...form.register('sourceId'),
+              value: formValues.sourceId || ''
+            }}
           />
         )}
         {transaction.type === 'CREDIT' && (
           <AddIncomeForm
             onSubmit={form.handleSubmit(onSubmit)}
             {...commonProps}
-            onCategoryProps={{ ...form.register('category') }}
-            onSourceIdProps={{ ...form.register('sourceId') }}
+            onCategoryProps={{
+              ...form.register('category'),
+              value: formValues.category || ''
+            }}
+            onSourceIdProps={{
+              ...form.register('sourceId'),
+              value: formValues.sourceId || ''
+            }}
           />
         )}
         {transaction.type === 'TRANSFER' && (
           <AddTransferForm
             onSubmit={form.handleSubmit(onSubmit)}
             {...commonProps}
-            onFromProps={{ ...form.register('from') }}
-            onToProps={{ ...form.register('to') }}
+            onFromProps={{
+              ...form.register('from'),
+              value: formValues.from || ''
+            }}
+            onToProps={{ ...form.register('to'), value: formValues.to || '' }}
           />
         )}
         <Button

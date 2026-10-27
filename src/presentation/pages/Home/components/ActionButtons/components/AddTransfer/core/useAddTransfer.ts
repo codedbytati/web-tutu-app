@@ -1,5 +1,5 @@
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import { useCreateTransaction } from '@tutu-services/account'
+import { useCreateTransaction } from '@tutu-services/transaction'
 import { useToast } from '@tutu-ui'
 
 type TransferFormData = {
