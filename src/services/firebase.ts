@@ -2,13 +2,13 @@ import { initializeApp } from 'firebase/app'
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyA-WGgzwL8zxffmsxK_bKegDP3eyGT39so',
-  authDomain: 'tutu-app-f1a12.firebaseapp.com',
-  projectId: 'tutu-app-f1a12',
-  storageBucket: 'tutu-app-f1a12.firebasestorage.app',
-  messagingSenderId: '855408455233',
-  appId: '1:855408455233:web:5d0a3784e2b3b6acbba0c0',
-  measurementId: 'G-K798JN6795'
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 }
 
 const app = initializeApp(firebaseConfig)
