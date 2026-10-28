@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "prettier": "npx prettier . --check",
-    "test:unit": "vitest run"
+    "test:unit": "vitest run",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
@@ -34,6 +36,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@storybook/addon-docs": "^10.6.5",
+    "@storybook/react-vite": "^10.6.5",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@types/node": "^24.13.3",
@@ -46,6 +50,7 @@
     "globals": "^17.11.0",
     "jsdom": "^30.1.3",
     "prettier": "3.9.6",
+    "storybook": "^10.6.5",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.67.0",
     "vite": "^8.2.2",
