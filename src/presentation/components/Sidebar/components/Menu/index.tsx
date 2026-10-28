@@ -30,9 +30,15 @@ const menuItems = [
   { to: '/perfil', label: 'Perfil', icon: UserIcon, color: 'coral' }
 ] as const
 
+const preloadedRoutes = new Set<(typeof menuItems)[number]['to']>()
+
 export const Menu = () => {
   const preloadRoute = (to: (typeof menuItems)[number]['to']) => {
+    if (preloadedRoutes.has(to)) return
+    preloadedRoutes.add(to)
+
     preloadRoutes[to]().catch((error: unknown) => {
+      preloadedRoutes.delete(to)
       console.error(`Falha ao pré-carregar a rota ${to}.`, error)
     })
 
@@ -52,6 +58,7 @@ export const Menu = () => {
     }
 
     preloadData.catch((error: unknown) => {
+      preloadedRoutes.delete(to)
       console.error(`Falha ao pré-carregar os dados da rota ${to}.`, error)
     })
   }
@@ -64,6 +71,7 @@ export const Menu = () => {
           to={to}
           onMouseEnter={() => preloadRoute(to)}
           onFocus={() => preloadRoute(to)}
+          onTouchStart={() => preloadRoute(to)}
         >
           {({ isActive }) => {
             const {

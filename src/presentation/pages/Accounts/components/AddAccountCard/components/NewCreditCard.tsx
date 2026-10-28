@@ -1,5 +1,5 @@
 import { ChevronLeftIcon } from 'lucide-react'
-import { Modal, Text } from '@tutu-ui'
+import { Modal, Text, useToast } from '@tutu-ui'
 import { AddCreditCardForm } from '@tutu-components'
 import { useCreateCreditCard } from '@tutu-services/account'
 import { useForm, type SubmitHandler } from 'react-hook-form'
@@ -22,7 +22,7 @@ export const NewCreditCard = ({
   onClose,
   onReturn
 }: NewCreditCardProps) => {
-  const { mutate, isError, isPending } = useCreateCreditCard()
+  const { mutateAsync, isError, isPending } = useCreateCreditCard()
   const {
     reset,
     handleSubmit,
@@ -36,19 +36,28 @@ export const NewCreditCard = ({
     const parsedLimit = Number(data.limit.replace(/\./g, '').replace(',', '.'))
     if (!Number.isFinite(parsedLimit)) return
 
-    mutate(
-      {
-        bank: data.bank as Bank,
-        nickname: data.nickname.trim(),
-        limit: parsedLimit
-      },
-      {
-        onSuccess: () => {
-          reset()
-          onClose()
-        }
+    void (async () => {
+      try {
+        await mutateAsync({
+          bank: data.bank as Bank,
+          nickname: data.nickname.trim(),
+          limit: parsedLimit
+        })
+        reset()
+        onClose()
+        useToast.add({
+          title: 'Sucesso!',
+          description: 'O cartão foi adicionado com sucesso.',
+          status: 'success'
+        })
+      } catch {
+        useToast.add({
+          title: 'Tente novamente',
+          description: 'Não foi possível adicionar o cartão.',
+          status: 'error'
+        })
       }
-    )
+    })()
   }
 
   return (

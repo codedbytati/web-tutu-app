@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ChevronLeftIcon } from 'lucide-react'
-import { Text } from '@tutu-ui'
+import { Text, useToast } from '@tutu-ui'
 import { AddCreditCardForm } from '@tutu-components'
 import { useCreateCreditCard } from '@tutu-services/account'
 import Logo from '../../../../../assets/logo.png'
@@ -19,7 +19,7 @@ type CreditCardFormData = {
 
 export const AddCreditCard = ({ onClose }: AddCreditCardProps) => {
   const navigate = useNavigate()
-  const { mutate, isError, isPending } = useCreateCreditCard()
+  const { mutateAsync, isError, isPending } = useCreateCreditCard()
   const {
     reset,
     handleSubmit,
@@ -33,19 +33,28 @@ export const AddCreditCard = ({ onClose }: AddCreditCardProps) => {
     const parsedLimit = Number(data.limit.replace(/\./g, '').replace(',', '.'))
     if (!Number.isFinite(parsedLimit)) return
 
-    mutate(
-      {
-        bank: data.bank as Bank,
-        nickname: data.nickname.trim(),
-        limit: parsedLimit
-      },
-      {
-        onSuccess: () => {
-          reset()
-          navigate('/')
-        }
+    void (async () => {
+      try {
+        await mutateAsync({
+          bank: data.bank as Bank,
+          nickname: data.nickname.trim(),
+          limit: parsedLimit
+        })
+        reset()
+        useToast.add({
+          title: 'Sucesso!',
+          description: 'O cartão foi adicionado com sucesso.',
+          status: 'success'
+        })
+        navigate('/')
+      } catch {
+        useToast.add({
+          title: 'Tente novamente',
+          description: 'Não foi possível adicionar o cartão.',
+          status: 'error'
+        })
       }
-    )
+    })()
   }
 
   return (
@@ -57,14 +66,27 @@ export const AddCreditCard = ({ onClose }: AddCreditCardProps) => {
         />
         <h1 className='font-display font-black text-foreground'>tutu</h1>
       </div>
-      <button className='flex items-center gap-2 cursor-pointer group' onClick={onClose}>
+      <button
+        className='flex items-center gap-2 cursor-pointer group'
+        onClick={onClose}
+      >
         <div className='bg-muted rounded-xl p-2'>
-          <ChevronLeftIcon size={14} className='text-muted-foreground group-hover:text-foreground' />
+          <ChevronLeftIcon
+            size={14}
+            className='text-muted-foreground group-hover:text-foreground'
+          />
         </div>
-        <Text appearance='body2' className='text-muted-foreground font-semibold group-hover:text-foreground'>Voltar</Text>
+        <Text
+          appearance='body2'
+          className='text-muted-foreground font-semibold group-hover:text-foreground'
+        >
+          Voltar
+        </Text>
       </button>
       <div className='mt-6 mb-5'>
-        <Text appearance='h1' className='text-2xl font-extrabold'>Adicionar conta</Text>
+        <Text appearance='h1' className='text-2xl font-extrabold'>
+          Adicionar conta
+        </Text>
         <Text appearance='body1' className='text-muted-foreground text-sm'>
           Você pode adicionar mais contas depois.
         </Text>

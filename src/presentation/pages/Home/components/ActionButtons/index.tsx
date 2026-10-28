@@ -10,9 +10,9 @@ export const ActionButtons = () => {
   >(null)
 
   return (
-    <div className='flex gap-3 justify-between'>
+    <div className='w-full flex gap-3 justify-between'>
       <button
-        className='flex flex-col items-center gap-2 w-52 p-4 bg-negative/10 rounded-2xl border border-negative/20 cursor-pointer transition-transform duration-200 ease-in-out hover:scale-97'
+        className='w-full flex flex-col items-center gap-2 p-4 bg-negative/10 rounded-2xl border border-negative/20 cursor-pointer transition-transform duration-200 ease-in-out hover:scale-97'
         onClick={() => setIsModalOpen('expense')}
       >
         <CircleMinusIcon size={22} className='text-negative' />
@@ -21,7 +21,7 @@ export const ActionButtons = () => {
         </h1>
       </button>
       <button
-        className='flex flex-col items-center gap-2 w-52 p-4 bg-positive/10 rounded-2xl border border-positive/20 cursor-pointer transition-transform duration-200 ease-in-out hover:scale-97'
+        className='w-full flex flex-col items-center gap-2 p-4 bg-positive/10 rounded-2xl border border-positive/20 cursor-pointer transition-transform duration-200 ease-in-out hover:scale-97'
         onClick={() => setIsModalOpen('income')}
       >
         <CirclePlusIcon size={22} className='text-positive' />
@@ -30,7 +30,7 @@ export const ActionButtons = () => {
         </h1>
       </button>
       <button
-        className='flex flex-col items-center gap-2 w-52 p-4 bg-primary rounded-2xl shadow-md cursor-pointer transition-transform duration-200 ease-in-out hover:scale-97'
+        className='w-full flex flex-col items-center gap-2 p-4 bg-primary rounded-2xl shadow-md cursor-pointer transition-transform duration-200 ease-in-out hover:scale-97'
         onClick={() => setIsModalOpen('transfer')}
       >
         <ArrowDownUpIcon size={22} className='text-card' />

@@ -1,6 +1,6 @@
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ChevronLeftIcon } from 'lucide-react'
-import { Modal, Text } from '@tutu-ui'
+import { Modal, Text, useToast } from '@tutu-ui'
 import { useCreateAccount } from '@tutu-services/account'
 import { AddAccountForm } from '@tutu-components'
 import { type AccountType, type Bank } from '../../../../utils'
@@ -19,7 +19,7 @@ type AccountFormData = {
 }
 
 export const NewAccount = ({ isOpen, onClose, onReturn }: NewAccountProps) => {
-  const { mutate, isError, isPending } = useCreateAccount()
+  const { mutateAsync, isError, isPending } = useCreateAccount()
   const {
     reset,
     handleSubmit,
@@ -30,29 +30,43 @@ export const NewAccount = ({ isOpen, onClose, onReturn }: NewAccountProps) => {
   })
 
   const onSubmit: SubmitHandler<AccountFormData> = (data) => {
-    const parsedBalance = Number(data.balance.replace(/\./g, '').replace(',', '.'))
+    const parsedBalance = Number(
+      data.balance.replace(/\./g, '').replace(',', '.')
+    )
     if (!Number.isFinite(parsedBalance)) return
 
-    mutate(
-      {
-        bank: data.bank as Bank,
-        nickname: data.nickname.trim(),
-        type: data.type as AccountType,
-        balance: parsedBalance
-      },
-      {
-        onSuccess: () => {
-          reset()
-          onClose()
-        }
+    void (async () => {
+      try {
+        await mutateAsync({
+          bank: data.bank as Bank,
+          nickname: data.nickname.trim(),
+          type: data.type as AccountType,
+          balance: parsedBalance
+        })
+        reset()
+        onClose()
+        useToast.add({
+          title: 'Sucesso!',
+          description: 'A conta foi adicionada com sucesso.',
+          status: 'success'
+        })
+      } catch {
+        useToast.add({
+          title: 'Tente novamente',
+          description: 'Não foi possível adicionar a conta.',
+          status: 'error'
+        })
       }
-    )
+    })()
   }
 
   return (
     <Modal isOpen={isOpen}>
       <Modal.Header onClose={onClose}>
-        <button className='cursor-pointer p-1 rounded-lg hover:bg-muted' onClick={onReturn}>
+        <button
+          className='cursor-pointer p-1 rounded-lg hover:bg-muted'
+          onClick={onReturn}
+        >
           <ChevronLeftIcon size={16} className='text-muted-foreground' />
         </button>
         <div>
@@ -91,9 +105,7 @@ export const NewAccount = ({ isOpen, onClose, onReturn }: NewAccountProps) => {
             errorMessage: errors.balance?.message
           }}
           errorMessage={
-            isError
-              ? 'Não foi possível adicionar a conta.'
-              : undefined
+            isError ? 'Não foi possível adicionar a conta.' : undefined
           }
           isDisabled={isPending}
         />

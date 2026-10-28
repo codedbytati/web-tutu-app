@@ -66,9 +66,14 @@ Essa organização ainda não representa uma Clean Architecture completa: não h
 - As páginas são carregadas com `React.lazy` e code splitting;
 - O gráfico de análises é carregado sob demanda;
 - Rotas são pré-carregadas ao passar o mouse ou receber foco nos links do menu;
+- Em dispositivos touch, as rotas também são pré-carregadas ao iniciar o toque;
+- Cada rota é pré-carregada no máximo uma vez por sessão da aplicação;
 - Dados de contas e transações podem ser pré-carregados pelo React Query durante a navegação;
 - O cache do React Query usa `staleTime`, `gcTime`, retry limitado e não refaz consultas ao focar a janela;
-- Queries de contas e transações são invalidadas após mutações;
+- Queries de contas e transações são invalidadas por um helper compartilhado após mutações;
+- As mutations financeiras aguardam a invalidação e o refetch antes de concluir;
+- Mutations financeiras não são repetidas automaticamente (`retry: 0`) para evitar duplicação de operações;
+- A estratégia é de refetch conservador, sem atualização otimista, porque uma transação pode alterar simultaneamente transações, contas e cartões;
 - O cache do React Query é limpo ao fazer logout.
 
 Configuração atual do cache:
@@ -79,6 +84,16 @@ gcTime: 5 minutos
 retry: 1 tentativa
 refetchOnWindowFocus: false
 ```
+
+No último build validado, as páginas principais foram divididas em chunks entre
+0,38 kB e 17,42 kB, enquanto o gráfico ApexCharts permanece isolado em um
+chunk carregado sob demanda de aproximadamente 888 kB. O chunk inicial da
+aplicação ficou em aproximadamente 554 kB. O aviso de tamanho do ApexCharts é
+esperado e não bloqueia o carregamento das páginas que não exibem análises.
+
+O layout público foi validado em viewport móvel de 390 x 844 px sem overflow
+horizontal. As áreas autenticadas usam navegação horizontal no mobile e layout
+em coluna, enquanto o layout desktop usa sidebar lateral.
 
 ## Segurança
 
