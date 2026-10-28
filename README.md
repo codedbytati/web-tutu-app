@@ -73,7 +73,6 @@ Essa organização ainda não representa uma Clean Architecture completa: não h
 - Queries de contas e transações são invalidadas por um helper compartilhado após mutações;
 - As mutations financeiras aguardam a invalidação e o refetch antes de concluir;
 - Mutations financeiras não são repetidas automaticamente (`retry: 0`) para evitar duplicação de operações;
-- A estratégia é de refetch conservador, sem atualização otimista, porque uma transação pode alterar simultaneamente transações, contas e cartões;
 - O cache do React Query é limpo ao fazer logout.
 
 Configuração atual do cache:
@@ -94,6 +93,46 @@ esperado e não bloqueia o carregamento das páginas que não exibem análises.
 O layout público foi validado em viewport móvel de 390 x 844 px sem overflow
 horizontal. As áreas autenticadas usam navegação horizontal no mobile e layout
 em coluna, enquanto o layout desktop usa sidebar lateral.
+
+## Decisões técnicas
+
+- A estrutura de pastas existente foi preservada, sem reorganização do projeto;
+- O React Query concentra o estado remoto, o React Context concentra a autenticação e o React Hook Form concentra os formulários;
+- As chaves de query de contas e transações são centralizadas em `src/services/queryKeys.ts`;
+- A invalidação financeira é compartilhada e aguardada pelas mutations para manter saldos e listas sincronizados;
+- O carregamento de páginas e gráficos é feito sob demanda, com prefetch de rotas e dados durante a navegação;
+- A configuração Web do Firebase é fornecida por variáveis `VITE_FIREBASE_*` para organização de ambientes, mas não é tratada como segredo;
+- A autenticação do backend valida o usuário e restringe os recursos financeiros ao proprietário autenticado;
+- A validação de entrada existe tanto nos schemas do frontend quanto nos middlewares do backend.
+
+## Métricas e checklist de entrega
+
+Resultados da validação final:
+
+| Verificação                              | Resultado                 |
+| ---------------------------------------- | ------------------------- |
+| Build frontend                           | Passou                    |
+| Lint frontend                            | Passou                    |
+| Testes unitários frontend                | 14 testes passando        |
+| Testes de integração backend             | 13 testes passando        |
+| Formatação dos arquivos alterados        | Passou                    |
+| Integridade do diff (`git diff --check`) | Passou                    |
+| Navegação e cadastro em navegador        | Validado                  |
+| Viewport mobile de 390 x 844 px          | Sem overflow horizontal   |
+| Chunk inicial                            | Aproximadamente 553,82 kB |
+| Chunk ApexCharts sob demanda             | Aproximadamente 888,28 kB |
+
+O build frontend foi concluído em aproximadamente 2,8 segundos na última
+execução local. Os testes frontend foram concluídos em aproximadamente 25,8
+segundos e os testes backend em aproximadamente 14,3 segundos. Os tempos são
+referências do ambiente local e podem variar entre máquinas.
+
+## Limitações conhecidas
+
+- A Clean Architecture é parcial: ainda não existem casos de uso e interfaces de repositório formais;
+- O chunk do ApexCharts permanece grande, embora seja carregado apenas na página de análises;
+- Alguns campos de formulário ainda podem evoluir para uma associação semântica mais completa entre `<label>` e controle;
+- O `npm audit` ainda aponta vulnerabilidades transitivas que devem ser avaliadas em uma atualização de dependências separada, sem aplicar `npm audit fix --force` automaticamente.
 
 ## Segurança
 

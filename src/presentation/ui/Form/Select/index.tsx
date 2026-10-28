@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef, useId, useState } from 'react'
 import { tv } from 'tailwind-variants'
 
 const makeSelectStyles = tv({
@@ -69,10 +69,13 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       defaultValue = '',
       onChange,
       className,
+      id,
       ...props
     },
     ref
   ) => {
+    const generatedId = useId()
+    const selectId = id ?? `select-field-${generatedId}`
     const hasError = isInvalid || Boolean(errorMessage)
     const message = errorMessage || hint
 
@@ -90,10 +93,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 
     return (
       <div className={className}>
-        <p className='font-display text-foreground text-xs font-semibold mb-1.5'>
+        <label
+          htmlFor={selectId}
+          className='font-display text-foreground text-xs font-semibold mb-1.5 block'
+        >
           {label}
-        </p>
+        </label>
         <select
+          id={selectId}
           ref={ref}
           className={makeSelectStyles({ size, isInvalid: hasError })}
           value={currentSelection}

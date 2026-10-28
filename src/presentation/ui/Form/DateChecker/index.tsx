@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useId } from 'react'
 import { tv } from 'tailwind-variants'
 
 const makeStyles = tv({
@@ -32,17 +32,25 @@ type DateCheckerProps = Omit<
 }
 
 export const DateChecker = forwardRef<HTMLInputElement, DateCheckerProps>(
-  ({ label, hint, errorMessage, isInvalid, size = 'md', ...props }, ref) => {
+  (
+    { label, hint, errorMessage, isInvalid, size = 'md', id, ...props },
+    ref
+  ) => {
+    const generatedId = useId()
+    const inputId = id ?? `date-field-${generatedId}`
     const hasError = isInvalid || Boolean(errorMessage)
     const message = errorMessage || hint
 
     return (
       <div>
-        <p className='font-display text-foreground text-xs font-semibold mb-1.5'>
+        <label
+          htmlFor={inputId}
+          className='font-display text-foreground text-xs font-semibold mb-1.5 block'
+        >
           {label}
-        </p>
+        </label>
         <div className={makeStyles({ size, isInvalid: hasError })}>
-          <input ref={ref} type='date' {...props} />
+          <input id={inputId} ref={ref} type='date' {...props} />
         </div>
         {message && (
           <p

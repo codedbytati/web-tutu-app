@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
 import { Mail, User } from 'lucide-react'
-import { Button, PasswordField, TextField } from '@tutu-ui'
+import { Button, PasswordField, Text, TextField } from '@tutu-ui'
 import { GoogleButton } from '@tutu-components'
 import { useRegister } from './core/useRegister'
 import { CreateWallet } from './components/CreateWallet'
@@ -14,7 +14,8 @@ export const Register = () => {
     onNameProps,
     onEmailProps,
     onPasswordProps,
-    onGoogleRegister
+    onGoogleRegister,
+    registerError
   } = useRegister({ onRegistered: () => setIsRegistered(true) })
 
   if (isRegistered) return <CreateWallet />
@@ -67,6 +68,11 @@ export const Register = () => {
             required
             {...onPasswordProps}
           />
+          {registerError && (
+            <Text appearance='caption' className='text-negative'>
+              {registerError}
+            </Text>
+          )}
           <Button size='lg' type='submit'>
             Criar conta
           </Button>

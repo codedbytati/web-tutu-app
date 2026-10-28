@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useGoogleLogin, useRegisterUser } from '@tutu-services/login'
 import { registerSchema, type RegisterFormData } from '@tutu-schemas'
+import { getFirebaseAuthErrorMessage } from '@tutu-services/login/firebaseAuthError'
 
 type UseRegisterProps = {
   onRegistered: () => void
@@ -17,7 +18,7 @@ export const useRegister = ({ onRegistered }: UseRegisterProps) => {
     mode: 'onSubmit'
   })
 
-  const { mutate: registerUser } = useRegisterUser()
+  const { mutate: registerUser, isError, error } = useRegisterUser()
   const { mutate: loginWithGoogle } = useGoogleLogin()
 
   const onSubmit = (data: RegisterFormData) => {
@@ -33,6 +34,7 @@ export const useRegister = ({ onRegistered }: UseRegisterProps) => {
   }
 
   return {
+    registerError: isError ? getFirebaseAuthErrorMessage(error) : undefined,
     onSubmit: handleSubmit(onSubmit),
     onGoogleRegister: handleGoogleRegister,
     onNameProps: {

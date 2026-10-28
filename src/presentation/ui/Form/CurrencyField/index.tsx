@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from 'react'
+import React, { forwardRef, useEffect, useId, useState } from 'react'
 import { tv } from 'tailwind-variants'
 
 const makeStyles = tv({
@@ -59,10 +59,13 @@ export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(
       size = 'md',
       value,
       onChange,
+      id,
       ...props
     },
     ref
   ) => {
+    const generatedId = useId()
+    const inputId = id ?? `currency-field-${generatedId}`
     const [displayValue, setDisplayValue] = useState<string>(() => {
       if (typeof value === 'number') return formatCentsToCurrency(value)
       return value || ''
@@ -100,15 +103,19 @@ export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(
 
     return (
       <div>
-        <p className='font-display text-foreground text-xs font-semibold mb-1.5'>
+        <label
+          htmlFor={inputId}
+          className='font-display text-foreground text-xs font-semibold mb-1.5 block'
+        >
           {label}
-        </p>
+        </label>
         <div className={makeStyles({ type, size, isInvalid: hasError })}>
           <p>R$</p>
           <input
             {...props}
             type='text'
             inputMode='numeric'
+            id={inputId}
             ref={ref}
             placeholder='0,00'
             value={displayValue}

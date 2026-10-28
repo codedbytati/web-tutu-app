@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useId } from 'react'
 import { tv } from 'tailwind-variants'
 import type { LucideIcon } from 'lucide-react'
 
@@ -44,21 +44,27 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       isInvalid,
       icon: Icon,
       size = 'md',
+      id,
       ...props
     },
     ref
   ) => {
+    const generatedId = useId()
+    const inputId = id ?? `text-field-${generatedId}`
     const hasError = isInvalid || Boolean(errorMessage)
     const message = errorMessage || hint
 
     return (
       <div>
-        <p className='font-display text-foreground text-xs font-semibold mb-1.5'>
+        <label
+          htmlFor={inputId}
+          className='font-display text-foreground text-xs font-semibold mb-1.5 block'
+        >
           {label}
-        </p>
+        </label>
         <div className={makeStyles({ size, isInvalid: hasError })}>
           {Icon && <Icon className='text-muted-foreground' size={15} />}
-          <input ref={ref} placeholder={placeholder} {...props} />
+          <input id={inputId} ref={ref} placeholder={placeholder} {...props} />
         </div>
         {message && (
           <p

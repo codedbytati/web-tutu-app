@@ -19,11 +19,12 @@ describe('AddExpenseForm', () => {
       />
     )
 
-    expect(
-      screen.getByPlaceholderText('Ex: Remuneração de agosto')
-    ).toBeInTheDocument()
+    expect(screen.getByLabelText('Descrição')).toBeInTheDocument()
+    expect(screen.getByLabelText('Data da transação')).toBeInTheDocument()
+    expect(screen.getByLabelText('Valor')).toBeInTheDocument()
+    expect(screen.getByLabelText('Categoria')).toBeInTheDocument()
+    expect(screen.getByLabelText('Conta')).toBeInTheDocument()
     expect(container.querySelector('input[type="date"]')).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('0,00')).toBeInTheDocument()
     expect(screen.getByText('Registrar despesa')).toBeInTheDocument()
   })
 })

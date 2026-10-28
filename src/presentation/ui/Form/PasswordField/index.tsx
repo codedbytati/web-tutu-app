@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react'
+import { forwardRef, useId, useState } from 'react'
 import { tv } from 'tailwind-variants'
 import { Eye, EyeOff } from 'lucide-react'
 
@@ -42,21 +42,28 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
       errorMessage,
       isInvalid,
       size = 'md',
+      id,
       ...props
     },
     ref
   ) => {
+    const generatedId = useId()
+    const inputId = id ?? `password-field-${generatedId}`
     const hasError = isInvalid || Boolean(errorMessage)
     const message = errorMessage || hint
     const [hidden, setIsHidden] = useState(true)
 
     return (
       <div>
-        <p className='font-display text-foreground text-xs font-semibold mb-1.5'>
+        <label
+          htmlFor={inputId}
+          className='font-display text-foreground text-xs font-semibold mb-1.5 block'
+        >
           {label}
-        </p>
+        </label>
         <div className={makeStyles({ size, isInvalid: hasError })}>
           <input
+            id={inputId}
             ref={ref}
             placeholder={placeholder}
             type={hidden ? 'password' : 'text'}
